@@ -70,6 +70,7 @@ def train_agent(agent,
     curr_obs = env.reset()
     while not done:    
       action = agent.act(curr_obs, mode='train')
+      import pdb; pdb.set_trace()
       next_obs, reward, done, _ = env.step(action)
       agent.update(curr_obs, action, reward, next_obs, done, timestep)
       curr_obs = next_obs
