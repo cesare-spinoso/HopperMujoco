@@ -1,7 +1,9 @@
+from re import S
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.distributions.normal import Normal
 
 
 class Agent:
@@ -10,13 +12,44 @@ class Agent:
     want to this class.
     """
 
+    TOTAL_TIMESTEPS = 2000000
+
     def __init__(self, env_specs):
+        # TODO: Add hyperparameter tuning for the actor e.g. activation function, learning rate, architecture etc.
+        ### ENVIRONMENT VARIABLES ###
         self.env_specs = env_specs
+        # Number of observations (states) and actions
+        self.num_obs = env_specs["observation_space"].shape[0]
+        self.num_actions = env_specs["action_space"].shape[0]
+        # Keep track of the timestep of the last episode (for the return computation)
+        self.timestep_of_last_episode = 0
+        self.time_since_last_update = 0
+        ### GENERAL HYPERPARAMETERS ###
+        self.gamma = 0.9
+        ### ACTOR ###
         self.actor_model = Actor(
-            num_inputs=env_specs["observation_space"].shape[0],
-            num_outputs=env_specs["action_space"].shape[0],
+            num_obs=self.num_obs,
+            num_actions=self.num_actions,
         )
-        # TODO: Create an optimizer and loss
+        self.actor_learning_rate = 0.001
+        self.actor_optimizer = torch.optim.Adam(
+            self.actor_model.parameters(), lr=self.actor_learning_rate
+        )
+        ### CRITIC ###
+        self.critic_model = Critic(num_obs=self.num_obs)
+        self.critic_learning_rate = 0.005  # Critic should stabilize faster
+        self.critic_optimizer = torch.optim.Adam(
+            self.critic_model.parameters(), lr=self.critic_learning_rate
+        )
+        # OpenAI Uses 80, another hyperparameter
+        self.number_of_critic_updates_per_actor_update = 80
+        ### BUFFER ###
+        self.buffer = Buffer(
+            number_obs=self.num_obs,
+            number_actions=self.num_actions,
+            gamma=self.gamma,
+            total_timesteps=Agent.TOTAL_TIMESTEPS,
+        )
 
     def load_weights(self, root_path):
         # Add root_path in front of the path of the saved network parameters
@@ -24,66 +57,215 @@ class Agent:
         pass
 
     def act(self, curr_obs, mode="eval"):
-        if mode == "train":
-            self.actor_model.train()
-        else:
-            self.actor_model.eval()
-        curr_obs = torch.from_numpy(curr_obs).float()
-        actor_forward = self.actor_model(curr_obs)
-        sample_action = torch.normal(actor_forward)
-        sample_action_as_array = sample_action.data.numpy()
+        # TODO: Implement mode eval
+        sample_action_as_array = torch.zeros(self.num_actions)
+        with torch.no_grad():
+            # We can use no grad for both train and eval because we're not
+            # keeping track of gradients here so this should make things
+            # run faster
+            if mode == "train":
+                curr_obs = torch.from_numpy(curr_obs).float()
+                action_distribution = self.actor_model(curr_obs)
+                sample_action = action_distribution.sample()
+                sample_action_as_array = sample_action.data.numpy()
+            else:
+                pass
         return sample_action_as_array
 
     def update(self, curr_obs, action, reward, next_obs, done, timestep):
-        # TODO: If doing not doing an update, just collect otherwise do an update
-        # TODO: An update looks like
-        # TODO: What is 1/|D_k| in the spinup version
-        # 1. Computing the returns and advantages with the critic
-        # 2. Update with policy grad
-        # 3. Update with critic grad
-        pass
+        # Convert the observations to tensors
+        curr_obs = torch.from_numpy(curr_obs).float()
+        action = torch.from_numpy(action).float()
+        next_obs = torch.from_numpy(next_obs).float()
+        # Compute and store the return (the computation is the same whether the episode is done or not)
+        t = timestep - self.timestep_of_last_episode
+        self.buffer.compute_and_store_return(reward=reward, t=t)
+        # Compute and store the advantage
+        self.buffer.compute_and_store_advantage(
+            critic=self.critic_model,
+            curr_obs=curr_obs,
+            reward=reward,
+            next_obs=next_obs,
+        )
+        if not done:
+            # Store the latest observation, action and reward
+            self.buffer.store_experience(obs=curr_obs, action=action)
+            self.time_since_last_update += 1
+        else:
+            if self.is_ready_to_train():
+                # Train the actor
+                (
+                    action_data,
+                    obs_data,
+                    advantage_data,
+                ) = self.buffer.get_data_for_training_actor()
+                self.train_actor(
+                    action_data=action_data,
+                    obs_data=obs_data,
+                    advantage_data=advantage_data,
+                )
+                # Train the critic
+                obs_data, return_data = self.buffer.get_data_for_training_critic()
+                self.train_critic(
+                    obs_data=obs_data,
+                    return_data=return_data,
+                    iterations=self.number_of_critic_updates_per_actor_update,
+                )
+            self.timestep_of_last_episode = timestep
+            self.time_since_last_update = 0
 
-    def create_optimizer():
-        pass
+    def is_ready_to_train(self):
+        # FIXME: This is not the correct condition for being ready to train see Buffer.get_data_for_training
+        # for a better explanation
+        return (
+            int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
+        )
 
-    def create_loss():
-        pass
+    def train_actor(self, action_data, obs_data, advantage_data):
+        # NOTE: The idea is that all the other models would mostly only change here
+        self.actor_optimizer.zero_grad()
+        # Apply a new forward pass with the batched data
+        distribution_of_obs = self.actor_model(obs_data)
+        # Compute the log_proba of the distribution using the actions
+        log_proba = distribution_of_obs.log_prob(action_data).sum(axis=-1)
+        # Compute the per time step loss
+        per_time_step_loss = -log_proba * advantage_data
+        # Compute the mean loss
+        mean_loss = per_time_step_loss.mean()
+        # Backpropagate the loss
+        mean_loss.backward()
+        # Update the parameters
+        self.actor_optimizer.step()
 
-    def get_returns():
-        pass
+    def train_critic(self, obs_data, return_data, iterations):
+        # NOTE: The idea is that all the other models would mostly only change here
+        # Train the critic just like a regression model
+        for _ in range(iterations):
+            self.critic_model.zero_grad()
+            # Apply a new forward pass with the batched data
+            estimated_value = self.critic_model(obs_data)
+            # Compute the loss
+            loss = F.mse_loss(estimated_value.squeeze(-1), return_data)
+            # Backpropagate the loss
+            loss.backward()
+            # Update the parameters
+            self.critic_optimizer.step()
 
 
 class Actor(nn.Module):
-    def __init__(self, num_inputs, num_outputs):
-        self.num_inputs = num_inputs
-        self.num_outputs = num_outputs
+    def __init__(self, num_obs, num_actions):
+        # TODO: Make the architecture hyper-parameterizable
         super(Actor, self).__init__()
-        self.fc1 = nn.Linear(num_inputs, 100)
-        self.fc2 = nn.Linear(100, 100)
-        self.fc3 = nn.Linear(100, num_outputs)
+        self.fc1 = nn.Linear(num_obs, 256)
+        self.fc2 = nn.Linear(256, 256)
+        self.fc3 = nn.Linear(256, num_actions)
 
     def forward(self, x):
-        # TODO: Do we want to add standard deviation as parametrized?
+        # TODO: Should allow for different distributions (e.g. learnable std, VAEs, etc.)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         mu = self.fc3(x)
-        return mu
-    
-    def _distribution():
-        # Get the action distribution
-        pass
+        # NOTE: The forward returns a distribution
+        return Normal(mu, torch.ones_like(mu))
 
 
 class Critic(nn.Module):
-    pass
+    def __init__(self, num_obs):
+        # TODO: Make the architecture hyper-parameterizable
+        super(Critic, self).__init__()
+        self.fc1 = nn.Linear(num_obs, 256)
+        self.fc2 = nn.Linear(256, 256)
+        self.fc3 = nn.Linear(256, 1)
+
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        return self.fc3(x)
 
 
 class Buffer:
-    def __init__(number_obs, number_actions, total_timesteps):
+    ADVATANGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
+    BACTHING_METHOD = ["most-recent", "random"]
+
+    def __init__(self, number_obs, number_actions, gamma, total_timesteps):
+        # Number of states, actions and total number of time steps
+        self.number_obs = number_obs
+        self.number_actions = number_actions
+        self.total_timesteps = total_timesteps
+        self.gamma = gamma
+        # Experience includes action and observation
+        # NOTE: Unlike OpenAI, we do not include rewards, state values and log_p in the buffer
+        # but we can add this if we want
+        self.action_buffer = torch.zeros((total_timesteps, number_actions))
+        self.obs_buffer = torch.zeros((total_timesteps, number_obs))
+        self.experience_pointer = 0
+        # Return buffer
+        self.return_buffer = torch.zeros(total_timesteps)
+        self.return_pointer = 0
+        # Advantage buffer
+        self.advantage_buffer = torch.zeros(total_timesteps)
+        self.advantage_pointer = 0
+        # Hyperparameters
+        self.advantage_computation_method = "td-error"
+        self.batch_size_in_time_steps = 5000
+        self.batching_method = "most-recent"
+
+    def store_experience(self, obs, action):
+        self.obs_buffer[self.experience_pointer, :] = obs
+        self.action_buffer[self.experience_pointer, :] = action
+        self.experience_pointer += 1
+
+    def compute_and_store_return(self, reward, t):
+        if t == 0:
+            # First time step of the episode
+            return_ = reward
+        else:
+            # Compute the return recursively
+            return_ = (self.gamma**t) * reward + self.return_buffer[t - 1]
+        self.return_buffer[self.return_pointer] = return_
+        self.return_pointer += 1
+
+    def compute_and_store_advantage(self, curr_obs, reward, next_obs, critic):
+        if self.advantage_computation_method == "td-error":
+            advantage = self._compute_td_error_advantage(
+                curr_obs, reward, next_obs, critic
+            )
+        elif self.advantage_computation_method == "generalized-advantage-estimation":
+            advantage = self._compute_generalized_advantage_estimation_advantage(
+                curr_obs, reward, next_obs, critic
+            )
+        else:
+            raise ValueError("Unknown advantage computation method")
+        self.advantage_buffer[self.advantage_pointer] = advantage
+        self.advantage_pointer += 1
+
+    def _compute_td_error_advantage(self, curr_obs, reward, next_obs, critic):
+        with torch.no_grad():
+            # Compute the TD error
+            # FIXME: OpenAI's implementation suggests that the value of the final state
+            # should be 0 (line 298 of vpg.py)
+            td_error = reward + self.gamma * critic(next_obs) - critic(curr_obs)
+            return td_error
+
+    def _compute_generalized_advantage_estimation_advantage(
+        self, curr_obs, reward, next_obs, critic
+    ):
+        # TODO: OpenAI's implementation of the advantage uses something like a lambda-return
         pass
 
-    def store(obs, action, reward):
-        pass
+    def get_data_for_training_actor(self):
+        # FIXME: For now this retrieves the last self.batch_size_in_time_steps amount of data
+        # but this is *incorrect* because it may be chopping an episode
+        # FIXME: OpenAI standardizes the advantage
+        return (
+            self.action_buffer[-self.batch_size_in_time_steps :, :],
+            self.obs_buffer[-self.batch_size_in_time_steps :, :],
+            self.advantage_buffer[-self.batch_size_in_time_steps :],
+        )
 
-    def get():
-        pass
+    def get_data_for_training_critic(self):
+        # NOTE: The return is computed on the fly for efficiency
+        return (
+            self.obs_buffer[-self.batch_size_in_time_steps :, :],
+            self.return_buffer[-self.batch_size_in_time_steps :],
+        )
