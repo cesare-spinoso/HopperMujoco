@@ -24,6 +24,7 @@ class Agent:
         # Keep track of the timestep of the last episode (for the return computation)
         self.timestep_of_last_episode = 0
         self.time_since_last_update = 0
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         ### GENERAL HYPERPARAMETERS ###
         self.gamma = 0.9
         ### ACTOR ###
@@ -69,7 +70,11 @@ class Agent:
                 sample_action = action_distribution.sample()
                 sample_action_as_array = sample_action.data.numpy()
             else:
-                pass
+                curr_obs = torch.from_numpy(curr_obs).float()
+                action_distribution = self.actor_model(curr_obs)
+                sample_action = action_distribution.mean
+                sample_action_as_array = sample_action.data.numpy()
+                # import pdb; pdb.set_trace()
         return sample_action_as_array
 
     def update(self, curr_obs, action, reward, next_obs, done, timestep):
@@ -87,9 +92,9 @@ class Agent:
             reward=reward,
             next_obs=next_obs,
         )
+        self.buffer.store_experience(obs=curr_obs, action=action)
         if not done:
             # Store the latest observation, action and reward
-            self.buffer.store_experience(obs=curr_obs, action=action)
             self.time_since_last_update += 1
         else:
             if self.is_ready_to_train():
@@ -125,6 +130,8 @@ class Agent:
         # NOTE: The idea is that all the other models would mostly only change here
         self.actor_optimizer.zero_grad()
         # Apply a new forward pass with the batched data
+        self.actor_model.to(self.device)
+        obs_data = obs_data.to(self.device)
         distribution_of_obs = self.actor_model(obs_data)
         # Compute the log_proba of the distribution using the actions
         log_proba = distribution_of_obs.log_prob(action_data).sum(axis=-1)
@@ -140,6 +147,9 @@ class Agent:
     def train_critic(self, obs_data, return_data, iterations):
         # NOTE: The idea is that all the other models would mostly only change here
         # Train the critic just like a regression model
+        self.critic_model.to(self.device)
+        obs_data = obs_data.to(self.device)
+        return_data = return_data.to(self.device)
         for _ in range(iterations):
             self.critic_model.zero_grad()
             # Apply a new forward pass with the batched data
@@ -184,8 +194,8 @@ class Critic(nn.Module):
 
 
 class Buffer:
-    ADVATANGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
-    BACTHING_METHOD = ["most-recent", "random"]
+    ADVANTAGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
+    BACTHING_METHODS = ["most-recent", "random"]
 
     def __init__(self, number_obs, number_actions, gamma, total_timesteps):
         # Number of states, actions and total number of time steps
