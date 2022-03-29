@@ -72,7 +72,7 @@ class Agent:
             else:
                 curr_obs = torch.from_numpy(curr_obs).float()
                 action_distribution = self.actor_model(curr_obs)
-                sample_action = action_distribution.mean()
+                sample_action = action_distribution.mean
                 sample_action_as_array = sample_action.data.numpy()
 
         return sample_action_as_array
