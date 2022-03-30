@@ -46,7 +46,7 @@ def get_environment(env_type):
 
 
 def train_agent(
-    agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate
+    agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency
 ):
 
     seed = 0
@@ -64,6 +64,8 @@ def train_agent(
     array_of_mean_acc_rewards = []
 
     while timestep < total_timesteps:
+        ## uncomment this to visualize the training
+        env.render()
 
         done = False
         curr_obs = env.reset()
@@ -85,6 +87,12 @@ def train_agent(
                 )
                 array_of_mean_acc_rewards.append(mean_acc_rewards)
 
+            if timestep % save_frequency == 0:
+              # find average rewards
+              mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
+              # call the save_checkpoint model from agent.py
+              agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards)
+
     return array_of_mean_acc_rewards
 
 
@@ -92,6 +100,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
+    parser.add_argument("--load", type=str, default="None", help="need filename in save_model folder (without .pth.tar)")
+
     args = parser.parse_args()
 
     path = "./" + args.group + "/"
@@ -121,11 +131,16 @@ if __name__ == "__main__":
     agent_module = importlib.import_module(args.group + ".agent")
     agent = agent_module.Agent(env_specs)
 
+    # load in the save_model if one is provided
+    if args.load != "None":
+      agent.load_weights(os.getcwd(), args.load)
+
     # Note these can be environment specific and you are free to experiment with what works best for you
     total_timesteps = 2000000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
+    save_frequency = 100000
 
     learning_curve = train_agent(
-        agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate
+        agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency
     )
