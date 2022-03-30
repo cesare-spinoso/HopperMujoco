@@ -1,3 +1,4 @@
+import os
 from re import S
 import numpy as np
 import torch
@@ -7,9 +8,9 @@ from torch.distributions.normal import Normal
 
 
 class Agent:
-    """The agent class that is to be filled.
-    You are allowed to add any method you
-    want to this class.
+    """
+    The agent class that is to be filled.
+    You are allowed to add any method you want to this class.
     """
 
     TOTAL_TIMESTEPS = 2000000
@@ -52,10 +53,30 @@ class Agent:
             total_timesteps=Agent.TOTAL_TIMESTEPS,
         )
 
-    def load_weights(self, root_path):
-        # Add root_path in front of the path of the saved network parameters
-        # For example if you have weights.pth in the GROUP_MJ1, do `root_path+"weights.pth"` while loading the parameters
-        pass
+    def load_weights(self, root_path, load_model):
+      # get pretrined model path and load it
+      pretrained_model_path = os.path.join(root_path, 'save_model', str(load_model)+'.pth.tar')
+      pretrained_model = torch.load(pretrained_model_path)
+
+      # load state dict for actor and critic
+      self.actor_model.load_state_dict(pretrained_model['actor'])
+      self.critic_model.load_state_dict(pretrained_model['critic'])
+
+      # TODO: also load the buffer? idk.
+      
+      print("Loaded {} OK".format(load_model))
+    
+    def save_checkpoint(self, actor, critic, score_avg):
+      # find or make the save directory
+      model_path = os.path.join(os.getcwd(),'save_model')
+      if not os.path.isdir(model_path):
+        os.makedirs(model_path)
+
+      # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
+      ckpt_path = os.path.join(model_path, 'vpg_ckpt_'+ str(round(score_avg,3))+'.pth.tar')
+
+      torch.save({'actor': actor.state_dict(), 'critic': critic.state_dict(), 'buffer': self.buffer, 'score': score_avg}, ckpt_path)
+      print("checkpoint saved: {}".format(ckpt_path))
 
     def act(self, curr_obs, mode="eval"):
         # TODO: Implement mode eval
@@ -195,7 +216,7 @@ class Critic(nn.Module):
 
 class Buffer:
     ADVANTAGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
-    BACTHING_METHODS = ["most-recent", "random"]
+    BATCHING_METHODS = ["most-recent", "random"]
 
     def __init__(self, number_obs, number_actions, gamma, total_timesteps):
         # Number of states, actions and total number of time steps
