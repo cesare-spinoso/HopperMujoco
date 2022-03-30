@@ -62,7 +62,7 @@ class Agent:
       self.actor_model.load_state_dict(pretrained_model['actor'])
       self.critic_model.load_state_dict(pretrained_model['critic'])
 
-      # TODO: also load the buffer? idk.
+      # TODO: also load the buffer? idk. maybe not.
       
       print("Loaded {} OK".format(load_model))
     
@@ -106,6 +106,7 @@ class Agent:
         # Compute and store the return (the computation is the same whether the episode is done or not)
         t = timestep - self.timestep_of_last_episode
         self.buffer.compute_and_store_return(reward=reward, t=t)
+        # TODO: Remove the advantage computation here, store observations and rewards instead
         # Compute and store the advantage
         self.buffer.compute_and_store_advantage(
             critic=self.critic_model,
@@ -118,6 +119,7 @@ class Agent:
             # Store the latest observation, action and reward
             self.time_since_last_update += 1
         else:
+            self.timestep_of_last_episode = timestep
             if self.is_ready_to_train():
                 # Train the actor
                 (
@@ -137,8 +139,7 @@ class Agent:
                     return_data=return_data,
                     iterations=self.number_of_critic_updates_per_actor_update,
                 )
-            self.timestep_of_last_episode = timestep
-            self.time_since_last_update = 0
+                self.time_since_last_update = 0
 
     def is_ready_to_train(self):
         # FIXME: This is not the correct condition for being ready to train see Buffer.get_data_for_training
@@ -148,6 +149,7 @@ class Agent:
         )
 
     def train_actor(self, action_data, obs_data, advantage_data):
+        # TODO: Compute the advantage here, make sure we gradients are removed
         # NOTE: The idea is that all the other models would mostly only change here
         self.actor_optimizer.zero_grad()
         # Apply a new forward pass with the batched data
