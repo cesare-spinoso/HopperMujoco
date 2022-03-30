@@ -1,4 +1,3 @@
-import os
 from re import S
 import numpy as np
 import torch
@@ -8,9 +7,9 @@ from torch.distributions.normal import Normal
 
 
 class Agent:
-    """
-    The agent class that is to be filled.
-    You are allowed to add any method you want to this class.
+    """The agent class that is to be filled.
+    You are allowed to add any method you
+    want to this class.
     """
 
     TOTAL_TIMESTEPS = 2000000
@@ -53,30 +52,10 @@ class Agent:
             total_timesteps=Agent.TOTAL_TIMESTEPS,
         )
 
-    def load_weights(self, root_path, load_model):
-      # get pretrined model path and load it
-      pretrained_model_path = os.path.join(root_path, 'save_model', str(load_model)+'.pth.tar')
-      pretrained_model = torch.load(pretrained_model_path)
-
-      # load state dict for actor and critic
-      self.actor_model.load_state_dict(pretrained_model['actor'])
-      self.critic_model.load_state_dict(pretrained_model['critic'])
-
-      # TODO: also load the buffer? idk. maybe not.
-      
-      print("Loaded {} OK".format(load_model))
-    
-    def save_checkpoint(self, actor, critic, score_avg):
-      # find or make the save directory
-      model_path = os.path.join(os.getcwd(),'save_model')
-      if not os.path.isdir(model_path):
-        os.makedirs(model_path)
-
-      # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
-      ckpt_path = os.path.join(model_path, 'vpg_ckpt_'+ str(round(score_avg,3))+'.pth.tar')
-
-      torch.save({'actor': actor.state_dict(), 'critic': critic.state_dict(), 'buffer': self.buffer, 'score': score_avg}, ckpt_path)
-      print("checkpoint saved: {}".format(ckpt_path))
+    def load_weights(self, root_path):
+        # Add root_path in front of the path of the saved network parameters
+        # For example if you have weights.pth in the GROUP_MJ1, do `root_path+"weights.pth"` while loading the parameters
+        pass
 
     def act(self, curr_obs, mode="eval"):
         # TODO: Implement mode eval
@@ -95,7 +74,7 @@ class Agent:
                 action_distribution = self.actor_model(curr_obs)
                 sample_action = action_distribution.mean
                 sample_action_as_array = sample_action.data.numpy()
-                # import pdb; pdb.set_trace()
+
         return sample_action_as_array
 
     def update(self, curr_obs, action, reward, next_obs, done, timestep):
@@ -105,8 +84,7 @@ class Agent:
         next_obs = torch.from_numpy(next_obs).float()
         # Compute and store the return (the computation is the same whether the episode is done or not)
         t = timestep - self.timestep_of_last_episode
-        self.buffer.compute_and_store_return(reward=reward, t=t)
-        # TODO: Remove the advantage computation here, store observations and rewards instead
+        #self.buffer.compute_and_store_return(reward=reward, t=t)
         # Compute and store the advantage
         self.buffer.compute_and_store_advantage(
             critic=self.critic_model,
@@ -114,32 +92,44 @@ class Agent:
             reward=reward,
             next_obs=next_obs,
         )
-        self.buffer.store_experience(obs=curr_obs, action=action)
+
         if not done:
             # Store the latest observation, action and reward
+            self.buffer.store_experience(obs=curr_obs, action=action, reward=reward)
             self.time_since_last_update += 1
         else:
-            self.timestep_of_last_episode = timestep
+            self.buffer.store_experience(obs=curr_obs, action=action, reward=reward)
+            self.time_since_last_update += 1
+            reward_data = self.buffer.get_reward_data(t, self.timestep_of_last_episode)
+            self.buffer.compute_and_store_return2(rewards=reward_data, t=t)
+
             if self.is_ready_to_train():
                 # Train the actor
                 (
                     action_data,
                     obs_data,
                     advantage_data,
-                ) = self.buffer.get_data_for_training_actor()
+                ) = self.buffer.get_data_for_training_actor(timestep, self.time_since_last_update)
+
+                _, return_data = self.buffer.get_data_for_training_critic(timestep, self.time_since_last_update)
+
                 self.train_actor(
                     action_data=action_data,
                     obs_data=obs_data,
                     advantage_data=advantage_data,
+                    return_data=return_data,
                 )
                 # Train the critic
-                obs_data, return_data = self.buffer.get_data_for_training_critic()
+                obs_data, return_data = self.buffer.get_data_for_training_critic(timestep, self.time_since_last_update)
                 self.train_critic(
                     obs_data=obs_data,
                     return_data=return_data,
                     iterations=self.number_of_critic_updates_per_actor_update,
                 )
                 self.time_since_last_update = 0
+
+            self.timestep_of_last_episode = timestep
+
 
     def is_ready_to_train(self):
         # FIXME: This is not the correct condition for being ready to train see Buffer.get_data_for_training
@@ -148,8 +138,7 @@ class Agent:
             int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
         )
 
-    def train_actor(self, action_data, obs_data, advantage_data):
-        # TODO: Compute the advantage here, make sure we gradients are removed
+    def train_actor(self, action_data, obs_data, advantage_data, return_data):
         # NOTE: The idea is that all the other models would mostly only change here
         self.actor_optimizer.zero_grad()
         # Apply a new forward pass with the batched data
@@ -163,7 +152,14 @@ class Agent:
         # Compute the mean loss
         mean_loss = per_time_step_loss.mean()
         # Backpropagate the loss
-        mean_loss.backward()
+        #mean_loss.backward()
+
+        # Alternative loss computation
+        log_probs = distribution_of_obs.log_prob(action_data).sum(axis=1)
+        actor_loss = - (return_data * log_probs).mean()
+
+        actor_loss.backward()
+
         # Update the parameters
         self.actor_optimizer.step()
 
@@ -218,7 +214,7 @@ class Critic(nn.Module):
 
 class Buffer:
     ADVANTAGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
-    BATCHING_METHODS = ["most-recent", "random"]
+    BACTHING_METHODS = ["most-recent", "random"]
 
     def __init__(self, number_obs, number_actions, gamma, total_timesteps):
         # Number of states, actions and total number of time steps
@@ -231,6 +227,7 @@ class Buffer:
         # but we can add this if we want
         self.action_buffer = torch.zeros((total_timesteps, number_actions))
         self.obs_buffer = torch.zeros((total_timesteps, number_obs))
+        self.reward_buffer = torch.zeros(total_timesteps)
         self.experience_pointer = 0
         # Return buffer
         self.return_buffer = torch.zeros(total_timesteps)
@@ -243,9 +240,10 @@ class Buffer:
         self.batch_size_in_time_steps = 5000
         self.batching_method = "most-recent"
 
-    def store_experience(self, obs, action):
+    def store_experience(self, obs, action, reward):
         self.obs_buffer[self.experience_pointer, :] = obs
         self.action_buffer[self.experience_pointer, :] = action
+        self.reward_buffer[self.experience_pointer] = reward
         self.experience_pointer += 1
 
     def compute_and_store_return(self, reward, t):
@@ -257,6 +255,18 @@ class Buffer:
             return_ = (self.gamma**t) * reward + self.return_buffer[t - 1]
         self.return_buffer[self.return_pointer] = return_
         self.return_pointer += 1
+
+    def compute_and_store_return2(self, rewards, t):
+
+        for i in range(0, t):
+            self.return_buffer[self.return_pointer] = 0
+            self.return_pointer += 1
+
+        running_returns = 0
+
+        for i in range(0, t):
+            running_returns = rewards[t - 1 - i] + self.gamma * running_returns
+            self.return_buffer[self.return_pointer - 1 - i] = running_returns
 
     def compute_and_store_advantage(self, curr_obs, reward, next_obs, critic):
         if self.advantage_computation_method == "td-error":
@@ -286,19 +296,24 @@ class Buffer:
         # TODO: OpenAI's implementation of the advantage uses something like a lambda-return
         pass
 
-    def get_data_for_training_actor(self):
+    def get_reward_data(self, t, tt):
+
+        return self.reward_buffer[tt:tt + t]
+
+
+    def get_data_for_training_actor(self, timestep, time_since_last_update):
         # FIXME: For now this retrieves the last self.batch_size_in_time_steps amount of data
         # but this is *incorrect* because it may be chopping an episode
         # FIXME: OpenAI standardizes the advantage
         return (
-            self.action_buffer[-self.batch_size_in_time_steps :, :],
-            self.obs_buffer[-self.batch_size_in_time_steps :, :],
-            self.advantage_buffer[-self.batch_size_in_time_steps :],
+            self.action_buffer[timestep-time_since_last_update: timestep, :],
+            self.obs_buffer[timestep-time_since_last_update: timestep, :],
+            self.advantage_buffer[timestep-time_since_last_update: timestep],
         )
 
-    def get_data_for_training_critic(self):
+    def get_data_for_training_critic(self, timestep, time_since_last_update):
         # NOTE: The return is computed on the fly for efficiency
         return (
-            self.obs_buffer[-self.batch_size_in_time_steps :, :],
-            self.return_buffer[-self.batch_size_in_time_steps :],
+            self.obs_buffer[timestep-time_since_last_update: timestep, :],
+            self.return_buffer[timestep-time_since_last_update: timestep],
         )
