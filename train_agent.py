@@ -13,6 +13,8 @@ import os
 from os import listdir, makedirs
 from os.path import isfile, join
 
+import matplotlib.pyplot as plt
+
 from environments import JellyBeanEnv, MujocoEnv
 
 
@@ -45,10 +47,7 @@ def get_environment(env_type):
     return env
 
 
-def train_agent(
-    agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency
-):
-
+def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency):
     seed = 0
     random.seed(seed)
     np.random.seed(seed)
@@ -64,12 +63,13 @@ def train_agent(
     array_of_mean_acc_rewards = []
 
     while timestep < total_timesteps:
-        ## uncomment this to visualize the training
-        env.render()
 
         done = False
         curr_obs = env.reset()
         while not done:
+            # uncomment this to visualize the training
+            env.render()
+
             action = agent.act(curr_obs, mode="train")
             next_obs, reward, done, _ = env.step(action)
             agent.update(curr_obs, action, reward, next_obs, done, timestep)
@@ -95,6 +95,41 @@ def train_agent(
 
     return array_of_mean_acc_rewards
 
+
+def plot_rewards(rewards, hyperparam_id = 'None'):
+
+    # save location
+    model_path = os.path.join(os.getcwd(),'save_model')
+    if not os.path.isdir(model_path):
+        os.makedirs(model_path)
+    last_reward = str(round(rewards[-1],2))
+
+    # TODO: make sure this hooks up with how we're saving hypereparameter tuning checkpoints
+    if hyperparam_id != 'None':
+        model_path += '/{}'.format(hyperparam_id)
+
+    # average reward plot
+    _ = plt.figure()
+    plt.plot(range(len(rewards)), rewards)
+    plt.ylabel('Average Reward')
+    plt.xlabel('Time Step')
+    plt.title("Average Reward Over Time")
+    save_location = model_path + '/avg_rewards_vpg_{}.png'.format(last_reward)
+    plt.savefig(save_location, bbox_inches='tight')
+    plt.close()
+
+    # cumulative reward plot
+    _ = plt.figure()
+    cumulative = np.cumsum(rewards)
+    plt.plot(range(len(cumulative)), cumulative)
+    plt.ylabel('Cumulative Reward')
+    plt.xlabel('Time Step')
+    plt.title("Cumulative Reward Over Time")
+    save_location = model_path + '/cum_rewards_vpg_{}.png'.format(last_reward)
+    plt.savefig(save_location, bbox_inches='tight')
+    plt.close()
+
+    print('Rewards graphed successfully. See {}'.format(model_path))
 
 if __name__ == "__main__":
 
@@ -136,11 +171,15 @@ if __name__ == "__main__":
       agent.load_weights(os.getcwd(), args.load)
 
     # Note these can be environment specific and you are free to experiment with what works best for you
-    total_timesteps = 2000000
-    evaluation_freq = 1000
+    total_timesteps = 600 #2000000
+    evaluation_freq = 100 #1000
     n_episodes_to_evaluate = 20
     save_frequency = 100000
 
-    learning_curve = train_agent(
-        agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency
-    )
+    learning_curve = train_agent(agent, env, env_eval, total_timesteps, 
+        evaluation_freq, n_episodes_to_evaluate, save_frequency)
+    # TODO: save the learning_curve to file --> will be useful to plot comparison graphs when hyp. tuning
+
+    # plot learning curves - average reward and cumulative reward
+    plot_rewards(learning_curve)
+
