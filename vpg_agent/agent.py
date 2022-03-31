@@ -53,30 +53,24 @@ class Agent:
             total_timesteps=Agent.TOTAL_TIMESTEPS,
         )
 
-    def load_weights(self, root_path, load_model):
+    def load_weights(self, root_path, pretrained_model_name):
       # get pretrined model path and load it
-      pretrained_model_path = os.path.join(root_path, 'save_model', str(load_model)+'.pth.tar')
+      pretrained_model_path = os.path.join(root_path, 'results', str(pretrained_model_name)+'.pth.tar')
       pretrained_model = torch.load(pretrained_model_path)
 
       # load state dict for actor and critic
       self.actor_model.load_state_dict(pretrained_model['actor'])
       self.critic_model.load_state_dict(pretrained_model['critic'])
-
-      # TODO: also load the buffer? idk.
       
-      print("Loaded {} OK".format(load_model))
+      print("Loaded {} OK".format(pretrained_model_name))
     
-    def save_checkpoint(self, actor, critic, score_avg):
-      # find or make the save directory
-      model_path = os.path.join(os.getcwd(),'save_model')
-      if not os.path.isdir(model_path):
-        os.makedirs(model_path)
-
+    def save_checkpoint(self, actor, critic, score_avg, ckpt_path):
       # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
-      ckpt_path = os.path.join(model_path, 'vpg_ckpt_'+ str(round(score_avg,3))+'.pth.tar')
+      ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_'+ str(round(score_avg,3))+'.pth.tar')
 
       torch.save({'actor': actor.state_dict(), 'critic': critic.state_dict(), 'buffer': self.buffer, 'score': score_avg}, ckpt_path)
-      print("checkpoint saved: {}".format(ckpt_path))
+      
+      return ckpt_path
 
     def act(self, curr_obs, mode="eval"):
         # TODO: Implement mode eval
