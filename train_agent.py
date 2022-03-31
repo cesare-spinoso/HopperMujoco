@@ -59,7 +59,7 @@ def get_environment(env_type):
     return env
 
 
-def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger, name=None):
+def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger, name=None, visualize=False):
     seed = 0
     random.seed(seed)
     np.random.seed(seed)
@@ -81,8 +81,8 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
         curr_obs = env.reset()
 
         while not done:
-            # uncomment this to visualize the training
-            env.render()
+            if visualize:
+                env.render()
 
             action = agent.act(curr_obs, mode="train")
             next_obs, reward, done, _ = env.step(action)
@@ -110,11 +110,6 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
             #   # call the save_checkpoint model from agent.py
             #   save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
             #   logger.log("checkpoint saved: {}".format(save_path))
-            if timestep % save_frequency == 0:
-              # find average rewards
-              mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
-              # call the save_checkpoint model from agent.py
-            #   agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards)
 
     return array_of_mean_acc_rewards
 
@@ -183,6 +178,8 @@ def plot_rewards(rewards, location, model_names=None):
                 reward_label = model_names
             else:
                 reward_label = last_reward
+        else:
+            reward_label = last_reward
         
         plt.plot(range(len(rewards)), rewards, label=reward_label)
         plt.ylabel('Average Reward')
@@ -232,7 +229,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
-    parser.add_argument("--load", type=str, default="None", help="need filename in results folder (without .pth.tar)")
+    parser.add_argument("--load", type=str, default="None", help="need folder/filename in results folder (without .pth.tar)")
 
     args = parser.parse_args()
 
@@ -272,52 +269,53 @@ if __name__ == "__main__":
       logger.log(f'Pretrained model loaded: {args.load}')
 
     # Note these can be environment specific and you are free to experiment with what works best for you
-    total_timesteps = 6000 #2000000
+    total_timesteps = 2000000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
     save_frequency = 100000
 
     ########################################## training a single model ##########################################
-    # logger.log("Training start ... ")
-    # start_time = time()
+    logger.log("Training start ... ")
+    start_time = time()
     # you can feed names to train_agent or not --> will change the saved file names/graph labels
-    # learning_curve = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger)
-    # logger.log("Training complete.")
+    learning_curve = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate,
+        save_frequency, logger, name=None, visualize=False)
+    logger.log("Training complete.")
 
     # log some details of the training
-    # logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
-    # logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
-    # logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
-    # elapsed_time = time() - start_time
-    # logger.log(f'Time Elapsed During Training: {elapsed_time}\n')
+    logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
+    logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
+    logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
+    elapsed_time = time() - start_time
+    logger.log(f'Time Elapsed During Training: {elapsed_time}\n')
 
     # plot learning curves - average reward and cumulative reward
     # you can feed names to plot_rewards or not --> will change the graph labels
-    # plot_rewards(learning_curve, logger.location)
-    # logger.log('\nRewards graphed successfully. See {}'.format(logger.location))
+    plot_rewards(learning_curve, logger.location)
+    logger.log('\nRewards graphed successfully. See {}'.format(logger.location))
 
     ########################################## training multiple models! ##########################################
     # TODO: add hyperparameter changes into this loop
-    model_names = ['v1', 'v2']
-    learning_curves = []
-    for name in model_names:
-        logger.log("Training start ... ")
-        start_time = time()
-        # you can feed names to train_agent or not --> will change the saved file names/graph labels
-        learning_curve = train_agent(agent, env, env_eval, total_timesteps, 
-            evaluation_freq, n_episodes_to_evaluate, save_frequency, logger, name)
-        learning_curves.append(learning_curve)
-        logger.log("Training complete.")
+    # model_names = ['v1', 'v2']
+    # learning_curves = []
+    # for name in model_names:
+    #     logger.log("Training start ... ")
+    #     start_time = time()
+    #     # you can feed names to train_agent or not --> will change the saved file names/graph labels
+    #     learning_curve = train_agent(agent, env, env_eval, total_timesteps, 
+    #         evaluation_freq, n_episodes_to_evaluate, save_frequency, logger, name, visualize=False)
+    #     learning_curves.append(learning_curve)
+    #     logger.log("Training complete.")
 
-        # log some details of the training
-        logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
-        logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
-        logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
-        elapsed_time = time() - start_time
-        logger.log(f'Time Elapsed During Training: {elapsed_time}\n')
+    #     # log some details of the training
+    #     logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
+    #     logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
+    #     logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
+    #     elapsed_time = time() - start_time
+    #     logger.log(f'Time Elapsed During Training: {elapsed_time}\n')
 
-    # plot learning curves - average reward and cumulative reward
-    # you can feed names to plot_rewards or not --> will change the graph labels
-    plot_rewards(learning_curves, logger.location, model_names)
-    logger.log('\nRewards graphed successfully. See {}'.format(logger.location))
+    # # plot learning curves - average reward and cumulative reward
+    # # you can feed names to plot_rewards or not --> will change the graph labels
+    # plot_rewards(learning_curves, logger.location, model_names)
+    # logger.log('\nRewards graphed successfully. See {}'.format(logger.location))
 
