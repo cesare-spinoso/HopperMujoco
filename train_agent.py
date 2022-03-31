@@ -65,7 +65,7 @@ def train_agent(
 
     while timestep < total_timesteps:
         ## uncomment this to visualize the training
-        env.render()
+        # env.render()
 
         done = False
         curr_obs = env.reset()
@@ -91,7 +91,7 @@ def train_agent(
               # find average rewards
               mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
               # call the save_checkpoint model from agent.py
-              agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards)
+            #   agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards)
 
     return array_of_mean_acc_rewards
 

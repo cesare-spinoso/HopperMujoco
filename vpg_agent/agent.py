@@ -1,3 +1,4 @@
+from cgi import print_arguments
 from re import S
 import numpy as np
 import torch
@@ -24,9 +25,10 @@ class Agent:
         # Keep track of the timestep of the last episode (for the return computation)
         self.timestep_of_last_episode = 0
         self.time_since_last_update = 0
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         ### GENERAL HYPERPARAMETERS ###
-        self.gamma = 0.9
+        self.gamma = 0.99
+        self.lambda_ = 0.97
         ### ACTOR ###
         self.actor_model = Actor(
             num_obs=self.num_obs,
@@ -49,6 +51,7 @@ class Agent:
             number_obs=self.num_obs,
             number_actions=self.num_actions,
             gamma=self.gamma,
+            lambda_=self.lambda_,
             total_timesteps=Agent.TOTAL_TIMESTEPS,
         )
 
@@ -58,7 +61,6 @@ class Agent:
         pass
 
     def act(self, curr_obs, mode="eval"):
-        # TODO: Implement mode eval
         sample_action_as_array = torch.zeros(self.num_actions)
         with torch.no_grad():
             # We can use no grad for both train and eval because we're not
@@ -82,54 +84,55 @@ class Agent:
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
         next_obs = torch.from_numpy(next_obs).float()
-        # Compute and store the return (the computation is the same whether the episode is done or not)
-        t = timestep - self.timestep_of_last_episode
-        #self.buffer.compute_and_store_return(reward=reward, t=t)
-        # Compute and store the advantage
-        self.buffer.compute_and_store_advantage(
-            critic=self.critic_model,
-            curr_obs=curr_obs,
-            reward=reward,
-            next_obs=next_obs,
-        )
-
-        if not done:
-            # Store the latest observation, action and reward
-            self.buffer.store_experience(obs=curr_obs, action=action, reward=reward)
-            self.time_since_last_update += 1
-        else:
-            self.buffer.store_experience(obs=curr_obs, action=action, reward=reward)
-            self.time_since_last_update += 1
-            reward_data = self.buffer.get_reward_data(t, self.timestep_of_last_episode)
-            self.buffer.compute_and_store_return2(rewards=reward_data, t=t)
-
+        # Store the latest observation, action and reward
+        self.buffer.store_experience(obs=curr_obs, action=action, reward=reward)
+        if done:
+            reward_data = self.buffer.get_reward_data(
+                start=self.timestep_of_last_episode, end=timestep
+            )
+            obs_data = self.buffer.get_obs_data(
+                start=self.timestep_of_last_episode, end=timestep
+            )
+            # Compute and store the return and advantage
+            self.buffer.compute_and_store_return(
+                rewards=reward_data, start=self.timestep_of_last_episode, end=timestep
+            )
+            self.buffer.compute_and_store_advantage(
+                critic=self.critic_model,
+                obs_data=obs_data,
+                reward_data=reward_data,
+                start=self.timestep_of_last_episode,
+                end=timestep,
+            )
             if self.is_ready_to_train():
                 # Train the actor
                 (
                     action_data,
                     obs_data,
                     advantage_data,
-                ) = self.buffer.get_data_for_training_actor(timestep, self.time_since_last_update)
-
-                _, return_data = self.buffer.get_data_for_training_critic(timestep, self.time_since_last_update)
-
+                ) = self.buffer.get_data_for_training_actor(
+                    timestep, self.time_since_last_update
+                )
                 self.train_actor(
                     action_data=action_data,
                     obs_data=obs_data,
                     advantage_data=advantage_data,
-                    return_data=return_data,
                 )
                 # Train the critic
-                obs_data, return_data = self.buffer.get_data_for_training_critic(timestep, self.time_since_last_update)
+                # import pdb; pdb.set_trace()
+                obs_data, return_data = self.buffer.get_data_for_training_critic(
+                    timestep, self.time_since_last_update
+                )
                 self.train_critic(
                     obs_data=obs_data,
                     return_data=return_data,
                     iterations=self.number_of_critic_updates_per_actor_update,
                 )
+                # Reset last time you trained a batch
                 self.time_since_last_update = 0
-
+            # Move episode pointer
             self.timestep_of_last_episode = timestep
-
+        self.time_since_last_update += 1
 
     def is_ready_to_train(self):
         # FIXME: This is not the correct condition for being ready to train see Buffer.get_data_for_training
@@ -138,8 +141,9 @@ class Agent:
             int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
         )
 
-    def train_actor(self, action_data, obs_data, advantage_data, return_data):
+    def train_actor(self, action_data, obs_data, advantage_data):
         # NOTE: The idea is that all the other models would mostly only change here
+        # Compute and store the advantage
         self.actor_optimizer.zero_grad()
         # Apply a new forward pass with the batched data
         self.actor_model.to(self.device)
@@ -152,14 +156,7 @@ class Agent:
         # Compute the mean loss
         mean_loss = per_time_step_loss.mean()
         # Backpropagate the loss
-        #mean_loss.backward()
-
-        # Alternative loss computation
-        log_probs = distribution_of_obs.log_prob(action_data).sum(axis=1)
-        actor_loss = - (return_data * log_probs).mean()
-
-        actor_loss.backward()
-
+        mean_loss.backward()
         # Update the parameters
         self.actor_optimizer.step()
 
@@ -216,12 +213,13 @@ class Buffer:
     ADVANTAGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
     BACTHING_METHODS = ["most-recent", "random"]
 
-    def __init__(self, number_obs, number_actions, gamma, total_timesteps):
+    def __init__(self, number_obs, number_actions, gamma, lambda_, total_timesteps):
         # Number of states, actions and total number of time steps
         self.number_obs = number_obs
         self.number_actions = number_actions
         self.total_timesteps = total_timesteps
         self.gamma = gamma
+        self.lambda_ = lambda_
         # Experience includes action and observation
         # NOTE: Unlike OpenAI, we do not include rewards, state values and log_p in the buffer
         # but we can add this if we want
@@ -231,12 +229,10 @@ class Buffer:
         self.experience_pointer = 0
         # Return buffer
         self.return_buffer = torch.zeros(total_timesteps)
-        self.return_pointer = 0
         # Advantage buffer
         self.advantage_buffer = torch.zeros(total_timesteps)
-        self.advantage_pointer = 0
         # Hyperparameters
-        self.advantage_computation_method = "td-error"
+        self.advantage_computation_method = "generalized-advantage-estimation"
         self.batch_size_in_time_steps = 5000
         self.batching_method = "most-recent"
 
@@ -246,74 +242,70 @@ class Buffer:
         self.reward_buffer[self.experience_pointer] = reward
         self.experience_pointer += 1
 
-    def compute_and_store_return(self, reward, t):
-        if t == 0:
-            # First time step of the episode
-            return_ = reward
-        else:
-            # Compute the return recursively
-            return_ = (self.gamma**t) * reward + self.return_buffer[t - 1]
-        self.return_buffer[self.return_pointer] = return_
-        self.return_pointer += 1
-
-    def compute_and_store_return2(self, rewards, t):
-
-        for i in range(0, t):
-            self.return_buffer[self.return_pointer] = 0
-            self.return_pointer += 1
-
+    def compute_and_store_return(self, rewards, start, end):
         running_returns = 0
+        t = end - start
 
         for i in range(0, t):
             running_returns = rewards[t - 1 - i] + self.gamma * running_returns
-            self.return_buffer[self.return_pointer - 1 - i] = running_returns
+            self.return_buffer[end - 1 - i] = running_returns
 
-    def compute_and_store_advantage(self, curr_obs, reward, next_obs, critic):
+    def compute_and_store_advantage(self, critic, obs_data, reward_data, start, end):
         if self.advantage_computation_method == "td-error":
-            advantage = self._compute_td_error_advantage(
-                curr_obs, reward, next_obs, critic
-            )
+            advantage = self._compute_td_error_advantage(critic, obs_data, reward_data)
         elif self.advantage_computation_method == "generalized-advantage-estimation":
             advantage = self._compute_generalized_advantage_estimation_advantage(
-                curr_obs, reward, next_obs, critic
+                critic, obs_data, reward_data
             )
         else:
             raise ValueError("Unknown advantage computation method")
-        self.advantage_buffer[self.advantage_pointer] = advantage
-        self.advantage_pointer += 1
+        self.advantage_buffer[start:end] = advantage
 
-    def _compute_td_error_advantage(self, curr_obs, reward, next_obs, critic):
+    def _compute_td_error_advantage(self, critic, obs_data, reward_data):
         with torch.no_grad():
             # Compute the TD error
             # FIXME: OpenAI's implementation suggests that the value of the final state
             # should be 0 (line 298 of vpg.py)
-            td_error = reward + self.gamma * critic(next_obs) - critic(curr_obs)
+            rewards = torch.cat((reward_data, torch.tensor([0.])))
+            estimated_values = torch.cat((critic(obs_data).squeeze(-1), torch.tensor([0.])))
+            td_error = (
+                rewards[:-1] + self.gamma * estimated_values[1:] - estimated_values[:-1]
+            )
             return td_error
 
     def _compute_generalized_advantage_estimation_advantage(
-        self, curr_obs, reward, next_obs, critic
+        self, critic, obs_data, reward_data
     ):
         # TODO: OpenAI's implementation of the advantage uses something like a lambda-return
-        pass
+        td_error = self._compute_td_error_advantage(critic, obs_data, reward_data)
+        generalized_advantage = torch.zeros_like(td_error)
+        running_advantage = 0
+        for i in reversed(range(0, len(generalized_advantage))):
+            running_advantage = (
+                td_error[i] + self.gamma * self.lambda_ * running_advantage
+            )
+            generalized_advantage[i] = running_advantage
+        return generalized_advantage
 
-    def get_reward_data(self, t, tt):
+    def get_reward_data(self, start, end):
+        return self.reward_buffer[start:end]
 
-        return self.reward_buffer[tt:tt + t]
-
+    def get_obs_data(self, start, end):
+            return self.obs_buffer[start:end]
 
     def get_data_for_training_actor(self, timestep, time_since_last_update):
         # FIXME: For now this retrieves the last self.batch_size_in_time_steps amount of data
         # but this is *incorrect* because it may be chopping an episode
         # FIXME: OpenAI standardizes the advantage
         return (
-            self.action_buffer[timestep-time_since_last_update: timestep, :],
-            self.obs_buffer[timestep-time_since_last_update: timestep, :],
-            self.advantage_buffer[timestep-time_since_last_update: timestep],
+            self.action_buffer[timestep - time_since_last_update : timestep, :],
+            self.obs_buffer[timestep - time_since_last_update : timestep, :],
+            self.advantage_buffer[timestep - time_since_last_update : timestep],
         )
 
     def get_data_for_training_critic(self, timestep, time_since_last_update):
         # NOTE: The return is computed on the fly for efficiency
         return (
-            self.obs_buffer[timestep-time_since_last_update: timestep, :],
-            self.return_buffer[timestep-time_since_last_update: timestep],
+            self.obs_buffer[timestep - time_since_last_update : timestep, :],
+            self.return_buffer[timestep - time_since_last_update : timestep],
         )
