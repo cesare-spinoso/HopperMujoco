@@ -1,3 +1,4 @@
+from re import M
 import gym
 
 import argparse
@@ -16,6 +17,7 @@ from os import listdir, makedirs
 from os.path import isfile, join
 
 import matplotlib.pyplot as plt
+from sklearn.metrics import auc
 
 from environments import JellyBeanEnv, MujocoEnv
 
@@ -57,7 +59,7 @@ def get_environment(env_type):
     return env
 
 
-def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger):
+def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger, name=None):
     seed = 0
     random.seed(seed)
     np.random.seed(seed)
@@ -71,11 +73,13 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
 
     timestep = 0
     array_of_mean_acc_rewards = []
+    current_mean_acc_rewards = 0
 
     while timestep < total_timesteps:
 
         done = False
         curr_obs = env.reset()
+
         while not done:
             # uncomment this to visualize the training
             env.render()
@@ -91,45 +95,110 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
                 logger.log("timestep: {ts}, acc_reward: {acr:.2f}".format(ts=timestep, acr=mean_acc_rewards))
                 array_of_mean_acc_rewards.append(mean_acc_rewards)
 
-            if timestep % save_frequency == 0:
-              # find average rewards
-              mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
-              # call the save_checkpoint model from agent.py
-              save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
-              logger.log("checkpoint saved: {}".format(save_path))
+                # if we have improvement, save a checkpoint
+                if mean_acc_rewards > current_mean_acc_rewards:
+                    if name != None:
+                        save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location, name)
+                    else:
+                        save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
+                    logger.log("checkpoint saved: {}".format(save_path))
+                current_mean_acc_rewards = mean_acc_rewards
+
+            # if timestep % save_frequency == 0:
+            #   # find average rewards
+            #   mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
+            #   # call the save_checkpoint model from agent.py
+            #   save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
+            #   logger.log("checkpoint saved: {}".format(save_path))
 
     return array_of_mean_acc_rewards
 
 
-def plot_rewards(rewards, location):
+def plot_rewards(rewards, location, model_names=None):
     '''
     Graphs the average and cumulative reward plots.
-    :param rewards: a list of rewards gained by the model
+    :param rewards: a list, or list of lists, of rewards gained by the model
     :param location: the location in which you want to store the generated .png files
+    :param model_names: str of a single model name, or a list of names (if not provided, will use final reward as label)
     '''
 
-    last_reward = str(round(rewards[-1],2))
+    if any(isinstance(r, list) for r in rewards):
 
-    # average reward plot
-    _ = plt.figure()
-    plt.plot(range(len(rewards)), rewards)
-    plt.ylabel('Average Reward')
-    plt.xlabel('Time Step')
-    plt.title("Average Reward Over Time")
-    filename = location + '/avg_rewards_vpg_{}.png'.format(last_reward)
-    plt.savefig(filename, bbox_inches='tight')
-    plt.close()
+        # average reward plot
+        _ = plt.figure()
+        for i in range(len(rewards)):
+            if model_names != None:
+                reward_label = model_names[i]
+            else:
+                reward_label = str(round(rewards[i][-1],2))
+            
+            plt.plot(range(len(rewards[i])), rewards[i], label=reward_label)
+        
+        plt.ylabel('Average Reward')
+        plt.xlabel('Time Step')
+        plt.title("Average Reward Over Time")
+        plt.legend()
+        filename = location + '/avg_rewards_vpg.png'
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
 
-    # cumulative reward plot
-    _ = plt.figure()
-    cumulative = np.cumsum(rewards)
-    plt.plot(range(len(cumulative)), cumulative)
-    plt.ylabel('Cumulative Reward')
-    plt.xlabel('Time Step')
-    plt.title("Cumulative Reward Over Time")
-    filename = location + '/cum_rewards_vpg_{}.png'.format(last_reward)
-    plt.savefig(filename, bbox_inches='tight')
-    plt.close()
+        # cumulative reward plot
+        _ = plt.figure()
+        for i in range(len(rewards)):
+            if model_names != None:
+                reward_label = model_names[i]
+            else:
+                reward_label = str(round(rewards[i][-1],2))
+
+            cumulative = np.cumsum(rewards[i])
+            plt.plot(range(len(cumulative)), cumulative, label=reward_label)
+
+        plt.ylabel('Cumulative Reward')
+        plt.xlabel('Time Step')
+        plt.title("Cumulative Reward Over Time")
+        plt.legend()
+        filename = location + '/cum_rewards_vpg.png'
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
+
+    else: # we have only one reward list, graph only the one
+
+        last_reward = str(round(rewards[-1],2))
+        reward_label = ""
+
+        # average reward plot
+        _ = plt.figure()
+
+        if model_names != None:
+            if isinstance(model_names, list):
+                # select the first element as the model name
+                reward_label = model_names[0]
+            elif isinstance(model_names, str):
+                # use single name
+                reward_label = model_names
+            else:
+                reward_label = last_reward
+        
+        plt.plot(range(len(rewards)), rewards, label=reward_label)
+        plt.ylabel('Average Reward')
+        plt.xlabel('Time Step')
+        plt.title("Average Reward Over Time")
+        plt.legend()
+        filename = location + '/avg_rewards_vpg_{}.png'.format(last_reward)
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
+
+        # cumulative reward plot
+        _ = plt.figure()
+        cumulative = np.cumsum(rewards)
+        plt.plot(range(len(cumulative)), cumulative, label=reward_label)
+        plt.ylabel('Cumulative Reward')
+        plt.xlabel('Time Step')
+        plt.title("Cumulative Reward Over Time")
+        plt.legend()
+        filename = location + '/cum_rewards_vpg_{}.png'.format(last_reward)
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
 
 
 def start_logging():
@@ -198,25 +267,52 @@ if __name__ == "__main__":
       logger.log(f'Pretrained model loaded: {args.load}')
 
     # Note these can be environment specific and you are free to experiment with what works best for you
-    total_timesteps = 2000000
+    total_timesteps = 6000 #2000000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
     save_frequency = 100000
 
-    # TODO: save the learning_curve to file --> will be useful to plot comparison graphs when hyp. tuning
-    logger.log("Training start ... ")
-    start_time = time()
-    learning_curve = train_agent(agent, env, env_eval, total_timesteps, 
-        evaluation_freq, n_episodes_to_evaluate, save_frequency, logger)
-    logger.log("Training complete.")
+    ########################################## training a single model ##########################################
+    # logger.log("Training start ... ")
+    # start_time = time()
+    # you can feed names to train_agent or not --> will change the saved file names/graph labels
+    # learning_curve = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger)
+    # logger.log("Training complete.")
 
-    # log some details of the training - TODO: add more stats here?
-    logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
-    logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
-    elapsed_time = time() - start_time
-    logger.log(f'Time Elapsed During Training: {elapsed_time}')
+    # log some details of the training
+    # logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
+    # logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
+    # logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
+    # elapsed_time = time() - start_time
+    # logger.log(f'Time Elapsed During Training: {elapsed_time}\n')
 
     # plot learning curves - average reward and cumulative reward
-    plot_rewards(learning_curve, logger.location)
+    # you can feed names to plot_rewards or not --> will change the graph labels
+    # plot_rewards(learning_curve, logger.location)
+    # logger.log('\nRewards graphed successfully. See {}'.format(logger.location))
+
+    ########################################## training multiple models! ##########################################
+    # TODO: add hyperparameter changes into this loop
+    model_names = ['v1', 'v2']
+    learning_curves = []
+    for name in model_names:
+        logger.log("Training start ... ")
+        start_time = time()
+        # you can feed names to train_agent or not --> will change the saved file names/graph labels
+        learning_curve = train_agent(agent, env, env_eval, total_timesteps, 
+            evaluation_freq, n_episodes_to_evaluate, save_frequency, logger, name)
+        learning_curves.append(learning_curve)
+        logger.log("Training complete.")
+
+        # log some details of the training
+        logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
+        logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
+        logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
+        elapsed_time = time() - start_time
+        logger.log(f'Time Elapsed During Training: {elapsed_time}\n')
+
+    # plot learning curves - average reward and cumulative reward
+    # you can feed names to plot_rewards or not --> will change the graph labels
+    plot_rewards(learning_curves, logger.location, model_names)
     logger.log('\nRewards graphed successfully. See {}'.format(logger.location))
 

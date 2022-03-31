@@ -64,11 +64,14 @@ class Agent:
       
       print("Loaded {} OK".format(pretrained_model_name))
     
-    def save_checkpoint(self, actor, critic, score_avg, ckpt_path):
+    def save_checkpoint(self, actor, critic, score_avg, ckpt_path, name=None):
       # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
-      ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_'+ str(round(score_avg,3))+'.pth.tar')
+      if name == None:
+        ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_' + str(round(score_avg,3)) + '.pth.tar')
+      else:
+        ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_' + name + '_' + str(round(score_avg,3)) + '.pth.tar')
 
-      torch.save({'actor': actor.state_dict(), 'critic': critic.state_dict(), 'buffer': self.buffer, 'score': score_avg}, ckpt_path)
+      torch.save({'actor': actor.state_dict(), 'critic': critic.state_dict(), 'score': score_avg}, ckpt_path)
       
       return ckpt_path
 
