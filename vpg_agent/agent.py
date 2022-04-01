@@ -1,6 +1,7 @@
 from cgi import print_arguments
 from re import S
 import numpy as np
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -55,10 +56,32 @@ class Agent:
             total_timesteps=Agent.TOTAL_TIMESTEPS,
         )
 
-    def load_weights(self, root_path):
-        # Add root_path in front of the path of the saved network parameters
-        # For example if you have weights.pth in the GROUP_MJ1, do `root_path+"weights.pth"` while loading the parameters
-        pass
+    def load_weights(self, root_path, pretrained_model_name):
+        # get pretrined model path and load it
+        pretrained_model_path = os.path.join(root_path, 'results', str(pretrained_model_name)+'.pth.tar')
+
+        try:
+            pretrained_model = torch.load(pretrained_model_path)
+        except:
+            raise Exception("Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
+                \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/vpg_ckpt_98.888")
+
+        # load state dict for actor and critic
+        self.actor_model.load_state_dict(pretrained_model['actor'])
+        self.critic_model.load_state_dict(pretrained_model['critic'])
+        
+        print("Loaded {} OK".format(pretrained_model_name))
+    
+    def save_checkpoint(self, actor, critic, score_avg, ckpt_path, name=None):
+        # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
+        if name == None:
+            ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_' + str(round(score_avg,3)) + '.pth.tar')
+        else:
+            ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_' + name + '_' + str(round(score_avg,3)) + '.pth.tar')
+
+        torch.save({'actor': actor.state_dict(), 'critic': critic.state_dict(), 'score': score_avg}, ckpt_path)
+        
+        return ckpt_path
 
     def act(self, curr_obs, mode="eval"):
         sample_action_as_array = torch.zeros(self.num_actions)
