@@ -14,6 +14,7 @@ logger = logging.getLogger()
 logger.addHandler(logging.StreamHandler())    # prints to stderr
 logger.setLevel(logging.INFO)                 # change to logging.DEBUG or logging.WARNING for more/less messages
 
+
 class Agent:
   """
   Soft Actor-Critic agent from (Haarnoja, 2018). This is an off-policy maximum entropy agent with a stochastic actor.
