@@ -58,6 +58,111 @@ def train_and_evaluate(
             f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}"
         )
         logger.log(f"Time Elapsed During Training: {elapsed_time}")
+    return env
+
+
+def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger, name=None, visualize=False):
+    seed = 0
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    # tf.random.set_seed(seed)
+    env.seed(seed)
+    env_eval.seed(seed)
+
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+    timestep = 0
+    array_of_mean_acc_rewards = []
+    current_mean_acc_rewards = 0
+
+    while timestep < total_timesteps:
+
+        done = False
+        curr_obs = env.reset()
+
+        while not done:
+            if visualize:
+                env.render()
+
+            action = agent.act(curr_obs, mode="train")
+            next_obs, reward, done, _ = env.step(action)
+            agent.update(curr_obs, action, reward, next_obs, done, timestep)
+            curr_obs = next_obs
+
+            timestep += 1
+            if timestep % evaluation_freq == 0:
+                mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
+                logger.log("timestep: {ts}, acc_reward: {acr:.2f}".format(ts=timestep, acr=mean_acc_rewards))
+                array_of_mean_acc_rewards.append(mean_acc_rewards)
+
+                # if we have improvement, save a checkpoint
+                if mean_acc_rewards > current_mean_acc_rewards:
+                    agent.save_checkpoint()
+                    # if name != None:
+                    #     save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location, name)
+                    # else:
+                    #     save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
+                    # logger.log("checkpoint saved: {}".format(save_path))
+                current_mean_acc_rewards = mean_acc_rewards
+
+            # if timestep % save_frequency == 0:
+            #   # find average rewards
+            #   mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
+            #   # call the save_checkpoint model from agent.py
+            #   save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
+            #   logger.log("checkpoint saved: {}".format(save_path))
+
+    return array_of_mean_acc_rewards
+
+
+def plot_rewards(rewards, location, model_names=None):
+    '''
+    Graphs the average and cumulative reward plots.
+    :param rewards: a list, or list of lists, of rewards gained by the model
+    :param location: the location in which you want to store the generated .png files
+    :param model_names: str of a single model name, or a list of names (if not provided, will use final reward as label)
+    '''
+
+    if any(isinstance(r, list) for r in rewards):
+
+        # average reward plot
+        _ = plt.figure()
+        for i in range(len(rewards)):
+            if model_names != None:
+                reward_label = model_names[i]
+            else:
+                reward_label = str(round(rewards[i][-1],2))
+            
+            plt.plot(range(len(rewards[i])), rewards[i], label=reward_label)
+        
+        plt.ylabel('Average Reward')
+        plt.xlabel('Time Step')
+        plt.title("Average Reward Over Time")
+        plt.legend()
+        filename = location + '/avg_rewards_vpg.png'
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
+
+        # cumulative reward plot
+        _ = plt.figure()
+        for i in range(len(rewards)):
+            if model_names != None:
+                reward_label = model_names[i]
+            else:
+                reward_label = str(round(rewards[i][-1],2))
+
+            cumulative = np.cumsum(rewards[i])
+            plt.plot(range(len(cumulative)), cumulative, label=reward_label)
+
+        plt.ylabel('Cumulative Reward')
+        plt.xlabel('Time Step')
+        plt.title("Cumulative Reward Over Time")
+        plt.legend()
+        filename = location + '/cum_rewards_vpg.png'
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
 
     # plot learning curves - average reward and cumulative reward
     # you can feed names to plot_rewards or not --> will change the graph labels
