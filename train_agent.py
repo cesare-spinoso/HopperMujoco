@@ -98,9 +98,9 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
                 # if we have improvement, save a checkpoint
                 if mean_acc_rewards > current_mean_acc_rewards:
                     if name != None:
-                        save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location, name)
+                        save_path = agent.save_checkpoint(mean_acc_rewards, logger.location, name)
                     else:
-                        save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
+                        save_path = agent.save_checkpoint(mean_acc_rewards, logger.location)
                     logger.log("checkpoint saved: {}".format(save_path))
                 current_mean_acc_rewards = mean_acc_rewards
 
