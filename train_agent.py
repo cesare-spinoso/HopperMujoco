@@ -100,7 +100,7 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
                     else:
                         save_path = agent.save_checkpoint(mean_acc_rewards, logger.location)
                     logger.log("checkpoint saved: {}".format(save_path))
-                current_mean_acc_rewards = mean_acc_rewards
+                    current_mean_acc_rewards = mean_acc_rewards
 
             # if timestep % save_frequency == 0:
             #   # find average rewards
