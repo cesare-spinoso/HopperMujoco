@@ -1,4 +1,3 @@
-from cgi import print_arguments
 import numpy as np
 import os
 import torch
