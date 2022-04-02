@@ -11,7 +11,7 @@ class Agent:
     want to this class.
     """
 
-    TOTAL_TIMESTEPS = 2000000
+    TOTAL_TIMESTEPS = 2100000
 
     def __init__(self, env_specs):
         # TODO: Add hyperparameter tuning for the actor e.g. activation function, learning rate, architecture etc.
