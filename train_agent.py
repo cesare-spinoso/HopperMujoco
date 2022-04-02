@@ -1,4 +1,3 @@
-from re import M
 import gym
 
 import argparse
