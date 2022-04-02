@@ -132,3 +132,6 @@ dmypy.json
 training_script.sh
 job_output.txt
 job_error.txt
+
+# Logger and checkpoints
+results/*
