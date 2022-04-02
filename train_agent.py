@@ -3,7 +3,6 @@ import gym
 
 import argparse
 import importlib
-import time
 import random
 import numpy as np
 from time import time
