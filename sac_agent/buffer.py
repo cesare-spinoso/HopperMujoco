@@ -4,6 +4,7 @@ Class for handling memory buffer
 Code adapted from 'Modern Reinforcement Learning: Actor-Critic Algorithms' Udemy course
 """
 import numpy as np
+from typing import Tuple
 
 
 class ReplayBuffer:
@@ -35,7 +36,7 @@ class ReplayBuffer:
 
     self.mem_counter += 1
 
-  def sample_buffer(self, batch_size: int):
+  def sample_buffer(self, batch_size: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Returns a sample of the replay buffer of size :batch:"""
     max_mem = min(self.mem_counter, self.mem_size)
 
