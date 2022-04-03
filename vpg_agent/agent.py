@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions.normal import Normal
+from typing import Tuple
+import numpy as np
 
 
 class Agent:
@@ -13,37 +15,62 @@ class Agent:
 
     TOTAL_TIMESTEPS = 2100000
 
-    def __init__(self, env_specs):
+    def __init__(
+        self,
+        env_specs: dict,
+        gamma: float = 0.99,
+        lambda_: float = 0.97,
+        actor_lr: float = 3e-4,
+        actor_architecture: tuple = (64, 64),
+        actor_activation_function: nn.activation = nn.ReLU,
+        critic_lr: float = 3e-4,
+        critic_architecture: tuple = (64, 64),
+        critic_activation_function: nn.activation = nn.ReLU,
+        number_of_critic_updates_per_actor_update: int = 80,
+        buffer_type: str = "static",
+        batch_size_in_time_steps: int = 4000,
+        advantage_computation_method: str = "generalized-advantage-estimation",
+        normalize_advantage: bool = False,
+        batching_method: str = "most-recent",
+    ):
         # TODO: Add hyperparameter tuning for the actor e.g. activation function, learning rate, architecture etc.
         ### ENVIRONMENT VARIABLES ###
         self.env_specs = env_specs
         # Number of observations (states) and actions
         self.num_obs = env_specs["observation_space"].shape[0]
         self.num_actions = env_specs["action_space"].shape[0]
-        # Keep track of the timestep of the last episode (for the return computation)
+        # Keep track of the timestep of the last episode (for the return and advantage computation)
         self.timestep_of_last_episode = 0
         self.time_since_last_update = 0
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         ### GENERAL HYPERPARAMETERS ###
-        self.gamma = 0.99
-        self.lambda_ = 0.97
+        self.gamma = gamma
+        self.lambda_ = lambda_
         ### ACTOR ###
         self.actor_model = Actor(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
+            architecture=actor_architecture,
+            activation_function=actor_activation_function,
         )
-        self.actor_learning_rate = 0.0003
+        self.actor_learning_rate = actor_lr
         self.actor_optimizer = torch.optim.Adam(
             self.actor_model.parameters(), lr=self.actor_learning_rate
         )
         ### CRITIC ###
-        self.critic_model = Critic(num_obs=self.num_obs)
-        self.critic_learning_rate = 0.001  # Critic should stabilize faster
+        self.critic_model = Critic(
+            num_obs=self.num_obs,
+            architecture=critic_architecture,
+            activation_function=critic_activation_function,
+        )
+        self.critic_learning_rate = critic_lr  # Critic should stabilize faster
         self.critic_optimizer = torch.optim.Adam(
             self.critic_model.parameters(), lr=self.critic_learning_rate
         )
         # OpenAI Uses 80, another hyperparameter
-        self.number_of_critic_updates_per_actor_update = 80
+        self.number_of_critic_updates_per_actor_update = (
+            number_of_critic_updates_per_actor_update
+        )
         ### BUFFER ###
         self.buffer = Buffer(
             number_obs=self.num_obs,
@@ -51,57 +78,77 @@ class Agent:
             gamma=self.gamma,
             lambda_=self.lambda_,
             total_timesteps=Agent.TOTAL_TIMESTEPS,
+            buffer_type=buffer_type,
+            batch_size_in_time_steps=batch_size_in_time_steps,
+            advantage_computation_method=advantage_computation_method,
+            normalize_advantage=normalize_advantage,
+            batching_method=batching_method,
         )
 
-    def load_weights(self, root_path, pretrained_model_name):
-        # get pretrined model path and load it
-        pretrained_model_path = os.path.join(root_path, 'results', str(pretrained_model_name)+'.pth.tar')
+    def load_weights(self, root_path: str, pretrained_model_name: str) -> None:
+        # get pretrained model path and load it
+        pretrained_model_path = os.path.join(
+            root_path, "results", str(pretrained_model_name) + ".pth.tar"
+        )
 
         try:
             pretrained_model = torch.load(pretrained_model_path)
         except:
-            raise Exception("Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
-                \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/vpg_ckpt_98.888")
+            raise Exception(
+                "Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
+                \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/vpg_ckpt_98.888"
+            )
 
         # load state dict for actor and critic
-        self.actor_model.load_state_dict(pretrained_model['actor'])
-        self.critic_model.load_state_dict(pretrained_model['critic'])
-        
+        self.actor_model.load_state_dict(pretrained_model["actor"])
+        self.critic_model.load_state_dict(pretrained_model["critic"])
+
         print("Loaded {} OK".format(pretrained_model_name))
-    
-    def save_checkpoint(self, score_avg, ckpt_path, name=None):
+
+    def save_checkpoint(
+        self, score_avg: float, ckpt_path: str, name: str = None
+    ) -> str:
         # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
         if name == None:
-            ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_' + str(round(score_avg,3)) + '.pth.tar')
+            ckpt_path = os.path.join(
+                ckpt_path, "vpg_ckpt_" + str(round(score_avg, 3)) + ".pth.tar"
+            )
         else:
-            ckpt_path = os.path.join(ckpt_path, 'vpg_ckpt_' + name + '_' + str(round(score_avg,3)) + '.pth.tar')
+            ckpt_path = os.path.join(
+                ckpt_path,
+                "vpg_ckpt_" + name + "_" + str(round(score_avg, 3)) + ".pth.tar",
+            )
 
-        torch.save({'actor': self.actor_model.state_dict(),
-                    'critic': self.critic_model.state_dict(),
-                    'score': score_avg}, ckpt_path)
-        
+        torch.save(
+            {
+                "actor": self.actor_model.state_dict(),
+                "critic": self.critic_model.state_dict(),
+                "score": score_avg,
+            },
+            ckpt_path,
+        )
+
         return ckpt_path
 
-    def act(self, curr_obs, mode="eval"):
+    def act(self, curr_obs: np.array, mode: str = "eval") -> np.array:
         sample_action_as_array = torch.zeros(self.num_actions)
         with torch.no_grad():
             # We can use no grad for both train and eval because we're not
             # keeping track of gradients here so this should make things
             # run faster
+            self.actor_model.to(self.device)
+            curr_obs = torch.from_numpy(curr_obs).float().to(self.device)
+            action_distribution = self.actor_model(curr_obs)
             if mode == "train":
-                curr_obs = torch.from_numpy(curr_obs).float()
-                action_distribution = self.actor_model(curr_obs)
                 sample_action = action_distribution.sample()
                 sample_action_as_array = sample_action.data.numpy()
             else:
-                curr_obs = torch.from_numpy(curr_obs).float()
-                action_distribution = self.actor_model(curr_obs)
                 sample_action = action_distribution.mean
                 sample_action_as_array = sample_action.data.numpy()
 
         return sample_action_as_array
 
-    def update(self, curr_obs, action, reward, next_obs, done, timestep):
+    def update(self, curr_obs: np.array, action: np.array, reward: np.array, next_obs: np.array, done: bool, timestep):
         # Convert the observations to tensors
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
@@ -207,78 +254,131 @@ class Agent:
 
 
 class Actor(nn.Module):
-    def __init__(self, num_obs, num_actions):
-        # TODO: Make the architecture hyper-parameterizable
+    def __init__(self, num_obs, num_actions, architecture, activation_function):
         super(Actor, self).__init__()
-        self.fc1 = nn.Linear(num_obs, 256)
-        self.fc2 = nn.Linear(256, 256)
-        self.fc3 = nn.Linear(256, num_actions)
+        layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
+        for input_dimension, output_dimension in zip(
+            architecture[0:], architecture[1:]
+        ):
+            layers.append(nn.Linear(input_dimension, output_dimension))
+            layers.append(activation_function())
+        layers.append(nn.Linear(architecture[-1], num_actions))
+        self.network = nn.Sequential(*layers)
 
     def forward(self, x):
         # TODO: Should allow for different distributions (e.g. learnable std, VAEs, etc.)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        mu = self.fc3(x)
+        mu = self.network(x)
         # NOTE: The forward returns a distribution
         return Normal(mu, torch.ones_like(mu))
 
 
 class Critic(nn.Module):
-    def __init__(self, num_obs):
+    def __init__(self, num_obs, architecture, activation_function):
         # TODO: Make the architecture hyper-parameterizable
         super(Critic, self).__init__()
-        self.fc1 = nn.Linear(num_obs, 256)
-        self.fc2 = nn.Linear(256, 256)
-        self.fc3 = nn.Linear(256, 1)
+        layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
+        for input_dimension, output_dimension in zip(
+            architecture[0:], architecture[1:]
+        ):
+            layers.append(nn.Linear(input_dimension, output_dimension))
+            layers.append(activation_function())
+        layers.append(nn.Linear(architecture[-1], 1))
+        self.network = nn.Sequential(*layers)
 
     def forward(self, x):
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        return self.fc3(x)
+        return self.network(x)
 
 
 class Buffer:
     ADVANTAGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
-    BACTHING_METHODS = ["most-recent", "random"]
+    BATCHING_METHOD = ["most-recent", "random"]
+    BUFFER_TYPES = ["static", "dynamic"]
 
-    def __init__(self, number_obs, number_actions, gamma, lambda_, total_timesteps):
+    def __init__(
+        self,
+        number_obs: int,
+        number_actions: int,
+        gamma: float,
+        lambda_: float,
+        total_timesteps: int,
+        buffer_type: str = "dynamic",
+        batch_size_in_time_steps: int = 4000,
+        advantage_computation_method: str = "generalized-advantage-estimation",
+        normalize_advantage: bool = True,
+        batching_method: str = "most-recent",
+    ) -> None:
         # Number of states, actions and total number of time steps
         self.number_obs = number_obs
         self.number_actions = number_actions
         self.total_timesteps = total_timesteps
         self.gamma = gamma
         self.lambda_ = lambda_
-        # Experience includes action and observation
-        # NOTE: Unlike OpenAI, we do not include rewards, state values and log_p in the buffer
-        # but we can add this if we want
-        self.action_buffer = torch.zeros((total_timesteps, number_actions))
-        self.obs_buffer = torch.zeros((total_timesteps, number_obs))
-        self.reward_buffer = torch.zeros(total_timesteps)
-        self.experience_pointer = 0
-        # Return buffer
-        self.return_buffer = torch.zeros(total_timesteps)
-        # Advantage buffer
-        self.advantage_buffer = torch.zeros(total_timesteps)
+        self.buffer_type = buffer_type
+        # NOTE: Unlike OpenAI, we do not include state values and log_p in the buffer
+        if self.buffer_type == "static":
+            self.action_buffer = torch.zeros(
+                (self.total_timesteps, self.number_actions)
+            )
+            self.obs_buffer = torch.zeros((self.total_timesteps, self.number_obs))
+            self.reward_buffer = torch.zeros(self.total_timesteps)
+            self.experience_pointer = 0
+            self.return_buffer = torch.zeros(self.total_timesteps)
+            self.advantage_buffer = torch.zeros(self.total_timesteps)
+        else:
+            self.action_buffer = []
+            self.obs_buffer = []
+            self.reward_buffer = []
+            self.return_buffer = []
+            self.advantage_buffer = []
         # Hyperparameters
-        self.advantage_computation_method = "generalized-advantage-estimation"
-        self.batch_size_in_time_steps = 5000
-        self.batching_method = "most-recent"
+        self.advantage_computation_method = advantage_computation_method
+        self.normalize_advantage = normalize_advantage
+        self.batch_size_in_time_steps = batch_size_in_time_steps
+        self.batching_method = batching_method
 
-    def store_experience(self, obs, action, reward):
-        self.obs_buffer[self.experience_pointer, :] = obs
-        self.action_buffer[self.experience_pointer, :] = action
-        self.reward_buffer[self.experience_pointer] = reward
-        self.experience_pointer += 1
+    def store_experience(
+        self, obs: torch.Tensor, action: torch.Tensor, reward: float
+    ) -> None:
+        """Store the experience differently based on the type of buffer"""
+        if self.buffer_type == "static":
+            self.obs_buffer[self.experience_pointer, :] = obs
+            self.action_buffer[self.experience_pointer, :] = action
+            self.reward_buffer[self.experience_pointer] = reward
+            self.experience_pointer += 1
+        else:
+            self.obs_buffer.append(obs)
+            self.action_buffer.append(action)
+            self.reward_buffer.append(reward)
 
-    def compute_and_store_return(self, rewards, start, end):
-        running_returns = 0
+    def compute_and_store_return(
+        self, rewards: torch.Tensor, start: int, end: int
+    ) -> None:
         t = end - start
+        assert t == len(
+            rewards
+        ), f"The length of the rewards tensor ({len(rewards)}) does not match end - start = {end - start}"
+        running_returns = 0
+        temporary_return_buffer = [0] * t
 
-        for i in range(0, t):
-            running_returns = rewards[t - 1 - i] + self.gamma * running_returns
-            self.return_buffer[end - 1 - i] = running_returns
+        for i in reversed(range(0, t)):
+            running_returns = rewards[i] + self.gamma * running_returns
+            temporary_return_buffer[i] = running_returns
 
-    def compute_and_store_advantage(self, critic, obs_data, reward_data, start, end):
+        if self.buffer_type == "static":
+            self.return_buffer[start:end] = torch.tensor(
+                temporary_return_buffer
+            ).float()
+        else:
+            self.return_buffer.extend(temporary_return_buffer)
+
+    def compute_and_store_advantage(
+        self,
+        critic: nn.Module,
+        obs_data: torch.Tensor,
+        reward_data: torch.Tensor,
+        start: int,
+        end: int,
+    ) -> None:
         if self.advantage_computation_method == "td-error":
             advantage = self._compute_td_error_advantage(critic, obs_data, reward_data)
         elif self.advantage_computation_method == "generalized-advantage-estimation":
@@ -287,23 +387,31 @@ class Buffer:
             )
         else:
             raise ValueError("Unknown advantage computation method")
-        self.advantage_buffer[start:end] = advantage
+        if self.buffer_type == "static":
+            self.advantage_buffer[start:end] = advantage
+        else:
+            self.advantage_buffer.append(advantage)
 
-    def _compute_td_error_advantage(self, critic, obs_data, reward_data):
+    def _compute_td_error_advantage(
+        self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
+    ) -> torch.Tensor:
         with torch.no_grad():
             # Compute the TD error
             # FIXME: OpenAI's implementation suggests that the value of the final state
             # should be 0 (line 298 of vpg.py)
-            rewards = torch.cat((reward_data, torch.tensor([0.])))
-            estimated_values = torch.cat((critic(obs_data).squeeze(-1), torch.tensor([0.])))
+            # print(reward_data)
+            rewards = torch.cat((reward_data, torch.tensor([0.0])))
+            estimated_values = torch.cat(
+                (critic(obs_data).squeeze(-1), torch.tensor([0.0]))
+            )
             td_error = (
                 rewards[:-1] + self.gamma * estimated_values[1:] - estimated_values[:-1]
             )
             return td_error
 
     def _compute_generalized_advantage_estimation_advantage(
-        self, critic, obs_data, reward_data
-    ):
+        self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
+    ) -> torch.Tensor:
         # TODO: OpenAI's implementation of the advantage uses something like a lambda-return
         td_error = self._compute_td_error_advantage(critic, obs_data, reward_data)
         generalized_advantage = torch.zeros_like(td_error)
@@ -316,24 +424,47 @@ class Buffer:
         return generalized_advantage
 
     def get_reward_data(self, start, end):
-        return self.reward_buffer[start:end]
+        if self.buffer_type == "static":
+            return self.reward_buffer[start:end]
+        else:
+            return torch.tensor(self.reward_buffer[-(end - start) :]).to(float)
 
     def get_obs_data(self, start, end):
+        if self.buffer_type == "static":
             return self.obs_buffer[start:end]
+        else:
+            return torch.stack(self.obs_buffer[-(end - start) :]).to(float)
 
-    def get_data_for_training_actor(self, timestep, time_since_last_update):
-        # FIXME: For now this retrieves the last self.batch_size_in_time_steps amount of data
-        # but this is *incorrect* because it may be chopping an episode
+    def get_data_for_training_actor(
+        self, timestep: int, time_since_last_update: int
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         # FIXME: OpenAI standardizes the advantage
-        return (
-            self.action_buffer[timestep - time_since_last_update : timestep, :],
-            self.obs_buffer[timestep - time_since_last_update : timestep, :],
-            self.advantage_buffer[timestep - time_since_last_update : timestep],
-        )
+        if self.buffer_type == "static":
+            action_buffer, obs_buffer, advantage_buffer = (
+                self.action_buffer[timestep - time_since_last_update : timestep, :],
+                self.obs_buffer[timestep - time_since_last_update : timestep, :],
+                self.advantage_buffer[timestep - time_since_last_update : timestep],
+            )
+        else:
+            action_buffer, obs_buffer, advantage_buffer = (
+                torch.stack(self.action_buffer).float(),
+                torch.stack(self.obs_buffer).float(),
+                torch.cat(tuple(self.advantage_buffer)).float(),
+            )
+        if self.normalize_advantage:
+            advantage_buffer = (advantage_buffer - advantage_buffer.mean()) / (
+                advantage_buffer.std() + 1e-8
+            )
+        return action_buffer, obs_buffer, advantage_buffer
 
     def get_data_for_training_critic(self, timestep, time_since_last_update):
-        # NOTE: The return is computed on the fly for efficiency
-        return (
-            self.obs_buffer[timestep - time_since_last_update : timestep, :],
-            self.return_buffer[timestep - time_since_last_update : timestep],
-        )
+        if self.buffer_type == "static":
+            return (
+                self.obs_buffer[timestep - time_since_last_update : timestep, :],
+                self.return_buffer[timestep - time_since_last_update : timestep],
+            )
+        else:
+            return (
+                torch.stack(self.obs_buffer).float(),
+                torch.tensor(self.return_buffer).float(),
+            )
