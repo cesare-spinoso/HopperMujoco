@@ -32,13 +32,13 @@ class Agent:
             num_obs=self.num_obs,
             num_actions=self.num_actions,
         )
-        self.actor_learning_rate = 0.001
+        self.actor_learning_rate = 0.0003
         self.actor_optimizer = torch.optim.Adam(
             self.actor_model.parameters(), lr=self.actor_learning_rate
         )
         ### CRITIC ###
         self.critic_model = Critic(num_obs=self.num_obs)
-        self.critic_learning_rate = 0.005  # Critic should stabilize faster
+        self.critic_learning_rate = 0.001  # Critic should stabilize faster
         self.critic_optimizer = torch.optim.Adam(
             self.critic_model.parameters(), lr=self.critic_learning_rate
         )
@@ -165,11 +165,13 @@ class Agent:
 
     def train_actor(self, action_data, obs_data, advantage_data):
         # NOTE: The idea is that all the other models would mostly only change here
-        # Compute and store the advantage
         self.actor_optimizer.zero_grad()
-        # Apply a new forward pass with the batched data
+        # Torch device moving
         self.actor_model.to(self.device)
+        advantage_data = advantage_data.to(self.device)
+        action_data = action_data.to(self.device)
         obs_data = obs_data.to(self.device)
+        # Apply a new forward pass with the batched data
         distribution_of_obs = self.actor_model(obs_data)
         # Compute the log_proba of the distribution using the actions
         log_proba = distribution_of_obs.log_prob(action_data).sum(axis=-1)
@@ -181,6 +183,8 @@ class Agent:
         mean_loss.backward()
         # Update the parameters
         self.actor_optimizer.step()
+        # Put back on cpu
+        self.actor_model.to("cpu")
 
     def train_critic(self, obs_data, return_data, iterations):
         # NOTE: The idea is that all the other models would mostly only change here
@@ -198,6 +202,8 @@ class Agent:
             loss.backward()
             # Update the parameters
             self.critic_optimizer.step()
+        # Put back on cpu
+        self.critic_model.to("cpu")
 
 
 class Actor(nn.Module):
