@@ -148,7 +148,15 @@ class Agent:
 
         return sample_action_as_array
 
-    def update(self, curr_obs: np.array, action: np.array, reward: np.array, next_obs: np.array, done: bool, timestep):
+    def update(
+        self,
+        curr_obs: np.array,
+        action: np.array,
+        reward: np.array,
+        next_obs: np.array,
+        done: bool,
+        timestep: int,
+    ) -> None:
         # Convert the observations to tensors
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
@@ -203,15 +211,20 @@ class Agent:
             self.timestep_of_last_episode = timestep
         self.time_since_last_update += 1
 
-    def is_ready_to_train(self):
+    def is_ready_to_train(self) -> bool:
         # FIXME: This is not the correct condition for being ready to train see Buffer.get_data_for_training
         # for a better explanation
         return (
             int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
         )
 
-    def train_actor(self, action_data, obs_data, advantage_data):
-        # NOTE: The idea is that all the other models would mostly only change here
+    def train_actor(
+        self,
+        action_data: torch.Tensor,
+        obs_data: torch.Tensor,
+        advantage_data: torch.Tensor,
+    ) -> None:
+        print("Updating actor")
         self.actor_optimizer.zero_grad()
         # Torch device moving
         self.actor_model.to(self.device)
@@ -233,9 +246,10 @@ class Agent:
         # Put back on cpu
         self.actor_model.to("cpu")
 
-    def train_critic(self, obs_data, return_data, iterations):
-        # NOTE: The idea is that all the other models would mostly only change here
-        # Train the critic just like a regression model
+    def train_critic(
+        self, obs_data: torch.Tensor, return_data: torch.Tensor, iterations: int
+    ) -> None:
+        print("Updating critic")
         self.critic_model.to(self.device)
         obs_data = obs_data.to(self.device)
         return_data = return_data.to(self.device)
@@ -254,7 +268,13 @@ class Agent:
 
 
 class Actor(nn.Module):
-    def __init__(self, num_obs, num_actions, architecture, activation_function):
+    def __init__(
+        self,
+        num_obs: int,
+        num_actions: int,
+        architecture: tuple,
+        activation_function: nn.activation,
+    ) -> None:
         super(Actor, self).__init__()
         layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
         for input_dimension, output_dimension in zip(
@@ -265,7 +285,7 @@ class Actor(nn.Module):
         layers.append(nn.Linear(architecture[-1], num_actions))
         self.network = nn.Sequential(*layers)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> Normal:
         # TODO: Should allow for different distributions (e.g. learnable std, VAEs, etc.)
         mu = self.network(x)
         # NOTE: The forward returns a distribution
@@ -273,7 +293,9 @@ class Actor(nn.Module):
 
 
 class Critic(nn.Module):
-    def __init__(self, num_obs, architecture, activation_function):
+    def __init__(
+        self, num_obs: int, architecture: tuple, activation_function: nn.activation
+    ) -> None:
         # TODO: Make the architecture hyper-parameterizable
         super(Critic, self).__init__()
         layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
@@ -285,7 +307,7 @@ class Critic(nn.Module):
         layers.append(nn.Linear(architecture[-1], 1))
         self.network = nn.Sequential(*layers)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.network(x)
 
 
@@ -423,13 +445,13 @@ class Buffer:
             generalized_advantage[i] = running_advantage
         return generalized_advantage
 
-    def get_reward_data(self, start, end):
+    def get_reward_data(self, start: int, end: int) -> torch.Tensor:
         if self.buffer_type == "static":
             return self.reward_buffer[start:end]
         else:
             return torch.tensor(self.reward_buffer[-(end - start) :]).to(float)
 
-    def get_obs_data(self, start, end):
+    def get_obs_data(self, start: int, end: int) -> torch.Tensor:
         if self.buffer_type == "static":
             return self.obs_buffer[start:end]
         else:
@@ -457,7 +479,9 @@ class Buffer:
             )
         return action_buffer, obs_buffer, advantage_buffer
 
-    def get_data_for_training_critic(self, timestep, time_since_last_update):
+    def get_data_for_training_critic(
+        self, timestep: int, time_since_last_update: int
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
         if self.buffer_type == "static":
             return (
                 self.obs_buffer[timestep - time_since_last_update : timestep, :],
