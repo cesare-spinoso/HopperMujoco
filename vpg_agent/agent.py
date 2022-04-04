@@ -227,7 +227,6 @@ class Agent:
         obs_data: torch.Tensor,
         advantage_data: torch.Tensor,
     ) -> None:
-        print("Updating actor")
         self.actor_optimizer.zero_grad()
         # Torch device moving
         self.actor_model.to(self.device)
@@ -252,7 +251,6 @@ class Agent:
     def train_critic(
         self, obs_data: torch.Tensor, return_data: torch.Tensor, iterations: int
     ) -> None:
-        print("Updating critic")
         self.critic_model.to(self.device)
         obs_data = obs_data.to(self.device)
         return_data = return_data.to(self.device)
