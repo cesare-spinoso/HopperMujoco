@@ -22,10 +22,10 @@ class Agent:
         lambda_: float = 0.97,
         actor_lr: float = 3e-4,
         actor_architecture: tuple = (64, 64),
-        actor_activation_function: nn.activation = nn.ReLU,
+        actor_activation_function: F = nn.ReLU,
         critic_lr: float = 3e-4,
         critic_architecture: tuple = (64, 64),
-        critic_activation_function: nn.activation = nn.ReLU,
+        critic_activation_function: F = nn.ReLU,
         number_of_critic_updates_per_actor_update: int = 80,
         buffer_type: str = "static",
         batch_size_in_time_steps: int = 4000,
@@ -164,41 +164,42 @@ class Agent:
         # Store the latest observation, action and reward
         self.buffer.store_experience(obs=curr_obs, action=action, reward=reward)
         if done:
-            reward_data = self.buffer.get_reward_data(
-                start=self.timestep_of_last_episode, end=timestep
+            start = (
+                0
+                if self.timestep_of_last_episode == 0
+                else self.timestep_of_last_episode + 1
             )
-            obs_data = self.buffer.get_obs_data(
-                start=self.timestep_of_last_episode, end=timestep
-            )
+            end = timestep + 1
+            reward_data = self.buffer.get_reward_data(start=start, end=end)
+            obs_data = self.buffer.get_obs_data(start=start, end=end)
             # Compute and store the return and advantage
             self.buffer.compute_and_store_return(
-                rewards=reward_data, start=self.timestep_of_last_episode, end=timestep
+                rewards=reward_data, start=start, end=end
             )
             self.buffer.compute_and_store_advantage(
                 critic=self.critic_model,
                 obs_data=obs_data,
                 reward_data=reward_data,
-                start=self.timestep_of_last_episode,
-                end=timestep,
+                start=start,
+                end=end,
             )
             if self.is_ready_to_train():
+                start = timestep - self.time_since_last_update
+                end = timestep + 1
                 # Train the actor
                 (
                     action_data,
                     obs_data,
                     advantage_data,
-                ) = self.buffer.get_data_for_training_actor(
-                    timestep, self.time_since_last_update
-                )
+                ) = self.buffer.get_data_for_training_actor(start=start, end=end)
                 self.train_actor(
                     action_data=action_data,
                     obs_data=obs_data,
                     advantage_data=advantage_data,
                 )
                 # Train the critic
-                # import pdb; pdb.set_trace()
                 obs_data, return_data = self.buffer.get_data_for_training_critic(
-                    timestep, self.time_since_last_update
+                    start=start, end=end
                 )
                 self.train_critic(
                     obs_data=obs_data,
@@ -207,6 +208,8 @@ class Agent:
                 )
                 # Reset last time you trained a batch
                 self.time_since_last_update = 0
+                # Reset buffer
+                self.buffer.reset()
             # Move episode pointer
             self.timestep_of_last_episode = timestep
         self.time_since_last_update += 1
@@ -273,7 +276,7 @@ class Actor(nn.Module):
         num_obs: int,
         num_actions: int,
         architecture: tuple,
-        activation_function: nn.activation,
+        activation_function: F,
     ) -> None:
         super(Actor, self).__init__()
         layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
@@ -294,7 +297,7 @@ class Actor(nn.Module):
 
 class Critic(nn.Module):
     def __init__(
-        self, num_obs: int, architecture: tuple, activation_function: nn.activation
+        self, num_obs: int, architecture: tuple, activation_function: F
     ) -> None:
         # TODO: Make the architecture hyper-parameterizable
         super(Critic, self).__init__()
@@ -371,6 +374,14 @@ class Buffer:
             self.obs_buffer.append(obs)
             self.action_buffer.append(action)
             self.reward_buffer.append(reward)
+
+    def reset(self):
+        if self.buffer_type == "dynamic":
+            self.action_buffer = []
+            self.obs_buffer = []
+            self.reward_buffer = []
+            self.return_buffer = []
+            self.advantage_buffer = []
 
     def compute_and_store_return(
         self, rewards: torch.Tensor, start: int, end: int
@@ -449,23 +460,23 @@ class Buffer:
         if self.buffer_type == "static":
             return self.reward_buffer[start:end]
         else:
-            return torch.tensor(self.reward_buffer[-(end - start) :]).to(float)
+            return torch.tensor(self.reward_buffer[-(end - start) :]).float()
 
     def get_obs_data(self, start: int, end: int) -> torch.Tensor:
         if self.buffer_type == "static":
             return self.obs_buffer[start:end]
         else:
-            return torch.stack(self.obs_buffer[-(end - start) :]).to(float)
+            return torch.stack(self.obs_buffer[-(end - start) :]).float()
 
     def get_data_for_training_actor(
-        self, timestep: int, time_since_last_update: int
+        self, start: int, end: int
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         # FIXME: OpenAI standardizes the advantage
         if self.buffer_type == "static":
             action_buffer, obs_buffer, advantage_buffer = (
-                self.action_buffer[timestep - time_since_last_update : timestep, :],
-                self.obs_buffer[timestep - time_since_last_update : timestep, :],
-                self.advantage_buffer[timestep - time_since_last_update : timestep],
+                self.action_buffer[start:end, :],
+                self.obs_buffer[start:end, :],
+                self.advantage_buffer[start:end],
             )
         else:
             action_buffer, obs_buffer, advantage_buffer = (
@@ -480,12 +491,12 @@ class Buffer:
         return action_buffer, obs_buffer, advantage_buffer
 
     def get_data_for_training_critic(
-        self, timestep: int, time_since_last_update: int
+        self, start: int, end: int
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         if self.buffer_type == "static":
             return (
-                self.obs_buffer[timestep - time_since_last_update : timestep, :],
-                self.return_buffer[timestep - time_since_last_update : timestep],
+                self.obs_buffer[start:end, :],
+                self.return_buffer[start:end],
             )
         else:
             return (
