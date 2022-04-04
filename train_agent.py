@@ -11,6 +11,8 @@ from pytest import param
 import tensorflow as tf
 import torch
 
+import logging
+
 import os
 from os import listdir, makedirs
 from os.path import isfile, join
@@ -24,12 +26,16 @@ from environments import JellyBeanEnv, MujocoEnv
 
 class Logger:
     def __init__(self, path):
-        self.logfile = open(path + "/log.txt", "w+")
+        logging.basicConfig(filename=path + "/log.txt",
+                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                            datefmt='%H:%M:%S',
+                            level=logging.DEBUG)
+        self.logger = logging.getLogger()
         self.location = path
 
     def log(self, msg):
         print(msg)
-        self.logfile.write(f"\n{msg}")
+        self.logger.log(f"{msg}")
 
 
 def evaluate_agent(agent, env, n_episodes_to_evaluate):
@@ -304,8 +310,8 @@ if __name__ == "__main__":
         "activation": [torch.nn.ReLU, torch.nn.Tanh],
         "number_of_critic_updates_per_actor_update": [100],
         "batch_size_in_time_steps": [5000],
-        "actor_lr": [1e-4, 1e-3],
-        "critic_lr": [1e-3]
+        "actor_lr": [3e-4, 3e-3],
+        "critic_lr": [1e-3, 1e-2]
     }
     grid = sklearn.model_selection.ParameterGrid(grid)
 
