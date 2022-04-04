@@ -23,7 +23,7 @@ class Agent:
         actor_lr: float = 3e-4,
         actor_architecture: tuple = (64, 64),
         actor_activation_function: F = nn.ReLU,
-        critic_lr: float = 3e-4,
+        critic_lr: float = 1e-3,
         critic_architecture: tuple = (64, 64),
         critic_activation_function: F = nn.ReLU,
         number_of_critic_updates_per_actor_update: int = 80,
