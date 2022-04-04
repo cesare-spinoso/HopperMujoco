@@ -317,8 +317,11 @@ if __name__ == "__main__":
 
     for i, params in enumerate(grid):
         params["actor_architecture"] = params["architecture"]
+        params["actor_activation_function"] = params["activation"]
         params["critic_architecture"] = params["architecture"]
+        params["critic_activation_function"] = params["activation"]
         del params["architecture"]
+        del params["activation"]
         agent = agent_module.Agent(env_specs, **params)
 
         # load in the pretrained model if one is provided

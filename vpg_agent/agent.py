@@ -27,8 +27,8 @@ class Agent:
         critic_architecture: tuple = (64, 64),
         critic_activation_function: F = nn.ReLU,
         number_of_critic_updates_per_actor_update: int = 80,
-        buffer_type: str = "static",
-        batch_size_in_time_steps: int = 4000,
+        buffer_type: str = "dynamic",
+        batch_size_in_time_steps: int = 5000,
         advantage_computation_method: str = "generalized-advantage-estimation",
         normalize_advantage: bool = False,
         batching_method: str = "most-recent",
@@ -141,10 +141,10 @@ class Agent:
             action_distribution = self.actor_model(curr_obs)
             if mode == "train":
                 sample_action = action_distribution.sample()
-                sample_action_as_array = sample_action.data.numpy()
+                sample_action_as_array = sample_action.data.cpu().numpy()
             else:
                 sample_action = action_distribution.mean
-                sample_action_as_array = sample_action.data.numpy()
+                sample_action_as_array = sample_action.data.cpu().numpy()
 
         return sample_action_as_array
 
@@ -227,7 +227,6 @@ class Agent:
         obs_data: torch.Tensor,
         advantage_data: torch.Tensor,
     ) -> None:
-        print("Updating actor")
         self.actor_optimizer.zero_grad()
         # Torch device moving
         self.actor_model.to(self.device)
@@ -252,7 +251,6 @@ class Agent:
     def train_critic(
         self, obs_data: torch.Tensor, return_data: torch.Tensor, iterations: int
     ) -> None:
-        print("Updating critic")
         self.critic_model.to(self.device)
         obs_data = obs_data.to(self.device)
         return_data = return_data.to(self.device)
