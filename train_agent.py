@@ -35,7 +35,7 @@ class Logger:
 
     def log(self, msg):
         print(msg)
-        self.logger.log(f"{msg}")
+        self.logger.info(f"{msg}")
 
 
 def evaluate_agent(agent, env, n_episodes_to_evaluate):
