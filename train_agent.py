@@ -293,6 +293,7 @@ if __name__ == "__main__":
             "action_space": env.action_space,
         }
     agent_module = importlib.import_module(args.group + ".agent")
+    agent = agent_module.Agent(env_specs)
 
     # Note these can be environment specific and you are free to experiment with what works best for you
     total_timesteps = 2000000
@@ -304,63 +305,43 @@ if __name__ == "__main__":
     # starting a logger - results stored in folder labeled w/ date+time
     logger = start_logging()
 
-    grid = {
-        # Found in this paper: https://arxiv.org/pdf/1709.06560.pdf
-        "architecture": [(64, 64), (100, 50, 25), (400, 300)],
-        "activation": [torch.nn.ReLU, torch.nn.Tanh],
-        "number_of_critic_updates_per_actor_update": [100],
-        "batch_size_in_time_steps": [5000],
-        "actor_lr": [3e-4, 3e-3],
-        "critic_lr": [1e-3, 1e-2]
-    }
-    grid = sklearn.model_selection.ParameterGrid(grid)
+    # load in the pretrained model if one is provided
+    if args.load != "None":
+        agent.load_weights(os.getcwd(), args.load)
+        logger.log(f"Pretrained model loaded: {args.load}")
 
-    for i, params in enumerate(grid):
-        params["actor_architecture"] = params["architecture"]
-        params["actor_activation_function"] = params["activation"]
-        params["critic_architecture"] = params["architecture"]
-        params["critic_activation_function"] = params["activation"]
-        del params["architecture"]
-        del params["activation"]
-        agent = agent_module.Agent(env_specs, **params)
+    logger.log(f"Training start for the following model ... ")
+    logger.log(f"{agent.__dict__}")
+    start_time = time()
+    # you can feed names to train_agent or not --> will change the saved file names/graph labels
+    learning_curve = train_agent(
+        agent,
+        env,
+        env_eval,
+        total_timesteps,
+        evaluation_freq,
+        n_episodes_to_evaluate,
+        save_frequency,
+        logger,
+        name=None,
+        visualize=False,
+    )
+    logger.log("Training complete.")
 
-        # load in the pretrained model if one is provided
-        if args.load != "None":
-            agent.load_weights(os.getcwd(), args.load)
-            logger.log(f"Pretrained model loaded: {args.load}")
+    # log some details of the training
+    logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
+    logger.log(f"Best average reward: {round(max(learning_curve),5)}")
+    logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
+    logger.log(
+        f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}"
+    )
+    elapsed_time = time() - start_time
+    logger.log(f"Time Elapsed During Training: {elapsed_time}\n")
 
-        logger.log(f"Training start for the following model {i} ... ")
-        logger.log(f"{agent.__dict__}")
-        start_time = time()
-        # you can feed names to train_agent or not --> will change the saved file names/graph labels
-        learning_curve = train_agent(
-            agent,
-            env,
-            env_eval,
-            total_timesteps,
-            evaluation_freq,
-            n_episodes_to_evaluate,
-            save_frequency,
-            logger,
-            name=f"m_{i}",
-            visualize=False,
-        )
-        logger.log("Training complete.")
-
-        # log some details of the training
-        logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
-        logger.log(f"Best average reward: {round(max(learning_curve),5)}")
-        logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
-        logger.log(
-            f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}"
-        )
-        elapsed_time = time() - start_time
-        logger.log(f"Time Elapsed During Training: {elapsed_time}\n")
-
-        # plot learning curves - average reward and cumulative reward
-        # you can feed names to plot_rewards or not --> will change the graph labels
-        plot_rewards(learning_curve, logger.location)
-        logger.log("\nRewards graphed successfully. See {}".format(logger.location))
+    # plot learning curves - average reward and cumulative reward
+    # you can feed names to plot_rewards or not --> will change the graph labels
+    plot_rewards(learning_curve, logger.location)
+    logger.log("\nRewards graphed successfully. See {}".format(logger.location))
 
     ########################################## training multiple models! ##########################################
     # TODO: add hyperparameter changes into this loop

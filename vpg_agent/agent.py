@@ -33,7 +33,6 @@ class Agent:
         normalize_advantage: bool = False,
         batching_method: str = "most-recent",
     ):
-        # TODO: Add hyperparameter tuning for the actor e.g. activation function, learning rate, architecture etc.
         ### ENVIRONMENT VARIABLES ###
         self.env_specs = env_specs
         # Number of observations (states) and actions
@@ -215,8 +214,6 @@ class Agent:
         self.time_since_last_update += 1
 
     def is_ready_to_train(self) -> bool:
-        # FIXME: This is not the correct condition for being ready to train see Buffer.get_data_for_training
-        # for a better explanation
         return (
             int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
         )
