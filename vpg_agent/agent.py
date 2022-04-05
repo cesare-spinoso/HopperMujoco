@@ -297,7 +297,6 @@ class Critic(nn.Module):
     def __init__(
         self, num_obs: int, architecture: tuple, activation_function: F
     ) -> None:
-        # TODO: Make the architecture hyper-parameterizable
         super(Critic, self).__init__()
         layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
         for input_dimension, output_dimension in zip(
