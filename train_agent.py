@@ -61,7 +61,7 @@ def calc_sample_efficiency(agent_module, env_specs, env, env_eval):
     total_timesteps = 100000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
-    save_frequency = 100000
+    save_checkpoints = False
 
     for seed in range(5):
         print(f'starting training on {seed+1} of 5...')
@@ -78,7 +78,7 @@ def calc_sample_efficiency(agent_module, env_specs, env, env_eval):
         agent = agent_module.Agent(env_specs)
 
         # train for 100K steps, evaluating every 1000
-        seed_performance = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, logger=None)
+        seed_performance = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints, logger=None)
         eval_performances.append(seed_performance)
 
     # calculate the AUC for the mean performance
@@ -104,7 +104,7 @@ def get_environment(env_type):
 
 
 def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, 
-    save_frequency, logger=None, name=None, visualize=False):
+    save_checkpoints=True, logger=None, name=None, visualize=False):
     # seed = 0
     # random.seed(seed)
     # np.random.seed(seed)
@@ -140,8 +140,8 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
                     logger.log("timestep: {ts}, acc_reward: {acr:.2f}".format(ts=timestep, acr=mean_acc_rewards))
                 array_of_mean_acc_rewards.append(mean_acc_rewards)
 
-                # if we have improvement, and we're logging, save a checkpoint
-                if mean_acc_rewards > current_mean_acc_rewards:
+                # if we have improvement, and we're logging/saving checkpoints, save a checkpoint
+                if mean_acc_rewards > current_mean_acc_rewards and save_checkpoints:
                     if name != None and logger != None:
                         save_path = agent.save_checkpoint(mean_acc_rewards, logger.location, name)
                     elif logger != None:
@@ -150,14 +150,6 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
                     if logger:
                         logger.log("checkpoint saved: {}".format(save_path))
                     current_mean_acc_rewards = mean_acc_rewards
-
-            # if timestep % save_frequency == 0:
-            #   # find average rewards
-            #   mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
-            #   # call the save_checkpoint model from agent.py
-            #   save_path = agent.save_checkpoint(agent.actor_model, agent.critic_model, mean_acc_rewards, logger.location)
-            #   if logger:
-            #       logger.log("checkpoint saved: {}".format(save_path))
 
     return array_of_mean_acc_rewards
 
@@ -187,7 +179,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.ylabel("Average Reward")
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/avg_rewards_vpg.png"
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
@@ -209,7 +201,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.ylabel("Cumulative Reward")
         plt.xlabel("Time Step")
         plt.title("Cumulative Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/cum_rewards_vpg.png"
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
@@ -241,7 +233,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.ylabel("Average Reward")
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/avg_rewards_vpg_{}.png".format(last_reward)
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
@@ -256,7 +248,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.ylabel("Cumulative Reward")
         plt.xlabel("Time Step")
         plt.title("Cumulative Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/cum_rewards_vpg_{}.png".format(last_reward)
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
@@ -286,15 +278,15 @@ def start_logging():
     return logger
 
 
-def train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency, 
-    logger=None, name=None, visualize=False):
+def train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, 
+    save_checkpoints, logger=None, name=None, visualize=False):
     
     if logger: logger.log("Training start ... ")
     start_time = time()
 
     # you can feed names to train_agent or not --> will change the saved file names/graph labels
-    learning_curve = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency,
-        logger=logger, name=name, visualize=False)
+    learning_curve = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints,
+        logger=logger, name=name, visualize=visualize)
     if logger: logger.log("Training complete.")
 
     # log some details of the training
@@ -303,15 +295,15 @@ def train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n
         logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
         logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
         logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
-        logger.log(f'Time Elapsed During Training: {elapsed_time}\n')
+        logger.log(f'Time Elapsed During Training: {elapsed_time}')
 
     # plot learning curves - average reward and cumulative reward
     # you can feed names to plot_rewards or not --> will change the graph labels
     if logger: plot_rewards(learning_curve, logger.location, names=name, time_step=evaluation_freq)
     if name:
-        if logger: logger.log('\n{} rewards graphed successfully. See {}'.format(name, logger.location))
+        if logger: logger.log('{} rewards graphed successfully. See {}'.format(name, logger.location))
     else:
-        if logger: logger.log('\nRewards graphed successfully. See {}'.format(logger.location))
+        if logger: logger.log('Rewards graphed successfully. See {}'.format(logger.location))
 
     return learning_curve
 
@@ -360,7 +352,7 @@ if __name__ == "__main__":
     total_timesteps = 2000000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
-    save_frequency = 100000
+    save_checkpoints = True
 
     # setting a seed --> removed from train_agent so that calc_sample_efficiency can work
     seed = 0
@@ -372,15 +364,46 @@ if __name__ == "__main__":
 
     ########################################## training a single model ##########################################
     # load in the pretrained model if one is provided
-    agent = agent_module.Agent(env_specs) # creates agent with our default parameters
-    if args.load != "None":
-        agent.load_weights(os.getcwd(), args.load)
-        logger.log(f"Pretrained model loaded: {args.load}")
-    train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_frequency,
-        logger, visualize=False)
+    # agent = agent_module.Agent(env_specs) # creates agent with our default parameters
+    # if args.load != "None":
+    #     agent.load_weights(os.getcwd(), args.load)
+    #     logger.log(f"Pretrained model loaded: {args.load}")
+    # train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints,
+    #     logger, visualize=False)
 
     ########################################## calculating sample efficiency ##########################################
-    logger.log('Starting calculation of sample efficiency...\n')
-    sample_efficiency, time_elapsed = calc_sample_efficiency(agent_module, env_specs, env, env_eval)
-    logger.log(f'Sample Efficiency: {sample_efficiency}')
-    logger.log(f'Time to Calculate Sample Efficiency: {time_elapsed}')
+    # logger.log('Starting calculation of sample efficiency...\n')
+    # sample_efficiency, time_elapsed = calc_sample_efficiency(agent_module, env_specs, env, env_eval)
+    # logger.log(f'Sample Efficiency: {sample_efficiency}')
+    # logger.log(f'Time to Calculate Sample Efficiency: {time_elapsed}')
+
+    ########################################## hyperparameter tuning ##########################################
+    save_checkpoints = False
+    grid = {
+        # Found in this paper: https://arxiv.org/pdf/1709.06560.pdf / OpenAI defaults
+        "architecture": [(64, 64), (100, 50, 25), (400, 300)],
+        "activation": [torch.nn.ReLU, torch.nn.Tanh],
+        "actor_lr": [3e-4, 3e-3],
+        "critic_lr": [1e-3, 1e-2]
+    }
+    grid = sklearn.model_selection.ParameterGrid(grid)
+    names, rewards = [], []
+
+    for i, params in enumerate(grid):
+        params["actor_architecture"] = params["architecture"]
+        params["actor_activation_function"] = params["activation"]
+        params["critic_architecture"] = params["architecture"]
+        params["critic_activation_function"] = params["activation"]
+        del params["architecture"]
+        del params["activation"]
+        agent = agent_module.Agent(env_specs, **params)
+
+        logger.log(f"\n\nTraining start for the following model {i} ... ")
+        logger.log(f"{agent.__dict__}")
+        r = train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints,
+            logger, f"m_{i}", visualize=False)
+        names.append(f"m_{i}")
+        rewards.append(r)
+
+    plot_rewards(rewards, logger.location, names=names, time_step=evaluation_freq)
+    logger.log('\nComparison of rewards graphed successfully. See {}'.format(logger.location))
