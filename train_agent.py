@@ -359,7 +359,7 @@ if __name__ == "__main__":
 
         # plot learning curves - average reward and cumulative reward
         # you can feed names to plot_rewards or not --> will change the graph labels
-        plot_rewards(learning_curve, logger.location)
+        plot_rewards(learning_curve, logger.location, model_names=f"m_{i}")
         logger.log("\nRewards graphed successfully. See {}".format(logger.location))
 
     ########################################## training multiple models! ##########################################
