@@ -44,7 +44,7 @@ def calc_sample_efficiency(agent_module, env_specs, env, env_eval):
     save_checkpoints = False
 
     for seed in range(5):
-        print(f'starting training on {seed+1} of 5...')
+        print(f"starting training on {seed+1} of 5...")
 
         # set a random seed
         random.seed(seed)
@@ -58,7 +58,16 @@ def calc_sample_efficiency(agent_module, env_specs, env, env_eval):
         agent = agent_module.Agent(env_specs)
 
         # train for 100K steps, evaluating every 1000
-        seed_performance = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints, logger=None)
+        seed_performance = train_agent(
+            agent,
+            env,
+            env_eval,
+            total_timesteps,
+            evaluation_freq,
+            n_episodes_to_evaluate,
+            save_checkpoints,
+            logger=None,
+        )
         eval_performances.append(seed_performance)
 
     # calculate the AUC for the mean performance
@@ -66,7 +75,7 @@ def calc_sample_efficiency(agent_module, env_specs, env, env_eval):
     sample_efficiency = auc(range(len(mean_performance)), mean_performance)
 
     time_elapsed = time() - start_time
-    
+
     return sample_efficiency, time_elapsed
 
 
@@ -124,47 +133,89 @@ def train_agent(
             curr_obs = next_obs
             timestep += 1
             if timestep % evaluation_freq == 0:
-                mean_acc_rewards = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
-                if logger:
-                    logger.log("timestep: {ts}, acc_reward: {acr:.2f}".format(ts=timestep, acr=mean_acc_rewards))
+                mean_acc_rewards = evaluate_agent(
+                    agent, env_eval, n_episodes_to_evaluate
+                )
+                logger.log(
+                    "timestep: {ts}, acc_reward: {acr:.2f}".format(
+                        ts=timestep, acr=mean_acc_rewards
+                    )
+                )
                 array_of_mean_acc_rewards.append(mean_acc_rewards)
 
-                # if we have improvement, and we're logging/saving checkpoints, save a checkpoint
-                if mean_acc_rewards > current_mean_acc_rewards and save_checkpoints:
-                    if name != None and logger != None:
-                        save_path = agent.save_checkpoint(mean_acc_rewards, logger.location, name)
-                    elif logger != None:
-                        save_path = agent.save_checkpoint(mean_acc_rewards, logger.location)
+                # if we have improvement, save a checkpoint
+                if mean_acc_rewards > current_mean_acc_rewards:
+                    if name != None:
+                        save_path = agent.save_checkpoint(
+                            mean_acc_rewards, logger.location, name
+                        )
+                    else:
+                        save_path = agent.save_checkpoint(
+                            mean_acc_rewards, logger.location
+                        )
+                    logger.log("checkpoint saved: {}".format(save_path))
+                    current_mean_acc_rewards = mean_acc_rewards
 
     return array_of_mean_acc_rewards, save_path
 
 
-def train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, 
-    save_checkpoints, logger=None, name=None, visualize=False):
-    
-    if logger: logger.log("Training start ... ")
+def train_and_evaluate(
+    agent,
+    env,
+    env_eval,
+    total_timesteps,
+    evaluation_freq,
+    n_episodes_to_evaluate,
+    save_checkpoints,
+    logger=None,
+    name=None,
+    visualize=False,
+):
+
+    if logger:
+        logger.log("Training start ... ")
     start_time = time()
 
     # you can feed names to train_agent or not --> will change the saved file names/graph labels
-    learning_curve = train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints,
-        logger=logger, name=name, visualize=visualize)
-    if logger: logger.log("Training complete.")
+    learning_curve = train_agent(
+        agent,
+        env,
+        env_eval,
+        total_timesteps,
+        evaluation_freq,
+        n_episodes_to_evaluate,
+        save_checkpoints,
+        logger=logger,
+        name=name,
+        visualize=visualize,
+    )
+    if logger:
+        logger.log("Training complete.")
 
     # log some details of the training
     elapsed_time = time() - start_time
     if logger:
         logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
         logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
-        logger.log(f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}")
-        logger.log(f'Time Elapsed During Training: {elapsed_time}')
+        logger.log(
+            f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}"
+        )
+        logger.log(f"Time Elapsed During Training: {elapsed_time}")
 
     # plot learning curves - average reward and cumulative reward
     # you can feed names to plot_rewards or not --> will change the graph labels
-    if logger: plot_rewards(learning_curve, logger.location, names=name, time_step=evaluation_freq)
+    if logger:
+        plot_rewards(
+            learning_curve, logger.location, names=name, time_step=evaluation_freq
+        )
     if name:
-        if logger: logger.log('{} rewards graphed successfully. See {}'.format(name, logger.location))
+        if logger:
+            logger.log(
+                "{} rewards graphed successfully. See {}".format(name, logger.location)
+            )
     else:
-        if logger: logger.log('Rewards graphed successfully. See {}'.format(logger.location))
+        if logger:
+            logger.log("Rewards graphed successfully. See {}".format(logger.location))
 
     return learning_curve
 
