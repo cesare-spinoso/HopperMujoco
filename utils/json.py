@@ -37,3 +37,11 @@ def log_training_experiment_to_json(
         with open(path_to_json, "a") as f:
             json.dump(dict_to_write, f)
             f.write("\n")
+
+def get_json_data(path_to_json: str):
+    """Load information from json file"""
+    json_data = []
+    with open(path_to_json, "r") as f:
+        for line in f:
+            json_data.append(json.loads(line))
+    return json_data
