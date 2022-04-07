@@ -135,7 +135,9 @@ class Agent:
             # We can use no grad for both train and eval because we're not
             # keeping track of gradients here so this should make things
             # run faster
-            curr_obs = torch.from_numpy(curr_obs).float().to(self.device)
+            # Do this computation on the cpu
+            self.actor_model.cpu()
+            curr_obs = torch.from_numpy(curr_obs).float()
             action_distribution = self.actor_model(curr_obs)
             if mode == "train":
                 sample_action = action_distribution.sample()
@@ -146,7 +148,8 @@ class Agent:
             else:
                 sample_action = action_distribution.mean
                 sample_action_as_array = sample_action.data.cpu().numpy()
-
+        # Place back on gpu if there is one
+        self.actor_model.to(self.device)
         return sample_action_as_array
 
     def update(
@@ -411,6 +414,8 @@ class PPOBuffer:
         self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
     ) -> torch.Tensor:
         with torch.no_grad():
+            # Place the critic on the cpu
+            critic.cpu()
             # Compute the TD error
             rewards = torch.cat((reward_data, torch.tensor([0.0])))
             estimated_values = torch.cat(
@@ -419,6 +424,7 @@ class PPOBuffer:
             td_error = (
                 rewards[:-1] + self.gamma * estimated_values[1:] - estimated_values[:-1]
             )
+            critic.to(critic.device)
             return td_error
 
     def _compute_generalized_advantage_estimation_advantage(
