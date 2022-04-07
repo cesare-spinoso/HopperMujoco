@@ -5,12 +5,14 @@ import importlib
 import numpy as np
 
 import os
-from os import listdir, makedirs
+from os import listdir
 from os.path import isfile, join
+from pathlib import Path
 
 from environments import JellyBeanEnv, MujocoEnv
 
 from utils.logging import start_logging
+from utils.json import get_json_data
 
 
 def evaluate_agent(agent, env, n_episodes_to_evaluate):
@@ -46,7 +48,18 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
-    parser.add_argument("--load", type=str, default="None", help="need folder/filename in results folder (without .pth.tar)")
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        default="None",
+        help="Relative path to model (without .pth.tar) with respect GROUP_13 directory",
+    )
+    parser.add_argument(
+        "--json_path",
+        type=str,
+        default="None",
+        help="Path to json file containing the paths of the models",
+    )
 
     args = parser.parse_args()
 
@@ -74,28 +87,56 @@ if __name__ == "__main__":
             "observation_space": env.observation_space,
             "action_space": env.action_space,
         }
-    agent_module = importlib.import_module(args.group + ".agent")
-    agent = agent_module.Agent(env_specs)
 
     # starting a logger - results stored in folder labeled w/ date+time
     logger = start_logging()
 
     # load in the pretrained model if one is provided
-    if args.load == "None":
-        raise ValueError("You must load in a pretrained model for the evaluation script.")
+    agent = None
+    if args.model_path == "None" and args.json_path == "None":
+        raise ValueError(
+            "You must load in a pretrained model or the log.json file for the evaluation script."
+        )
+    elif args.model_path != "None":
+        agent_module = importlib.import_module(args.group + ".agent")
+        # Load single agent (requires manually changing the parameters to the agent's constructor in the
+        # next line)
+        agent = agent_module.Agent(env_specs)
+        agent.load_weights(os.getcwd(), args.model_path)
+        logger.log(f"Pretrained model loaded: {args.model_path}")
     else:
-        agent.load_weights(os.getcwd(), args.load)
-        logger.log(f'Pretrained model loaded: {args.load}')
+        # Load json file containing the paths of the models
+        json_data = get_json_data(args.json_path)
+        # Load the hyperparameters corresponding to the json file
+        hyperparameter_module = importlib.import_module(args.group + ".hyperparameters")
+        grid = hyperparameter_module.hyperparameter_grid
+        # Load the different agents
+        agent_module = importlib.import_module(args.group + ".agent")
+        agents = [agent_module.Agent(env_specs, **params) for params in grid]
+        for model, json in zip(agents, json_data):
+            model.load_weights(
+                os.path.join(os.getcwd(), args.model_path, "results"),
+                Path(Path(json["path_to_best_model"]).stem).stem,
+            )
 
-    # "Out-of-sample" Evaluation 
+    # "Out-of-sample" Evaluation
     n_episodes_to_evaluate = 100
 
-    # TODO: Add Sabina's sample efficiency calculation here?
-
-    ########################################## evaluate a single model ##########################################
-    logger.log("Evaluation starting ... ")
-    # Calculate the average (out-of-sample) reward
-    average_reward_list = []
-    average_reward_per_episode = evaluate_agent(agent, env_eval, n_episodes_to_evaluate)
-
-    logger.log(f"Average reward per episode: {average_reward_per_episode} +/-")
+    ########################################## evaluate a single/multiple model(s) ##########################################
+    if agent is not None:
+        logger.log("Evaluation starting ... ")
+        # Calculate the average (out-of-sample) reward
+        average_reward_per_episode = evaluate_agent(
+            agent, env_eval, n_episodes_to_evaluate
+        )
+        # TODO: Add Sabina's sample efficiency calculation here
+        logger.log(f"Average reward per episode: {average_reward_per_episode}")
+    else:
+        for agent, json in zip(agents, json_data):
+            logger.log(f"Evaluation starting for ... {json['model_name']}")
+            # Calculate the average (out-of-sample) reward
+            average_reward_per_episode = evaluate_agent(
+                agent, env_eval, n_episodes_to_evaluate
+            )
+            logger.log(f"Average reward per episode: {average_reward_per_episode}")
+            # TODO: Add Sabina's sample efficiency calculation here
