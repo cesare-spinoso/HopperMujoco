@@ -33,6 +33,7 @@ class Agent:
         normalize_advantage: bool = False,
         batching_method: str = "most-recent",
     ):
+        """VPG Agent, implementation similar to OpenAI's spin-up. NOTE: Make sure to cite it!"""
         ### ENVIRONMENT VARIABLES ###
         self.env_specs = env_specs
         # Number of observations (states) and actions
@@ -84,11 +85,20 @@ class Agent:
             batching_method=batching_method,
         )
 
-    def load_weights(self, root_path: str, pretrained_model_name: str) -> None:
-        # get pretrained model path and load it
-        pretrained_model_path = os.path.join(
-            root_path, "results", str(pretrained_model_name) + ".pth.tar"
-        )
+    def load_weights(self, root_path: str, pretrained_model_name: str = None) -> None:
+        """Load the weights of the actor and the critic into the agent. If pretrained_model_name is None,
+        then use default name of "model" which is assumed to be in the same directory as load_weights.
+
+        Args:
+            root_path (str): Root path
+            pretrained_model_name (str, optional): Model name e.g. vpg_ckpt_98.888. Defaults to None.
+        """
+        if pretrained_model_name is None:
+            pretrained_model_path = os.path.join(root_path, "model.pth.tar")
+        else:
+            pretrained_model_path = os.path.join(
+                root_path, "results", str(pretrained_model_name) + ".pth.tar"
+            )
 
         try:
             pretrained_model = torch.load(pretrained_model_path)
@@ -107,6 +117,9 @@ class Agent:
     def save_checkpoint(
         self, score_avg: float, ckpt_path: str, name: str = None
     ) -> str:
+        """Save the weights of the critic and the actor as well as its score. If name is None,
+        then use its score as the name.
+        """
         # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
         if name == None:
             ckpt_path = os.path.join(
@@ -130,6 +143,8 @@ class Agent:
         return ckpt_path
 
     def act(self, curr_obs: np.array, mode: str = "eval") -> np.array:
+        """Return the action for the current observation. Returns a sample if training
+        and the mean if evaluating."""
         sample_action_as_array = torch.zeros(self.num_actions)
         with torch.no_grad():
             # We can use no grad for both train and eval because we're not
@@ -156,6 +171,7 @@ class Agent:
         done: bool,
         timestep: int,
     ) -> None:
+        """Update the agent by doing 1 vanilla policy gradient update  + n number of critic updates."""
         # Convert the observations to tensors
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
@@ -214,6 +230,7 @@ class Agent:
         self.time_since_last_update += 1
 
     def is_ready_to_train(self) -> bool:
+        """Return if the agent is ready to train <=> If the last update was more than batch time steps away."""
         return (
             int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
         )
@@ -224,6 +241,7 @@ class Agent:
         obs_data: torch.Tensor,
         advantage_data: torch.Tensor,
     ) -> None:
+        """Do a vanilla policy gradient update on the actor."""
         self.actor_optimizer.zero_grad()
         # Torch device moving
         self.actor_model.to(self.device)
@@ -248,6 +266,9 @@ class Agent:
     def train_critic(
         self, obs_data: torch.Tensor, return_data: torch.Tensor, iterations: int
     ) -> None:
+        """Do a critic update i.e. update the value function. Done by using a regression
+        objective between the prediction and the observed return. The critic is trained for
+        n iterations."""
         self.critic_model.to(self.device)
         obs_data = obs_data.to(self.device)
         return_data = return_data.to(self.device)
@@ -273,6 +294,7 @@ class Actor(nn.Module):
         architecture: tuple,
         activation_function: F,
     ) -> None:
+        """Standard MLP takes in observations and outputs action distribution."""
         super(Actor, self).__init__()
         layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
         for input_dimension, output_dimension in zip(
@@ -284,7 +306,6 @@ class Actor(nn.Module):
         self.network = nn.Sequential(*layers)
 
     def forward(self, x: torch.Tensor) -> Normal:
-        # TODO: Should allow for different distributions (e.g. learnable std, VAEs, etc.)
         mu = self.network(x)
         # NOTE: The forward returns a distribution
         return Normal(mu, torch.ones_like(mu))
@@ -294,6 +315,7 @@ class Critic(nn.Module):
     def __init__(
         self, num_obs: int, architecture: tuple, activation_function: F
     ) -> None:
+        """Standard MLP for the value function."""
         super(Critic, self).__init__()
         layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
         for input_dimension, output_dimension in zip(
@@ -326,6 +348,10 @@ class Buffer:
         normalize_advantage: bool = True,
         batching_method: str = "most-recent",
     ) -> None:
+        """Buffer responsible for storing the experience and computing returns and advantages
+        as well as fetching the appropriate data for training. The recommended buffer type is dynamic
+        as it will use less memory.
+        """
         # Number of states, actions and total number of time steps
         self.number_obs = number_obs
         self.number_actions = number_actions
@@ -370,6 +396,7 @@ class Buffer:
             self.reward_buffer.append(reward)
 
     def reset(self):
+        """Empty the buffer if it's dynamic. Should be called once the agent trains on the batch."""
         if self.buffer_type == "dynamic":
             self.action_buffer = []
             self.obs_buffer = []
@@ -380,6 +407,9 @@ class Buffer:
     def compute_and_store_return(
         self, rewards: torch.Tensor, start: int, end: int
     ) -> None:
+        """Compute the return based on the rewards received during the episode and store
+        the returns in the buffer. Slightly different computations for static vs dynamic buffers.
+        """
         t = end - start
         assert t == len(
             rewards
@@ -406,6 +436,7 @@ class Buffer:
         start: int,
         end: int,
     ) -> None:
+        """Compute and store the advantage which is either a standard 1 step TD error or lambda-return."""
         if self.advantage_computation_method == "td-error":
             advantage = self._compute_td_error_advantage(critic, obs_data, reward_data)
         elif self.advantage_computation_method == "generalized-advantage-estimation":
@@ -422,6 +453,7 @@ class Buffer:
     def _compute_td_error_advantage(
         self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
     ) -> torch.Tensor:
+        """Compute the TD error based R_t + gamma * V(S_t+1) - V(S_t) where V is returned by the critic."""
         with torch.no_grad():
             # Compute the TD error
             # FIXME: OpenAI's implementation suggests that the value of the final state
@@ -439,6 +471,7 @@ class Buffer:
     def _compute_generalized_advantage_estimation_advantage(
         self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
     ) -> torch.Tensor:
+        """Compute lambda-error which is a weighted cumulative sum of returns."""
         # TODO: OpenAI's implementation of the advantage uses something like a lambda-return
         td_error = self._compute_td_error_advantage(critic, obs_data, reward_data)
         generalized_advantage = torch.zeros_like(td_error)
@@ -451,12 +484,14 @@ class Buffer:
         return generalized_advantage
 
     def get_reward_data(self, start: int, end: int) -> torch.Tensor:
+        """Get reward data."""
         if self.buffer_type == "static":
             return self.reward_buffer[start:end]
         else:
             return torch.tensor(self.reward_buffer[-(end - start) :]).float()
 
     def get_obs_data(self, start: int, end: int) -> torch.Tensor:
+        """Get observation data."""
         if self.buffer_type == "static":
             return self.obs_buffer[start:end]
         else:
@@ -465,6 +500,7 @@ class Buffer:
     def get_data_for_training_actor(
         self, start: int, end: int
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Get data to train the actor which includes states, actions and advantages."""
         # FIXME: OpenAI standardizes the advantage
         if self.buffer_type == "static":
             action_buffer, obs_buffer, advantage_buffer = (
@@ -487,6 +523,7 @@ class Buffer:
     def get_data_for_training_critic(
         self, start: int, end: int
     ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """Get data to train critic which includes states and returns."""
         if self.buffer_type == "static":
             return (
                 self.obs_buffer[start:end, :],

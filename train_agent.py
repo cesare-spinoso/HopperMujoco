@@ -1,41 +1,21 @@
-import gym
-
 import argparse
 import importlib
-import random
-import numpy as np
-from time import time
-from datetime import datetime
-from pytest import param
-
-import tensorflow as tf
-import torch
-
-import logging
-
 import os
-from os import listdir, makedirs
+import random
+from os import listdir
 from os.path import isfile, join
+from time import time
 
-import matplotlib.pyplot as plt
+import gym
+import numpy as np
+import torch
 from sklearn.metrics import auc
-import sklearn.model_selection
 
 from environments import JellyBeanEnv, MujocoEnv
 
-
-class Logger:
-    def __init__(self, path):
-        logging.basicConfig(filename=path + "/log.txt",
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%H:%M:%S',
-                            level=logging.DEBUG)
-        self.logger = logging.getLogger()
-        self.location = path
-
-    def log(self, msg):
-        print(msg)
-        self.logger.info(f"{msg}")
+from utils.json import log_training_experiment_to_json
+from utils.plotting import plot_rewards
+from utils.logging import start_logging
 
 
 def evaluate_agent(agent, env, n_episodes_to_evaluate):
@@ -103,15 +83,24 @@ def get_environment(env_type):
     return env
 
 
-def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, 
-    save_checkpoints=True, logger=None, name=None, visualize=False):
-    # seed = 0
-    # random.seed(seed)
-    # np.random.seed(seed)
-    # torch.manual_seed(seed)
-    # # tf.random.set_seed(seed)
-    # env.seed(seed)
-    # env_eval.seed(seed)
+def train_agent(
+    agent,
+    env,
+    env_eval,
+    total_timesteps,
+    evaluation_freq,
+    n_episodes_to_evaluate,
+    logger,
+    name=None,
+    visualize=False,
+):
+    """Train the agent and return the average rewards and the path to the best model."""
+    seed = 0
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    env.seed(seed)
+    env_eval.seed(seed)
 
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
@@ -147,135 +136,7 @@ def train_agent(agent, env, env_eval, total_timesteps, evaluation_freq, n_episod
                     elif logger != None:
                         save_path = agent.save_checkpoint(mean_acc_rewards, logger.location)
 
-                    if logger:
-                        logger.log("checkpoint saved: {}".format(save_path))
-                    current_mean_acc_rewards = mean_acc_rewards
-
-    return array_of_mean_acc_rewards
-
-
-def plot_rewards(rewards, location, names=None, time_step=None):
-    """
-    Graphs the average and cumulative reward plots.
-    :param rewards: a list, or list of lists, of rewards gained by the model
-    :param location: the location in which you want to store the generated .png files
-    :param model_names: str of a single model name, or a list of names (if not provided, will use final reward as label)
-    """
-
-    if any(isinstance(r, list) for r in rewards):
-
-        # average reward plot
-        _ = plt.figure()
-        for i in range(len(rewards)):
-            if names != None:
-                reward_label = names[i]
-            else:
-                reward_label = str(round(rewards[i][-1], 2))
-            if time_step: # range(start, stop, step)
-                plt.plot(range(0, len(rewards[i])*time_step, time_step), rewards[i], label=reward_label)
-            else: 
-                plt.plot(range(len(rewards[i])), rewards[i], label=reward_label)
-
-        plt.ylabel("Average Reward")
-        plt.xlabel("Time Step")
-        plt.title("Average Reward Over Time")
-        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/avg_rewards_vpg.png"
-        plt.savefig(filename, bbox_inches="tight")
-        plt.close()
-
-        # cumulative reward plot
-        _ = plt.figure()
-        for i in range(len(rewards)):
-            if names != None:
-                reward_label = names[i]
-            else:
-                reward_label = str(round(rewards[i][-1], 2))
-
-            cumulative = np.cumsum(rewards[i])
-            if time_step: # range(start, stop, step)
-                plt.plot(range(0, len(cumulative)*time_step, time_step), cumulative, label=reward_label)
-            else: 
-                plt.plot(range(len(cumulative)), cumulative, label=reward_label)
-
-        plt.ylabel("Cumulative Reward")
-        plt.xlabel("Time Step")
-        plt.title("Cumulative Reward Over Time")
-        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/cum_rewards_vpg.png"
-        plt.savefig(filename, bbox_inches="tight")
-        plt.close()
-
-    else:  # we have only one reward list, graph only the one
-
-        last_reward = str(round(rewards[-1], 2))
-        reward_label = ""
-
-        # average reward plot
-        _ = plt.figure()
-
-        if names != None:
-            if isinstance(names, list):
-                # select the first element as the model name
-                reward_label = names[0]
-            elif isinstance(names, str):
-                # use single name
-                reward_label = names
-            else:
-                reward_label = last_reward
-        else:
-            reward_label = last_reward
-
-        if time_step: # range(start, stop, step)
-            plt.plot(range(0, len(rewards)*time_step, time_step), rewards, label=reward_label)
-        else: 
-            plt.plot(range(len(rewards)), rewards, label=reward_label)
-        plt.ylabel("Average Reward")
-        plt.xlabel("Time Step")
-        plt.title("Average Reward Over Time")
-        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/avg_rewards_vpg_{}.png".format(last_reward)
-        plt.savefig(filename, bbox_inches="tight")
-        plt.close()
-
-        # cumulative reward plot
-        _ = plt.figure()
-        cumulative = np.cumsum(rewards)
-        if time_step: # range(start, stop, step)
-            plt.plot(range(0, len(cumulative)*time_step, time_step), cumulative, label=reward_label)
-        else: 
-            plt.plot(range(len(cumulative)), cumulative, label=reward_label)
-        plt.ylabel("Cumulative Reward")
-        plt.xlabel("Time Step")
-        plt.title("Cumulative Reward Over Time")
-        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/cum_rewards_vpg_{}.png".format(last_reward)
-        plt.savefig(filename, bbox_inches="tight")
-        plt.close()
-
-
-def start_logging():
-    """
-    Starts an instance of the Logger class to log the training results.
-    :return logger: the Logger class instance for this training session
-    :return results_path: the location of the log files
-    """
-    # making sure there is a results folder
-    results_folder = os.path.join(os.getcwd(), "results")
-    if not os.path.isdir(results_folder):
-        os.mkdir(results_folder)
-
-    # making a folder for this current training
-    results_path = os.path.join(
-        os.getcwd(), "results/" + datetime.now().strftime("%Y-%m-%d_%Hh%Mm%S")
-    )
-    if not os.path.isdir(results_path):
-        os.mkdir(results_path)
-
-    # start an instance of the Logger class :)
-    logger = Logger(results_path)
-
-    return logger
+    return array_of_mean_acc_rewards, save_path
 
 
 def train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, 
@@ -309,7 +170,7 @@ def train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n
 
 
 if __name__ == "__main__":
-
+    # Parse command line arguments
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
     parser.add_argument(
@@ -318,19 +179,21 @@ if __name__ == "__main__":
         default="None",
         help="need folder/filename in results folder (without .pth.tar)",
     )
-
     args = parser.parse_args()
 
+    # Process input
     path = "./" + args.group + "/"
     files = [f for f in listdir(path) if isfile(join(path, f))]
     if ("agent.py" not in files) or ("env_info.txt" not in files):
         print("Your GROUP folder does not contain agent.py or env_info.txt!")
         exit()
 
+    # Get environment
     with open(path + "env_info.txt") as f:
         lines = f.readlines()
     env_type = lines[0].lower()
 
+    # Get environment for training and evaluation
     env = get_environment(env_type)
     env_eval = get_environment(env_type)
     if "jellybean" in env_type:
@@ -345,65 +208,85 @@ if __name__ == "__main__":
             "observation_space": env.observation_space,
             "action_space": env.action_space,
         }
-    agent_module = importlib.import_module(args.group + ".agent")
-    logger = start_logging()
 
-    # Note these can be environment specific and you are free to experiment with what works best for you
-    total_timesteps = 2000000
+    # Training and evaluation variables
+    total_timesteps = 20000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
-    save_checkpoints = True
 
-    # setting a seed --> removed from train_agent so that calc_sample_efficiency can work
-    seed = 0
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    env.seed(seed)
-    env_eval.seed(seed)
+    ########################################## training a single/multiple agent(s) ##########################################
+    # starting a logger - results stored in folder labeled w/ date+time
+    logger = start_logging()
 
-    ########################################## training a single model ##########################################
-    # load in the pretrained model if one is provided
-    # agent = agent_module.Agent(env_specs) # creates agent with our default parameters
-    # if args.load != "None":
-    #     agent.load_weights(os.getcwd(), args.load)
-    #     logger.log(f"Pretrained model loaded: {args.load}")
-    # train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints,
-    #     logger, visualize=False)
-
-    ########################################## calculating sample efficiency ##########################################
-    # logger.log('Starting calculation of sample efficiency...\n')
-    # sample_efficiency, time_elapsed = calc_sample_efficiency(agent_module, env_specs, env, env_eval)
-    # logger.log(f'Sample Efficiency: {sample_efficiency}')
-    # logger.log(f'Time to Calculate Sample Efficiency: {time_elapsed}')
-
-    ########################################## hyperparameter tuning ##########################################
-    save_checkpoints = False
-    grid = {
-        # Found in this paper: https://arxiv.org/pdf/1709.06560.pdf / OpenAI defaults
-        "architecture": [(64, 64), (100, 50, 25), (400, 300)],
-        "activation": [torch.nn.ReLU, torch.nn.Tanh],
-        "actor_lr": [3e-4, 3e-3],
-        "critic_lr": [1e-3, 1e-2]
-    }
-    grid = sklearn.model_selection.ParameterGrid(grid)
-    names, rewards = [], []
+    # Load the agent and try to load hyperparameters
+    agent_module = importlib.import_module(args.group + ".agent")
+    try:
+        hyperparameter_module = importlib.import_module(args.group + ".hyperparameters")
+        grid = hyperparameter_module.hyperparameter_grid
+        logger.log("Loaded the hyperparameter grid")
+    except:
+        # Use the default hyperparameters
+        logger.log("Could not find the hyperparameters.py module, using default agent.")
+        grid = [{}]
 
     for i, params in enumerate(grid):
-        params["actor_architecture"] = params["architecture"]
-        params["actor_activation_function"] = params["activation"]
-        params["critic_architecture"] = params["architecture"]
-        params["critic_activation_function"] = params["activation"]
-        del params["architecture"]
-        del params["activation"]
+        # Create the agent
         agent = agent_module.Agent(env_specs, **params)
 
-        logger.log(f"\n\nTraining start for the following model {i} ... ")
-        logger.log(f"{agent.__dict__}")
-        r = train_and_evaluate(agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, save_checkpoints,
-            logger, f"m_{i}", visualize=False)
-        names.append(f"m_{i}")
-        rewards.append(r)
+        # Load in the pretrained model if one is provided
+        if args.load != "None":
+            agent.load_weights(os.getcwd(), args.load)
+            logger.log(f"Pretrained model loaded: {args.load}")
 
-    plot_rewards(rewards, logger.location, names=names, time_step=evaluation_freq)
-    logger.log('\nComparison of rewards graphed successfully. See {}'.format(logger.location))
+        logger.log(f"Training start for the following model {i} ... ")
+        logger.log(f"{agent.__dict__}")
+        start_time = time()
+        # You can feed names to train_agent or not --> will change the saved file names/graph labels
+        learning_curve, path_to_best_model = train_agent(
+            agent,
+            env,
+            env_eval,
+            total_timesteps,
+            evaluation_freq,
+            n_episodes_to_evaluate,
+            logger,
+            name=f"m_{i}",
+            visualize=False,
+        )
+        logger.log("Training complete.")
+
+        # Compute some details about the training experiment
+        final_mean_reward = learning_curve[-1]
+        average_mean_reward = np.mean(learning_curve)
+        median_mean_reward = np.median(learning_curve)
+        best_mean_reward = np.max(learning_curve)
+        cumulative_reward = np.sum(learning_curve)
+        auc_mean_reward = auc(range(len(learning_curve)), learning_curve)
+        # Log to file
+        logger.log(f"\n\nFinal Mean Reward: {round(final_mean_reward, 5)}")
+        logger.log(f"\n\Average Mean Reward: {round(average_mean_reward, 5)}")
+        logger.log(f"\n\Median Mean Reward: {round(median_mean_reward, 5)}")
+        logger.log(f"Best Mean Reward: {round(best_mean_reward, 5)}")
+        logger.log(f"Final Cumulative Reward: {round(cumulative_reward, 5)}")
+        logger.log(f"AUC for Mean Reward: {round(auc_mean_reward, 5)}")
+        elapsed_time = time() - start_time
+        logger.log(f"Time Elapsed During Training: {elapsed_time}\n")
+        # Log to json
+        log_training_experiment_to_json(
+            path_to_json=os.path.join(logger.location, "log.json"),
+            model_name=f"m_{i}",
+            hyperparameters=f"{params}",
+            final_mean_reward=final_mean_reward,
+            average_mean_reward=average_mean_reward,
+            median_mean_reward=median_mean_reward,
+            best_mean_reward=best_mean_reward,
+            cumulative_reward=cumulative_reward,
+            auc_mean_reward=auc_mean_reward,
+            path_to_best_model=path_to_best_model,
+            list_of_rewards=learning_curve,
+        )
+
+        # Plot learning curves - average reward and cumulative reward
+        # You can feed names to plot_rewards or not --> will change the graph labels
+        plot_rewards(learning_curve, logger.location, model_names=f"m_{i}")
+        logger.log("\nRewards graphed successfully. See {}".format(logger.location))
