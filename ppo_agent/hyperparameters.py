@@ -6,12 +6,10 @@ import torch
 import sklearn.model_selection
 
 grid = {
-    "architecture": [(64, 64), (100, 50, 25)],
-    "activation": [torch.nn.ReLU, torch.nn.Tanh],
-    "actor_lr": [3e-4, 3e-3],
-    "critic_lr": [1e-3, 1e-2],
+    "architecture": [(64, 64), (100, 50, 25), (400, 300)],
+    "activation": [torch.nn.ReLU, torch.nn.Tanh]
 }
-# gamma = 0.99, lambda = 0.097, KL threshold = 0.015, clip rate = 0.2
+# gamma = 0.99, lambda = 0.97, KL threshold = 0.015, clip rate = 0.2
 grid = sklearn.model_selection.ParameterGrid(grid)
 
 # Provide activations and architectures to both actor and critic
