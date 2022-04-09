@@ -1,4 +1,4 @@
-"""Hyperparameters for VPG found from this paper: https://arxiv.org/pdf/1709.06560.pdf
+"""Hyperparameters for DDPG found from this paper: https://arxiv.org/pdf/1709.06560.pdf
 """
 import torch
 import sklearn.model_selection
