@@ -1,47 +1,20 @@
-import gym
-
 import argparse
 import importlib
-import numpy as np
 
 import os
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
+from copy import deepcopy
+from socket import ALG_SET_PUBKEY
 
-from environments import JellyBeanEnv, MujocoEnv
 
 from utils.logging import start_logging
 from utils.json import get_json_data
 
-
-def evaluate_agent(agent, env, n_episodes_to_evaluate):
-    """Evaluates the agent for a provided number of episodes."""
-    array_of_acc_rewards = []
-    for _ in range(n_episodes_to_evaluate):
-        acc_reward = 0
-        done = False
-        curr_obs = env.reset()
-        while not done:
-            action = agent.act(curr_obs, mode="eval")
-            next_obs, reward, done, _ = env.step(action)
-            acc_reward += reward
-            curr_obs = next_obs
-        array_of_acc_rewards.append(acc_reward)
-    return np.mean(np.array(array_of_acc_rewards))
-
-
-def get_environment(env_type):
-    """Generates an environment specific to the agent type."""
-    if "jellybean" in env_type:
-        env = JellyBeanEnv(gym.make("JBW-COMP579-obj-v1"))
-    elif "mujoco" in env_type:
-        env = MujocoEnv(gym.make("Hopper-v2"))
-    else:
-        raise Exception(
-            "ERROR: Please define your env_type to be either 'jellybean' or 'mujoco'!"
-        )
-    return env
+from utils.environment import get_environment
+from utils.evaluation import evaluate_agent
+from utils.metrics import calc_sample_efficiency
 
 
 if __name__ == "__main__":
@@ -101,8 +74,9 @@ if __name__ == "__main__":
         agent_module = importlib.import_module(args.group + ".agent")
         # Load single agent (requires manually changing the parameters to the agent's constructor in the
         # next line)
-        agent = agent_module.Agent(env_specs)
-        agent.load_weights(os.getcwd(), args.model_path)
+        agent_untrained = agent_module.Agent(env_specs)
+        agent_pretrained = deepcopy(agent_untrained)
+        agent_pretrained.load_weights(os.getcwd(), args.model_path)
         logger.log(f"Pretrained model loaded: {args.model_path}")
     else:
         # Load json file containing the paths of the models
@@ -112,31 +86,77 @@ if __name__ == "__main__":
         grid = hyperparameter_module.hyperparameter_grid
         # Load the different agents
         agent_module = importlib.import_module(args.group + ".agent")
-        agents = [agent_module.Agent(env_specs, **params) for params in grid]
-        for model, json in zip(agents, json_data):
-            model.load_weights(
-                os.path.join(os.getcwd(), args.model_path, "results"),
+        agents_untrained = [agent_module.Agent(env_specs, **params) for params in grid]
+        agents_pretrained = [deepcopy(agent) for agent in agents_untrained]
+        for agent_pretrained, json in zip(agents_pretrained, json_data):
+            agent_pretrained.load_weights(
+                os.path.join(os.getcwd(), args.group, "results"),
                 Path(Path(json["path_to_best_model"]).stem).stem,
             )
 
     # "Out-of-sample" Evaluation
-    n_episodes_to_evaluate = 100
+    n_episodes_to_evaluate_average_reward = 100
+
+    # Sample efficiency
+    num_seeds = 5
+    total_timesteps = 100_000
+    evaluation_freq = 1000
+    n_episodes_to_evaluate_sample_efficiency = 20
+
 
     ########################################## evaluate a single/multiple model(s) ##########################################
-    if agent is not None:
+    if agents_pretrained is None:
         logger.log("Evaluation starting ... ")
-        # Calculate the average (out-of-sample) reward
-        average_reward_per_episode = evaluate_agent(
-            agent, env_eval, n_episodes_to_evaluate
+        # Calculate the sample efficiency
+        logger.log(f"Retraining model for {num_seeds} seeds ...")
+        sample_efficiency, time_to_train = calc_sample_efficiency(
+            agent_untrained,
+            env,
+            env_eval,
+            total_timesteps,
+            evaluation_freq,
+            n_episodes_to_evaluate_sample_efficiency,
+            num_seeds,
+            logger
         )
-        # TODO: Add Sabina's sample efficiency calculation here
+        # Calculate the average (out-of-sample) reward
+        logger.log("Evaluating the average return of the pretrained model ... ")
+        average_reward_per_episode = evaluate_agent(
+            agent_pretrained, env_eval, n_episodes_to_evaluate_average_reward
+        )
         logger.log(f"Average reward per episode: {average_reward_per_episode}")
+        logger.log(f"Sample efficiency: {sample_efficiency}")
+        logger.log(f"Time to train: {time_to_train}")
     else:
-        for agent, json in zip(agents, json_data):
-            logger.log(f"Evaluation starting for ... {json['model_name']}")
-            # Calculate the average (out-of-sample) reward
-            average_reward_per_episode = evaluate_agent(
-                agent, env_eval, n_episodes_to_evaluate
+        logger.log("Evaluating the sample efficiency of the untrained agents ... ")
+        sample_efficiencies = []
+        times_to_train = []
+        for agent_untrained, json in zip(agents_untrained, json_data):
+            logger.log(f"Retraining {json['model_name']} for {num_seeds} seeds ...")
+            sample_efficiency, time_to_train = calc_sample_efficiency(
+                agent_untrained,
+                env,
+                env_eval,
+                total_timesteps,
+                evaluation_freq,
+                n_episodes_to_evaluate_sample_efficiency,
+                num_seeds,
+                logger
             )
+            sample_efficiencies.append(sample_efficiency)
+            times_to_train.append(time_to_train)
+
+        logger.log("Evaluating the average return of the pretrained models ... ")
+        average_rewards_per_episode = []
+        for agent, json in zip(agents_pretrained, json_data):
+            logger.log(f"Average reward evaluation starting for ... {json['model_name']}") 
+            average_reward_per_episode = evaluate_agent(
+                agent, env_eval, n_episodes_to_evaluate_average_reward
+            )
+            average_rewards_per_episode.append(average_reward_per_episode)
+        logger.log("Evaluation finished! Results ...")
+        for sample_efficiency, time_to_train, average_reward_per_episode, json in zip(sample_efficiencies, times_to_train, average_rewards_per_episode, json_data):
+            logger.log(f"Results for {json['model_name']}")
+            logger.log(f"Sample efficiency: {sample_efficiency}")
+            logger.log(f"Average time to train {total_timesteps} timesteps: {time_to_train}")
             logger.log(f"Average reward per episode: {average_reward_per_episode}")
-            # TODO: Add Sabina's sample efficiency calculation here
