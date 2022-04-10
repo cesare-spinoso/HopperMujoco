@@ -44,6 +44,7 @@ class Agent:
         # Tracking variables
         self.current_timestep = 0
         self.current_episode = 0
+        self.episode_of_last_update = None
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         ### HYPERPARAMETERS ###
@@ -201,12 +202,16 @@ class Agent:
           self.current_episode += 1
         if self.is_ready_to_train():
             self.train()
+            self.episode_of_last_update = self.current_episode
 
     def is_ready_to_train(self):
-        return (
-            self.current_episode > self.update_start_in_episodes
-            and self.current_episode % self.update_frequency_in_episodes == 0
-        )
+        if self.episode_of_last_update is None:
+            return self.current_episode > self.update_start_in_episodes
+        else:
+            return (
+                self.current_episode > self.episode_of_last_update
+                and self.current_episode % self.update_frequency_in_episodes == 0
+            )
 
     def train(self):
         for _ in range(self.number_of_batch_updates):
