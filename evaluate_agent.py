@@ -6,7 +6,6 @@ from os import listdir
 from os.path import isfile, join
 from pathlib import Path
 from copy import deepcopy
-from socket import ALG_SET_PUBKEY
 
 
 from utils.logging import start_logging
@@ -65,15 +64,16 @@ if __name__ == "__main__":
     logger = start_logging()
 
     # load in the pretrained model if one is provided
-    agent = None
+    agent_pretrained = None
+    agents_pretrained = None
     if args.model_path == "None" and args.json_path == "None":
-        raise ValueError(
-            "You must load in a pretrained model or the log.json file for the evaluation script."
-        )
+        # Load untrained instance of the agent, will only evaluate sample efficiency
+        agent_module = importlib.import_module(args.group + ".agent")
+        agent_untrained = agent_module.Agent(env_specs)
     elif args.model_path != "None":
         agent_module = importlib.import_module(args.group + ".agent")
         # Load single agent (requires manually changing the parameters to the agent's constructor in the
-        # next line)
+        # next line), will evaluate average reward and sample efficiency
         agent_untrained = agent_module.Agent(env_specs)
         agent_pretrained = deepcopy(agent_untrained)
         agent_pretrained.load_weights(os.getcwd(), args.model_path)
@@ -105,7 +105,23 @@ if __name__ == "__main__":
 
 
     ########################################## evaluate a single/multiple model(s) ##########################################
-    if agents_pretrained is None:
+    if agent_pretrained is None and agents_pretrained is None:
+        logger.log("Evaluation starting ... ")
+        # Calculate the sample efficiency
+        logger.log(f"Training model for {num_seeds} seeds ...")
+        sample_efficiency, time_to_train = calc_sample_efficiency(
+            agent_untrained,
+            env,
+            env_eval,
+            total_timesteps,
+            evaluation_freq,
+            n_episodes_to_evaluate_sample_efficiency,
+            num_seeds,
+            logger
+        )
+        logger.log(f"Sample efficiency: {sample_efficiency}")
+        logger.log(f"Time to train: {time_to_train}")    
+    elif agents_pretrained is None:
         logger.log("Evaluation starting ... ")
         # Calculate the sample efficiency
         logger.log(f"Retraining model for {num_seeds} seeds ...")
