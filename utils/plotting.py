@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from json_utils import get_json_data
 
 def plot_rewards(rewards, location, names=None, time_step=None):
     """
@@ -12,7 +13,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
     if any(isinstance(r, list) for r in rewards):
 
         # average reward plot
-        _ = plt.figure()
+        _ = plt.figure(figsize=(20, 10))
         for i in range(len(rewards)):
             if names != None:
                 reward_label = names[i]
@@ -32,7 +33,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.close()
 
         # cumulative reward plot
-        _ = plt.figure()
+        _ = plt.figure(figsize=(20, 10))
         for i in range(len(rewards)):
             if names != None:
                 reward_label = names[i]
@@ -99,3 +100,16 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         filename = location + "/cum_rewards_vpg_{}.png".format(last_reward)
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
+
+
+if __name__ == '__main__':
+    loaded_json = get_json_data("results/2022-04-09_22h10m40/log.json")
+
+    reward_lists, names = [], []
+    for m in loaded_json:
+        names.append(m['model_name'])
+        reward_lists.append(m['list_of_rewards'])
+
+    save_location = "results/2022-04-09_22h10m40"
+
+    plot_rewards(reward_lists, save_location, names)

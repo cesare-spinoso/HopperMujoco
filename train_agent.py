@@ -13,9 +13,9 @@ from sklearn.metrics import auc
 
 from environments import JellyBeanEnv, MujocoEnv
 
-from utils.json import log_training_experiment_to_json
+from utils.json_utils import log_training_experiment_to_json
 from utils.plotting import plot_rewards
-from utils.logging import start_logging
+from utils.logging_utils import start_logging
 
 
 def evaluate_agent(agent, env, n_episodes_to_evaluate):
