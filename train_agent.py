@@ -9,9 +9,9 @@ import numpy as np
 from sklearn.metrics import auc
 
 
-from utils.json import log_training_experiment_to_json
+from utils.json_utils import log_training_experiment_to_json
 from utils.plotting import plot_rewards
-from utils.logging import start_logging
+from utils.logging_utils import start_logging
 from utils.environment import get_environment
 from utils.training import train_agent
 

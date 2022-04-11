@@ -16,6 +16,7 @@ def train_agent(
     seed=0,
     name=None,
     visualize=False,
+    save_checkpoint=True,
 ):
     """Train the agent and return the average rewards and the path to the best model."""
     random.seed(seed)
@@ -55,18 +56,18 @@ def train_agent(
                     )
                 )
                 array_of_mean_acc_rewards.append(mean_acc_rewards)
-
-                # if we have improvement, save a checkpoint
-                if mean_acc_rewards > current_mean_acc_rewards:
-                    if name != None:
-                        save_path = agent.save_checkpoint(
-                            mean_acc_rewards, logger.location, name
-                        )
-                    else:
-                        save_path = agent.save_checkpoint(
-                            mean_acc_rewards, logger.location
-                        )
-                    logger.log("checkpoint saved: {}".format(save_path))
-                    current_mean_acc_rewards = mean_acc_rewards
+                if save_checkpoint:
+                    # if we are saving checkpoints and have improvement, save the model
+                    if mean_acc_rewards > current_mean_acc_rewards:
+                        if name != None:
+                            save_path = agent.save_checkpoint(
+                                mean_acc_rewards, logger.location, name
+                            )
+                        else:
+                            save_path = agent.save_checkpoint(
+                                mean_acc_rewards, logger.location
+                            )
+                        logger.log("checkpoint saved: {}".format(save_path))
+                        current_mean_acc_rewards = mean_acc_rewards
 
     return array_of_mean_acc_rewards, save_path
