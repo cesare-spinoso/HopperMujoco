@@ -117,8 +117,7 @@ if __name__ == "__main__":
             evaluation_freq,
             n_episodes_to_evaluate_sample_efficiency,
             num_seeds,
-            logger,
-            save_checkpoint=False
+            logger
         )
         logger.log(f"Sample efficiency: {sample_efficiency}")
         logger.log(f"Time to train: {time_to_train}")    
@@ -134,8 +133,7 @@ if __name__ == "__main__":
             evaluation_freq,
             n_episodes_to_evaluate_sample_efficiency,
             num_seeds,
-            logger,
-            save_checkpoint=False
+            logger
         )
         # Calculate the average (out-of-sample) reward
         logger.log("Evaluating the average return of the pretrained model ... ")
@@ -159,8 +157,7 @@ if __name__ == "__main__":
                 evaluation_freq,
                 n_episodes_to_evaluate_sample_efficiency,
                 num_seeds,
-                logger,
-                save_checkpoint=False
+                logger
             )
             sample_efficiencies.append(sample_efficiency)
             times_to_train.append(time_to_train)
