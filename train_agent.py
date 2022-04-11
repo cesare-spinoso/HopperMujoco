@@ -1,162 +1,19 @@
 import argparse
 import importlib
 import os
-import random
 from os import listdir
 from os.path import isfile, join
 from time import time
 
-import gym
 import numpy as np
-import torch
 from sklearn.metrics import auc
 
-from environments import JellyBeanEnv, MujocoEnv
 
 from utils.json_utils import log_training_experiment_to_json
 from utils.plotting import plot_rewards
 from utils.logging_utils import start_logging
-
-
-def evaluate_agent(agent, env, n_episodes_to_evaluate):
-    """Evaluates the agent for a provided number of episodes."""
-    array_of_acc_rewards = []
-    for _ in range(n_episodes_to_evaluate):
-        acc_reward = 0
-        done = False
-        curr_obs = env.reset()
-        while not done:
-            action = agent.act(curr_obs, mode="eval")
-            next_obs, reward, done, _ = env.step(action)
-            acc_reward += reward
-            curr_obs = next_obs
-        array_of_acc_rewards.append(acc_reward)
-    return np.mean(np.array(array_of_acc_rewards))
-
-
-def calc_sample_efficiency(agent_module, env_specs, env, env_eval):
-    start_time = time()
-
-    eval_performances = []
-    total_timesteps = 100000
-    evaluation_freq = 1000
-    n_episodes_to_evaluate = 20
-    save_checkpoints = False
-
-    for seed in range(5):
-        print(f"starting training on {seed+1} of 5...")
-
-        # set a random seed
-        random.seed(seed)
-        np.random.seed(seed)
-        torch.manual_seed(seed)
-        env.seed(seed)
-        env_eval.seed(seed)
-
-        # randomly initialize the weights for the agent
-        # TODO: ensure this random initialization actually leads to different things... --> try printing first reward for all 5
-        agent = agent_module.Agent(env_specs)
-
-        # train for 100K steps, evaluating every 1000
-        seed_performance = train_agent(
-            agent,
-            env,
-            env_eval,
-            total_timesteps,
-            evaluation_freq,
-            n_episodes_to_evaluate,
-            save_checkpoints,
-            logger=None,
-        )
-        eval_performances.append(seed_performance)
-
-    # calculate the AUC for the mean performance
-    mean_performance = np.mean(eval_performances, axis=0)
-    sample_efficiency = auc(range(len(mean_performance)), mean_performance)
-
-    time_elapsed = time() - start_time
-
-    return sample_efficiency, time_elapsed
-
-
-def get_environment(env_type):
-    """Generates an environment specific to the agent type."""
-    if "jellybean" in env_type:
-        env = JellyBeanEnv(gym.make("JBW-COMP579-obj-v1"))
-    elif "mujoco" in env_type:
-        env = MujocoEnv(gym.make("Hopper-v2"))
-    else:
-        raise Exception(
-            "ERROR: Please define your env_type to be either 'jellybean' or 'mujoco'!"
-        )
-    return env
-
-
-def train_agent(
-    agent,
-    env,
-    env_eval,
-    total_timesteps,
-    evaluation_freq,
-    n_episodes_to_evaluate,
-    logger,
-    name=None,
-    visualize=False,
-):
-    """Train the agent and return the average rewards and the path to the best model."""
-    seed = 0
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    env.seed(seed)
-    env_eval.seed(seed)
-
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
-
-    timestep = 0
-    array_of_mean_acc_rewards = []
-    current_mean_acc_rewards = 0
-
-    while timestep < total_timesteps:
-
-        done = False
-        curr_obs = env.reset()
-
-        while not done:
-            if visualize:
-                env.render()
-
-            action = agent.act(curr_obs, mode="train")
-            next_obs, reward, done, _ = env.step(action)
-            agent.update(curr_obs, action, reward, next_obs, done, timestep)
-            curr_obs = next_obs
-            timestep += 1
-            if timestep % evaluation_freq == 0:
-                mean_acc_rewards = evaluate_agent(
-                    agent, env_eval, n_episodes_to_evaluate
-                )
-                logger.log(
-                    "timestep: {ts}, acc_reward: {acr:.2f}".format(
-                        ts=timestep, acr=mean_acc_rewards
-                    )
-                )
-                array_of_mean_acc_rewards.append(mean_acc_rewards)
-
-                # if we have improvement, save a checkpoint
-                if mean_acc_rewards > current_mean_acc_rewards:
-                    if name != None:
-                        save_path = agent.save_checkpoint(
-                            mean_acc_rewards, logger.location, name
-                        )
-                    else:
-                        save_path = agent.save_checkpoint(
-                            mean_acc_rewards, logger.location
-                        )
-                    logger.log("checkpoint saved: {}".format(save_path))
-                    current_mean_acc_rewards = mean_acc_rewards
-
-    return array_of_mean_acc_rewards, save_path
+from utils.environment import get_environment
+from utils.training import train_agent
 
 
 def train_and_evaluate(
