@@ -14,7 +14,8 @@ def calc_sample_efficiency(
     evaluation_freq,
     n_episodes_to_evaluate,
     num_seeds,
-    logger
+    logger,
+    save_checkpoint=False,
 ):
     auc_performances = []
     start_time = time.time()
@@ -32,6 +33,7 @@ def calc_sample_efficiency(
             n_episodes_to_evaluate,
             logger,
             seed=i,
+            save_checkpoint=save_checkpoint
         )
         auc_performances.append(auc(range(len(seed_performance)), seed_performance))
     end_time = time.time()

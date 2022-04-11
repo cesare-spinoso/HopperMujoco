@@ -8,8 +8,8 @@ from pathlib import Path
 from copy import deepcopy
 
 
-from utils.logging import start_logging
-from utils.json import get_json_data
+from utils.logging_utils import start_logging
+from utils.json_utils import get_json_data
 
 from utils.environment import get_environment
 from utils.evaluation import evaluate_agent
@@ -61,7 +61,7 @@ if __name__ == "__main__":
         }
 
     # starting a logger - results stored in folder labeled w/ date+time
-    logger = start_logging()
+    logger = start_logging(logger_name="evaluation")
 
     # load in the pretrained model if one is provided
     agent_pretrained = None

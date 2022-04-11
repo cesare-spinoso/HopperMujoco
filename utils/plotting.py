@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from json_utils import get_json_data
 
-def plot_rewards(rewards, location, model_names=None):
+def plot_rewards(rewards, location, names=None, time_step=None):
     """
     Graphs the average and cumulative reward plots.
     :param rewards: a list, or list of lists, of rewards gained by the model
@@ -12,38 +13,43 @@ def plot_rewards(rewards, location, model_names=None):
     if any(isinstance(r, list) for r in rewards):
 
         # average reward plot
-        _ = plt.figure()
+        _ = plt.figure(figsize=(20, 10))
         for i in range(len(rewards)):
-            if model_names != None:
-                reward_label = model_names[i]
+            if names != None:
+                reward_label = names[i]
             else:
                 reward_label = str(round(rewards[i][-1], 2))
-
-            plt.plot(range(len(rewards[i])), rewards[i], label=reward_label)
+            if time_step: # range(start, stop, step)
+                plt.plot(range(0, len(rewards[i])*time_step, time_step), rewards[i], label=reward_label)
+            else: 
+                plt.plot(range(len(rewards[i])), rewards[i], label=reward_label)
 
         plt.ylabel("Average Reward")
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/avg_rewards_vpg.png"
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
         # cumulative reward plot
-        _ = plt.figure()
+        _ = plt.figure(figsize=(20, 10))
         for i in range(len(rewards)):
-            if model_names != None:
-                reward_label = model_names[i]
+            if names != None:
+                reward_label = names[i]
             else:
                 reward_label = str(round(rewards[i][-1], 2))
 
             cumulative = np.cumsum(rewards[i])
-            plt.plot(range(len(cumulative)), cumulative, label=reward_label)
+            if time_step: # range(start, stop, step)
+                plt.plot(range(0, len(cumulative)*time_step, time_step), cumulative, label=reward_label)
+            else: 
+                plt.plot(range(len(cumulative)), cumulative, label=reward_label)
 
         plt.ylabel("Cumulative Reward")
         plt.xlabel("Time Step")
         plt.title("Cumulative Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/cum_rewards_vpg.png"
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
@@ -56,23 +62,26 @@ def plot_rewards(rewards, location, model_names=None):
         # average reward plot
         _ = plt.figure()
 
-        if model_names != None:
-            if isinstance(model_names, list):
+        if names != None:
+            if isinstance(names, list):
                 # select the first element as the model name
-                reward_label = model_names[0]
-            elif isinstance(model_names, str):
+                reward_label = names[0]
+            elif isinstance(names, str):
                 # use single name
-                reward_label = model_names
+                reward_label = names
             else:
                 reward_label = last_reward
         else:
             reward_label = last_reward
 
-        plt.plot(range(len(rewards)), rewards, label=reward_label)
+        if time_step: # range(start, stop, step)
+            plt.plot(range(0, len(rewards)*time_step, time_step), rewards, label=reward_label)
+        else: 
+            plt.plot(range(len(rewards)), rewards, label=reward_label)
         plt.ylabel("Average Reward")
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/avg_rewards_vpg_{}.png".format(last_reward)
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
@@ -80,11 +89,27 @@ def plot_rewards(rewards, location, model_names=None):
         # cumulative reward plot
         _ = plt.figure()
         cumulative = np.cumsum(rewards)
-        plt.plot(range(len(cumulative)), cumulative, label=reward_label)
+        if time_step: # range(start, stop, step)
+            plt.plot(range(0, len(cumulative)*time_step, time_step), cumulative, label=reward_label)
+        else: 
+            plt.plot(range(len(cumulative)), cumulative, label=reward_label)
         plt.ylabel("Cumulative Reward")
         plt.xlabel("Time Step")
         plt.title("Cumulative Reward Over Time")
-        plt.legend()
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         filename = location + "/cum_rewards_vpg_{}.png".format(last_reward)
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
+
+
+if __name__ == '__main__':
+    loaded_json = get_json_data("results/2022-04-09_22h10m40/log.json")
+
+    reward_lists, names = [], []
+    for m in loaded_json:
+        names.append(m['model_name'])
+        reward_lists.append(m['list_of_rewards'])
+
+    save_location = "results/2022-04-09_22h10m40"
+
+    plot_rewards(reward_lists, save_location, names)
