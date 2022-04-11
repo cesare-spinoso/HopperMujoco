@@ -13,9 +13,9 @@ from sklearn.metrics import auc
 
 from environments import JellyBeanEnv, MujocoEnv
 
-from utils.json import log_training_experiment_to_json
+from utils.json_utils import log_training_experiment_to_json
 from utils.plotting import plot_rewards
-from utils.logging import start_logging
+from utils.logging_utils import start_logging
 
 
 def evaluate_agent(agent, env, n_episodes_to_evaluate):
@@ -32,6 +32,51 @@ def evaluate_agent(agent, env, n_episodes_to_evaluate):
             curr_obs = next_obs
         array_of_acc_rewards.append(acc_reward)
     return np.mean(np.array(array_of_acc_rewards))
+
+
+def calc_sample_efficiency(agent_module, env_specs, env, env_eval):
+    start_time = time()
+
+    eval_performances = []
+    total_timesteps = 100000
+    evaluation_freq = 1000
+    n_episodes_to_evaluate = 20
+    save_checkpoints = False
+
+    for seed in range(5):
+        print(f"starting training on {seed+1} of 5...")
+
+        # set a random seed
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        env.seed(seed)
+        env_eval.seed(seed)
+
+        # randomly initialize the weights for the agent
+        # TODO: ensure this random initialization actually leads to different things... --> try printing first reward for all 5
+        agent = agent_module.Agent(env_specs)
+
+        # train for 100K steps, evaluating every 1000
+        seed_performance = train_agent(
+            agent,
+            env,
+            env_eval,
+            total_timesteps,
+            evaluation_freq,
+            n_episodes_to_evaluate,
+            save_checkpoints,
+            logger=None,
+        )
+        eval_performances.append(seed_performance)
+
+    # calculate the AUC for the mean performance
+    mean_performance = np.mean(eval_performances, axis=0)
+    sample_efficiency = auc(range(len(mean_performance)), mean_performance)
+
+    time_elapsed = time() - start_time
+
+    return sample_efficiency, time_elapsed
 
 
 def get_environment(env_type):
@@ -112,6 +157,67 @@ def train_agent(
                     current_mean_acc_rewards = mean_acc_rewards
 
     return array_of_mean_acc_rewards, save_path
+
+
+def train_and_evaluate(
+    agent,
+    env,
+    env_eval,
+    total_timesteps,
+    evaluation_freq,
+    n_episodes_to_evaluate,
+    save_checkpoints,
+    logger=None,
+    name=None,
+    visualize=False,
+):
+
+    if logger:
+        logger.log("Training start ... ")
+    start_time = time()
+
+    # you can feed names to train_agent or not --> will change the saved file names/graph labels
+    learning_curve = train_agent(
+        agent,
+        env,
+        env_eval,
+        total_timesteps,
+        evaluation_freq,
+        n_episodes_to_evaluate,
+        save_checkpoints,
+        logger=logger,
+        name=name,
+        visualize=visualize,
+    )
+    if logger:
+        logger.log("Training complete.")
+
+    # log some details of the training
+    elapsed_time = time() - start_time
+    if logger:
+        logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
+        logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
+        logger.log(
+            f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}"
+        )
+        logger.log(f"Time Elapsed During Training: {elapsed_time}")
+
+    # plot learning curves - average reward and cumulative reward
+    # you can feed names to plot_rewards or not --> will change the graph labels
+    if logger:
+        plot_rewards(
+            learning_curve, logger.location, names=name, time_step=evaluation_freq
+        )
+    if name:
+        if logger:
+            logger.log(
+                "{} rewards graphed successfully. See {}".format(name, logger.location)
+            )
+    else:
+        if logger:
+            logger.log("Rewards graphed successfully. See {}".format(logger.location))
+
+    return learning_curve
 
 
 if __name__ == "__main__":
@@ -233,5 +339,5 @@ if __name__ == "__main__":
 
         # Plot learning curves - average reward and cumulative reward
         # You can feed names to plot_rewards or not --> will change the graph labels
-        plot_rewards(learning_curve, logger.location, model_names=f"m_{i}")
+        plot_rewards(learning_curve, logger.location, names=f"m_{i}", time_step=evaluation_freq)
         logger.log("\nRewards graphed successfully. See {}".format(logger.location))
