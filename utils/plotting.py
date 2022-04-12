@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from .json_utils import get_json_data
+from utils.json_utils import get_json_data
 
 def plot_rewards(rewards, location, names=None, time_step=None):
     """
@@ -28,7 +28,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/avg_rewards_vpg.png"
+        filename = location + "/avg_rewards.png"
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
@@ -50,7 +50,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.xlabel("Time Step")
         plt.title("Cumulative Reward Over Time")
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/cum_rewards_vpg.png"
+        filename = location + "/cum_rewards.png"
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
@@ -82,7 +82,7 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/avg_rewards_vpg_{}.png".format(last_reward)
+        filename = location + "/avg_rewards_{}.png".format(last_reward)
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
@@ -97,19 +97,80 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.xlabel("Time Step")
         plt.title("Cumulative Reward Over Time")
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        filename = location + "/cum_rewards_vpg_{}.png".format(last_reward)
+        filename = location + "/cum_rewards_{}.png".format(last_reward)
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
+# TODO: add implementation for this method to take multiple json files so all models can be graphed together
+def plot_best_model_rewards(json_location, save_location, time_step=None):
+    """
+    Graphs the average and cumulative reward plots for 5 runs of the best model.
+    """
+    # collect rewards from json file
+    loaded_json = get_json_data(json_location)
+
+    rewards, names = [], []
+    for m in loaded_json:
+        names.append(m['model_name'])
+        rewards.append(m['list_of_rewards'])
+
+    # average reward plot
+    _ = plt.figure(figsize=(20, 10))
+    mean_rewards = np.mean(rewards, axis=0)
+    std_rewards = np.std(rewards, axis=0)
+
+    if time_step: # range(start, stop, step)
+        x = range(0, len(mean_rewards)*time_step, time_step)
+        plt.plot(x, mean_rewards, color='b')
+        plt.fill_between(x=x, y1=mean_rewards-std_rewards, y2=mean_rewards+std_rewards, alpha=0.3, color='b')
+    else: 
+        x = range(len(mean_rewards))
+        plt.plot(x, mean_rewards, color='b')
+        plt.fill_between(x=x, y1=mean_rewards-std_rewards, y2=mean_rewards+std_rewards, alpha=0.3, color='b')
+
+    plt.ylabel("Average Reward")
+    plt.xlabel("Time Step")
+    plt.title("Average Reward Over Time")
+    filename = save_location + "/avg_rewards_best_model.png"
+    plt.savefig(filename, bbox_inches="tight")
+    plt.close()
+
+    # cumulative reward plot
+    _ = plt.figure(figsize=(20, 10))
+    cumulative_rewards = []
+    for i in range(len(rewards)): cumulative_rewards.append(np.cumsum(rewards[i]))
+    
+    mean_cumulative_rewards = np.mean(cumulative_rewards, axis=0)
+    std_cumulative_rewards = np.std(cumulative_rewards, axis=0)
+
+    if time_step: # range(start, stop, step)
+        x = range(0, len(mean_cumulative_rewards)*time_step, time_step)
+        plt.plot(x, mean_cumulative_rewards, color='b')
+        plt.fill_between(x=x, y1=mean_cumulative_rewards-std_cumulative_rewards, 
+            y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.3, color='b')
+    else: 
+        x = range(len(mean_cumulative_rewards))
+        plt.plot(x, mean_cumulative_rewards, color='b')
+        plt.fill_between(x=x, y1=mean_cumulative_rewards-std_cumulative_rewards, 
+            y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.3, color='b')
+
+    plt.ylabel("Cumulative Reward")
+    plt.xlabel("Time Step")
+    plt.title("Cumulative Reward Over Time")
+    filename = save_location + "/cum_rewards_best_model.png"
+    plt.savefig(filename, bbox_inches="tight")
+    plt.close()
+
+
 
 if __name__ == '__main__':
-    loaded_json = get_json_data("results/2022-04-09_22h10m40/log.json")
+    loaded_json = get_json_data("ppo_agent/results/log.json")
 
     reward_lists, names = [], []
     for m in loaded_json:
         names.append(m['model_name'])
         reward_lists.append(m['list_of_rewards'])
 
-    save_location = "results/2022-04-09_22h10m40"
+    save_location = "ppo_agent/results/"
 
     plot_rewards(reward_lists, save_location, names)
