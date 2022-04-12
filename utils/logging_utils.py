@@ -19,23 +19,25 @@ class Logger:
         print(msg)
         self.logger.info(f"{msg}")
 
-def start_logging(logger_name="log"):
+def start_logging(logger_name="log", location=None):
     """
     Starts an instance of the Logger class to log the training results.
     :return logger: the Logger class instance for this training session
-    :return results_path: the location of the log files
     """
-    # making sure there is a results folder
-    results_folder = os.path.join(os.getcwd(), "results")
-    if not os.path.isdir(results_folder):
-        os.mkdir(results_folder)
+    if location == None:
+        # making sure there is a results folder
+        results_folder = os.path.join(os.getcwd(), "results")
+        if not os.path.isdir(results_folder):
+            os.mkdir(results_folder)
 
-    # making a folder for this current training
-    results_path = os.path.join(
-        os.getcwd(), "results/" + datetime.now().strftime("%Y-%m-%d_%Hh%Mm%S")
-    )
-    if not os.path.isdir(results_path):
-        os.mkdir(results_path)
+        # making a folder for this current training
+        results_path = os.path.join(
+            os.getcwd(), "results/" + datetime.now().strftime("%Y-%m-%d_%Hh%Mm%S")
+        )
+        if not os.path.isdir(results_path):
+            os.mkdir(results_path)
+    else:
+        results_path = location
 
     # start an instance of the Logger class :)
     logger = Logger(results_path, logger_name)
