@@ -1,46 +1,93 @@
-18:37:10,880 root INFO Evaluation starting for ... m_0
-18:37:37,420 root INFO Average reward per episode: 2245.6799449735568
-18:37:37,420 root INFO Evaluation starting for ... m_1
-18:37:40,87 root INFO Average reward per episode: 229.24216136389208
-18:37:40,88 root INFO Evaluation starting for ... m_2
-18:37:50,926 root INFO Average reward per episode: 724.0325651962481
-18:37:50,926 root INFO Evaluation starting for ... m_3
-18:38:04,890 root INFO Average reward per episode: 717.6817832275256
-18:38:04,891 root INFO Evaluation starting for ... m_4
-18:38:19,661 root INFO Average reward per episode: 1339.1516787229991
-18:38:19,662 root INFO Evaluation starting for ... m_5
-18:38:50,92 root INFO Average reward per episode: 2628.3510866058946
-18:38:50,92 root INFO Evaluation starting for ... m_6
-18:39:10,124 root INFO Average reward per episode: 2483.558956814226
-18:39:10,124 root INFO Evaluation starting for ... m_7
-18:39:28,826 root INFO Average reward per episode: 2144.7328938032247
-18:39:28,827 root INFO Evaluation starting for ... m_8
-18:39:52,288 root INFO Average reward per episode: 1942.6854377088266
-18:39:52,288 root INFO Evaluation starting for ... m_9
-18:40:21,573 root INFO Average reward per episode: 3069.251895165431
-18:40:21,574 root INFO Evaluation starting for ... m_10
-18:40:33,584 root INFO Average reward per episode: 1008.0680054913649
-18:40:33,584 root INFO Evaluation starting for ... m_11
-18:40:39,571 root INFO Average reward per episode: 619.4109345954354
-18:40:39,571 root INFO Evaluation starting for ... m_12
-18:40:45,820 root INFO Average reward per episode: 424.7618473515077
-18:40:45,820 root INFO Evaluation starting for ... m_13
-18:40:52,627 root INFO Average reward per episode: 442.2010329121013
-18:40:52,628 root INFO Evaluation starting for ... m_14
-18:40:59,816 root INFO Average reward per episode: 674.556927904061
-18:40:59,816 root INFO Evaluation starting for ... m_15
-18:41:09,523 root INFO Average reward per episode: 667.7865483276744
-18:41:09,523 root INFO Evaluation starting for ... m_16
-18:41:16,235 root INFO Average reward per episode: 709.408927781634
-18:41:16,235 root INFO Evaluation starting for ... m_17
-18:41:41,295 root INFO Average reward per episode: 2218.659607124507
-18:41:41,295 root INFO Evaluation starting for ... m_18
-18:42:06,633 root INFO Average reward per episode: 2567.503304411028
-18:42:06,633 root INFO Evaluation starting for ... m_19
-18:42:29,915 root INFO Average reward per episode: 2745.2773815151036
-18:42:29,916 root INFO Evaluation starting for ... m_20
-18:42:54,184 root INFO Average reward per episode: 2727.397777856668
-18:42:54,184 root INFO Evaluation starting for ... m_21
-18:43:05,468 root INFO Average reward per episode: 1336.5682283786632
-18:43:05,468 root INFO Evaluation starting for ... m_22
-18:43:14,655 root INFO Average reward per episode: 873.0392562872804
+15:40:38,743 root INFO Evaluation finished! Results ...
+15:40:38,743 root INFO Results for m_0
+15:40:38,743 root INFO Sample efficiency: 9593.730922354647
+15:40:38,744 root INFO Average time to train 100000 timesteps: 172.20766234397888
+15:40:38,744 root INFO Average reward per episode: 2239.689149115805
+15:40:38,744 root INFO Results for m_1
+15:40:38,744 root INFO Sample efficiency: 6544.40285646845
+15:40:38,745 root INFO Average time to train 100000 timesteps: 182.15378232002257
+15:40:38,745 root INFO Average reward per episode: 229.21644398641993
+15:40:38,745 root INFO Results for m_2
+15:40:38,746 root INFO Sample efficiency: 1239.6740527851348
+15:40:38,746 root INFO Average time to train 100000 timesteps: 120.32419080734253
+15:40:38,746 root INFO Average reward per episode: 865.9714438250445
+15:40:38,746 root INFO Results for m_3
+15:40:38,747 root INFO Sample efficiency: 6740.134613976715
+15:40:38,747 root INFO Average time to train 100000 timesteps: 143.07200880050658
+15:40:38,747 root INFO Average reward per episode: 738.6098163561842
+15:40:38,747 root INFO Results for m_4
+15:40:38,748 root INFO Sample efficiency: 10365.249711702012
+15:40:38,748 root INFO Average time to train 100000 timesteps: 155.00439705848694
+15:40:38,748 root INFO Average reward per episode: 1436.2325972187762
+15:40:38,748 root INFO Results for m_5
+15:40:38,749 root INFO Sample efficiency: 11415.587776665761
+15:40:38,749 root INFO Average time to train 100000 timesteps: 159.28475012779236
+15:40:38,749 root INFO Average reward per episode: 2653.594587665947
+15:40:38,749 root INFO Results for m_6
+15:40:38,750 root INFO Sample efficiency: 12734.600203215912
+15:40:38,750 root INFO Average time to train 100000 timesteps: 177.28072962760925
+15:40:38,750 root INFO Average reward per episode: 2509.8083855225595
+15:40:38,750 root INFO Results for m_7
+15:40:38,751 root INFO Sample efficiency: 11205.326031435163
+15:40:38,751 root INFO Average time to train 100000 timesteps: 163.87817249298095
+15:40:38,751 root INFO Average reward per episode: 2122.373538431619
+15:40:38,752 root INFO Results for m_8
+15:40:38,752 root INFO Sample efficiency: 5369.007483496398
+15:40:38,752 root INFO Average time to train 100000 timesteps: 151.30653171539308
+15:40:38,752 root INFO Average reward per episode: 1942.062685877559
+15:40:38,753 root INFO Results for m_9
+15:40:38,753 root INFO Sample efficiency: 5994.03352717982
+15:40:38,753 root INFO Average time to train 100000 timesteps: 185.84093551635743
+15:40:38,754 root INFO Average reward per episode: 3039.535798706779
+15:40:38,754 root INFO Results for m_10
+15:40:38,754 root INFO Sample efficiency: 13564.61481372508
+15:40:38,754 root INFO Average time to train 100000 timesteps: 181.19247450828553
+15:40:38,755 root INFO Average reward per episode: 896.8074370814181
+15:40:38,755 root INFO Results for m_11
+15:40:38,755 root INFO Sample efficiency: 20842.421363172954
+15:40:38,756 root INFO Average time to train 100000 timesteps: 258.676460313797
+15:40:38,756 root INFO Average reward per episode: 580.778079232997
+15:40:38,756 root INFO Results for m_12
+15:40:38,756 root INFO Sample efficiency: 9488.221677058065
+15:40:38,757 root INFO Average time to train 100000 timesteps: 160.03181524276732
+15:40:38,757 root INFO Average reward per episode: 425.0632595606002
+15:40:38,757 root INFO Results for m_13
+15:40:38,758 root INFO Sample efficiency: 5293.072781300106
+15:40:38,758 root INFO Average time to train 100000 timesteps: 120.91796412467957
+15:40:38,758 root INFO Average reward per episode: 442.067040290986
+15:40:38,758 root INFO Results for m_14
+15:40:38,759 root INFO Sample efficiency: 6169.5947772049985
+15:40:38,759 root INFO Average time to train 100000 timesteps: 149.8094997406006
+15:40:38,759 root INFO Average reward per episode: 641.2056673462625
+15:40:38,759 root INFO Results for m_15
+15:40:38,760 root INFO Sample efficiency: 7668.4746511814665
+15:40:38,760 root INFO Average time to train 100000 timesteps: 164.63572607040405
+15:40:38,760 root INFO Average reward per episode: 699.676011120768
+15:40:38,761 root INFO Results for m_16
+15:40:38,761 root INFO Sample efficiency: 14983.033735517169
+15:40:38,761 root INFO Average time to train 100000 timesteps: 170.37211847305298
+15:40:38,761 root INFO Average reward per episode: 713.5422684118253
+15:40:38,762 root INFO Results for m_17
+15:40:38,762 root INFO Sample efficiency: 15392.272904388843
+15:40:38,762 root INFO Average time to train 100000 timesteps: 176.18273377418518
+15:40:38,762 root INFO Average reward per episode: 2160.495955659507
+15:40:38,763 root INFO Results for m_18
+15:40:38,763 root INFO Sample efficiency: 17127.716888656447
+15:40:38,763 root INFO Average time to train 100000 timesteps: 177.84151124954224
+15:40:38,763 root INFO Average reward per episode: 2610.0495034434866
+15:40:38,764 root INFO Results for m_19
+15:40:38,764 root INFO Sample efficiency: 14912.769765727917
+15:40:38,764 root INFO Average time to train 100000 timesteps: 180.20023679733276
+15:40:38,764 root INFO Average reward per episode: 2797.874089758424
+15:40:38,765 root INFO Results for m_20
+15:40:38,765 root INFO Sample efficiency: 14800.35675205527
+15:40:38,765 root INFO Average time to train 100000 timesteps: 193.07371101379394
+15:40:38,765 root INFO Average reward per episode: 2727.726508024032
+15:40:38,766 root INFO Results for m_21
+15:40:38,766 root INFO Sample efficiency: 16100.153987597092
+15:40:38,766 root INFO Average time to train 100000 timesteps: 194.86163840293884
+15:40:38,766 root INFO Average reward per episode: 1251.5567518457103
+15:40:38,767 root INFO Results for m_22
+15:40:38,767 root INFO Sample efficiency: 16371.304910169789
+15:40:38,767 root INFO Average time to train 100000 timesteps: 180.865824508667
+15:40:38,767 root INFO Average reward per episode: 1005.794878953326
