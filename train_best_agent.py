@@ -8,6 +8,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 from time import time
+from datetime import datetime
 
 import numpy as np
 from sklearn.metrics import auc
@@ -19,78 +20,13 @@ from utils.logging_utils import start_logging
 from utils.environment import get_environment
 from utils.training import train_agent
 
-
-def train_and_evaluate(
-    agent,
-    env,
-    env_eval,
-    total_timesteps,
-    evaluation_freq,
-    n_episodes_to_evaluate,
-    save_checkpoints,
-    logger=None,
-    name=None,
-    visualize=False,
-):
-
-    if logger:
-        logger.log("Training start ... ")
-    start_time = time()
-
-    # you can feed names to train_agent or not --> will change the saved file names/graph labels
-    learning_curve = train_agent(
-        agent,
-        env,
-        env_eval,
-        total_timesteps,
-        evaluation_freq,
-        n_episodes_to_evaluate,
-        save_checkpoints,
-        logger=logger,
-        name=name,
-        visualize=visualize,
-    )
-    if logger:
-        logger.log("Training complete.")
-
-    # log some details of the training
-    elapsed_time = time() - start_time
-    if logger:
-        logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
-        logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
-        logger.log(
-            f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}"
-        )
-        logger.log(f"Time Elapsed During Training: {elapsed_time}")
-
-    # plot learning curves - average reward and cumulative reward
-    # you can feed names to plot_rewards or not --> will change the graph labels
-    if logger:
-        plot_rewards(
-            learning_curve, logger.location, names=name, time_step=evaluation_freq
-        )
-    if name:
-        if logger:
-            logger.log(
-                "{} rewards graphed successfully. See {}".format(name, logger.location)
-            )
-    else:
-        if logger:
-            logger.log("Rewards graphed successfully. See {}".format(logger.location))
-
-    return learning_curve
-
-
 if __name__ == "__main__":
+    save_path = os.path.join(os.getcwd(), "results/" + datetime.now().strftime("%Y-%m-%d_%Hh%Mm%S"))
+
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
-    parser.add_argument(
-        "--load",
-        type=str,
-        default="None",
-        help="need folder/filename in results folder (without .pth.tar)",
-    )
+    parser.add_argument("--save_path", type=str, default=str(save_path))
     args = parser.parse_args()
 
     # Process input
@@ -99,6 +35,8 @@ if __name__ == "__main__":
     if ("agent.py" not in files) or ("env_info.txt" not in files):
         print("Your GROUP folder does not contain agent.py or env_info.txt!")
         exit()
+
+    if args.save_path: save_path = args.save_path
 
     # Get environment
     with open(path + "env_info.txt") as f:
@@ -127,26 +65,18 @@ if __name__ == "__main__":
     n_episodes_to_evaluate = 20
 
     # starting a logger - results stored in folder labeled w/ date+time
-    logger = start_logging()
+    logger = start_logging(logger_name='log_best_model', location=save_path)
 
     # Load the agent and try to load hyperparameters
     agent_module = importlib.import_module(args.group + ".agent")
 
-    # NOTE: change these dependent on what model you want to train & its best hyperparams
-    # These are currently the best hyperparameters for: PPO
-    params = {'actor_architecture': (64, 64), 
-        'actor_activation_function': torch.nn.ReLU, 
-        'critic_architecture': (64, 64), 
-        'critic_activation_function': torch.nn.ReLU}
+    # these change dependent on what model you put for the --group argument
+    hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")
+    params = hyperparameter_module.params
 
     for i in range(5):
         # Create the agent
         agent = agent_module.Agent(env_specs, **params)
-
-        # Load in the pretrained model if one is provided
-        if args.load != "None":
-            agent.load_weights(os.getcwd(), args.load)
-            logger.log(f"Pretrained model loaded: {args.load}")
 
         logger.log(f"Training start for the following model run {i} ... ")
         logger.log(f"{agent.__dict__}")
@@ -184,7 +114,7 @@ if __name__ == "__main__":
         logger.log(f"Time Elapsed During Training: {elapsed_time}\n")
         # Log to json
         log_training_experiment_to_json(
-            path_to_json=os.path.join(logger.location, "log.json"),
+            path_to_json=os.path.join(save_path, "log_best_model.json"),
             model_name=f"run_{i}",
             hyperparameters=f"{params}",
             final_mean_reward=final_mean_reward,
@@ -198,5 +128,5 @@ if __name__ == "__main__":
         )
 
     # Plot learning curves - average reward and cumulative reward averages with standard deviation
-    plot_best_model_rewards(os.path.join(logger.location, "log.json"), logger.location, time_step=evaluation_freq)
-    logger.log("\nRewards graphed successfully. See {}".format(logger.location))
+    plot_best_model_rewards(os.path.join(save_path, "log_best_model.json"), save_path, time_step=evaluation_freq)
+    logger.log("\nRewards graphed successfully. See {}".format(save_path))

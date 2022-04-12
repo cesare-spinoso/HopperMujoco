@@ -164,13 +164,13 @@ def plot_best_model_rewards(json_location, save_location, time_step=None):
 
 
 if __name__ == '__main__':
-    loaded_json = get_json_data("ppo_agent/results/2022-04-09_22h10m40/log.json")
+    loaded_json = get_json_data("ppo_agent/results/log.json")
 
     reward_lists, names = [], []
     for m in loaded_json:
         names.append(m['model_name'])
         reward_lists.append(m['list_of_rewards'])
 
-    save_location = "results/2022-04-09_22h10m40"
+    save_location = "ppo_agent/results/"
 
     plot_rewards(reward_lists, save_location, names)
