@@ -57,7 +57,7 @@ class Agent:
         # get pretrined model path and load it
         if pretrained_model_name is None:
             pretrained_model_name = "submitted_model"
-            pretrained_model_path = "GROUP_MJ1/submitted_model.pth.tar"
+            pretrained_model_path = os.path.join(root_path, "submitted_model.pth.tar")
             print(pretrained_model_path)
         else:
             pretrained_model_path = os.path.join(root_path, 'results', str(pretrained_model_name) + '.pth.tar')
