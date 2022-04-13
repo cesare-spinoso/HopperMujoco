@@ -142,8 +142,8 @@ class Agent:
         self.q1_network.load_state_dict(pretrained_model["q1_network"])
         self.q2_network.load_state_dict(pretrained_model["q2_network"])
         self.policy_network.load_state_dict(pretrained_model["policy_network"])
-        self.q1_network_target.load_state_dict(pretrained_model["q1_network"])
-        self.q2_network_target.load_state_dict(pretrained_model["q2_network"])
+        self.q1_network_target.load_state_dict(pretrained_model["q1_network_target"])
+        self.q2_network_target.load_state_dict(pretrained_model["q2_network_target"])
         self.policy_network_target.load_state_dict(pretrained_model["policy_network"])
 
         print("Loaded {} OK".format(pretrained_model_name))
