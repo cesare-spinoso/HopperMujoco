@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Cluster scripts and outputs
+training_script.sh
+job_output.txt
+job_error.txt
+
+# Logger and checkpoints
+results/*
