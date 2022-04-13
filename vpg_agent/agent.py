@@ -128,7 +128,7 @@ class Agent:
         else:
             ckpt_path = os.path.join(
                 ckpt_path,
-                "vpg_ckpt_" + name + "_" + str(round(score_avg, 3)) + ".pth.tar",
+                "vpg_ckpt_" + name + ".pth.tar",
             )
 
         torch.save(
