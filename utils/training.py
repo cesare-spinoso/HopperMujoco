@@ -32,6 +32,8 @@ def train_agent(
     array_of_mean_acc_rewards = []
     current_mean_acc_rewards = 0
 
+    save_path = None
+
     while timestep < total_timesteps:
 
         done = False
