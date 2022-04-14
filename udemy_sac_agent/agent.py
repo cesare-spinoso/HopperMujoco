@@ -339,12 +339,6 @@ class Actor(nn.Module):
 
     return action, log_probs
 
-  def save_checkpoint(self):
-    torch.save(self.state_dict(), self.checkpoint_file)
-
-  def load_checkpoint(self):
-    self.load_state_dict(torch.load(self.checkpoint_file))
-
 
 class Critic(nn.Module):
   """
@@ -381,13 +375,6 @@ class Critic(nn.Module):
     q = self.q(action_value)
     return q
 
-  def save_checkpoint(self):
-    torch.save(self.state_dict(), self.checkpoint_file)
-
-  def load_checkpoint(self):
-    self.load_state_dict(torch.load(self.checkpoint_file))
-
-
 class ValueNetwork(nn.Module):
   """
   Implementation of the value network from (Haarnoja, 2018). This is a 'typical' neural network.
@@ -421,10 +408,3 @@ class ValueNetwork(nn.Module):
 
     v = self.v(state_value)
     return v
-
-  def save_checkpoint(self):
-    torch.save(self.state_dict(), self.checkpoint_file)
-
-  def load_checkpoint(self):
-    self.load_state_dict(torch.load(self.checkpoint_file))
-
