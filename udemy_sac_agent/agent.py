@@ -152,14 +152,29 @@ class Agent:
     # Update target value network
     self.update_target_network_parameters()
 
-  def save_checkpoint(self):
-    """Saves parameters of all 5 models. Filepaths to weights are created in the constructor of each model"""
-    logger.debug('... saving models ...')
-    self.actor.save_checkpoint()
-    self.value.save_checkpoint()
-    self.target_value.save_checkpoint()
-    self.critic_1.save_checkpoint()
-    self.critic_2.save_checkpoint()
+  def save_checkpoint(self, score_avg: float, ckpt_path: str, name: str = None) -> str:
+    """Save the weights of the critic and the actor as well as its score. If name is None,
+    then use its score as the name.
+    """
+
+    logger.debug('.... saving all 5 models ....')
+    # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
+    if name is None:
+      ckpt_path = os.path.join(ckpt_path, "sac_ckpt_" + str(round(score_avg, 3)) + ".pth.tar")
+    else:
+      ckpt_path = os.path.join(ckpt_path, "sac_ckpt_" + name + "_" + str(round(score_avg, 3)) + ".pth.tar")
+
+    torch.save({"actor": self.actor.state_dict(),
+                "critic_1": self.critic_1.state_dict(),
+                "critic_2": self.critic_2.state_dict(),
+                "value": self.value.state_dict(),
+                "target_value": self.target_value.state_dict(),
+                "score": score_avg},
+               ckpt_path)
+
+    logger.debug('done.')
+
+    return ckpt_path
 
   def load_checkpoint(self):
     """Loads parameters of all 5 models. Filepaths to weights are created in the constructor of each model"""
