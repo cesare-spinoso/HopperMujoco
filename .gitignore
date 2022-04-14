@@ -1,5 +1,6 @@
 # Personal
 results/
+runs/
 # Pycharm
 .idea/
 MUJOCO_LOG.TXT
