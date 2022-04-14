@@ -52,6 +52,8 @@ class Agent:
 
     self.update_target_network_parameters(tau=1)
 
+    self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
   def act(self, observation: np.ndarray, mode: str = 'train') -> np.ndarray:
     """Returns a sample from the policy: ie. return ~ pi(a | s=observation)
     TODO: Add a 'mean' version for testing mode instead of just sampling
@@ -153,7 +155,7 @@ class Agent:
     self.update_target_network_parameters()
 
   def save_checkpoint(self, score_avg: float, ckpt_path: str, name: str = None) -> str:
-    """Save the weights of the critic and the actor as well as its score. If name is None,
+    """Save the weights of each network as well as its score. If name is None,
     then use its score as the name.
     """
 
@@ -175,6 +177,36 @@ class Agent:
     logger.debug('done.')
 
     return ckpt_path
+
+  def load_weights(self, root_path: str, pretrained_model_name: str = None) -> None:
+    """Load the weights of each network the agent. If pretrained_model_name is None,
+    then use default name of "model" which is assumed to be in the same directory as load_weights.
+
+    Args:
+        root_path (str): Root path
+        pretrained_model_name (str, optional): Model name e.g. td3_ckpt_98.888. Defaults to None.
+    """
+    if pretrained_model_name is None:
+      pretrained_model_path = os.path.join(root_path, "model.pth.tar")
+    else:
+      pretrained_model_path = os.path.join(root_path, str(pretrained_model_name) + ".pth.tar")
+
+    try:
+      pretrained_model = torch.load(pretrained_model_path, map_location=torch.device(self.device))
+    except:
+      raise Exception(
+        "Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
+        \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/td3_ckpt_98.888"
+      )
+
+    # load state dict for the 5 networks
+    self.actor.load_state_dict(pretrained_model["actor"])
+    self.critic_1.load_state_dict(pretrained_model["critic_1"])
+    self.critic_2.load_state_dict(pretrained_model["critic_2"])
+    self.value.load_state_dict(pretrained_model["value"])
+    self.target_value.load_state_dict(pretrained_model["target_value"])
+
+    logger.info(f"Loaded {pretrained_model_name} OK")
 
   def load_checkpoint(self):
     """Loads parameters of all 5 models. Filepaths to weights are created in the constructor of each model"""
