@@ -1,13 +1,19 @@
 """
 Implementation of the Soft Actor-Critic agent proposed in (Haarnoja, 2018)
+This file contains the Agent class, as well as the Actor, Critic, ValueNetwork, and ReplayBuffer
+that are instantiated by the Agent class.
 
 Code adapted from 'Modern Reinforcement Learning: Actor-Critic Algorithms' Udemy course
 """
+
+import os
 import numpy as np
+
 import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.distributions import Normal
 import torch.nn.functional as F
-# from .buffer import ReplayBuffer
-# from .networks import Actor, Critic, ValueNetwork
 
 from typing import Tuple
 
@@ -28,11 +34,12 @@ class Agent:
       :value:          Parameterized state-value function which accounts for entropy
       :target_value:   Parameterized state-value function which does not account for entropy (ie. 'true' value function)
   """
-  def __init__(self, env_specs: dict, id: str = 'sac_test', actor_lr: float = 3e-4, critic_lr: float = 3e-4,
+  def __init__(self, env_specs: dict, id: str = 'udemy_sac', actor_lr: float = 3e-4, critic_lr: float = 3e-4,
                tau: float = 5e-3, gamma: float = 0.99, max_buffer_size: int = 10_000_000, layer1_size: int = 256,
                layer2_size: int = 256, batch_size: int = 100, reward_scale: int = 2):
 
     # General params
+    self.id = id
     self.tau = tau                # smoothing constant for target network. See section 5.2 of (Haarnoja, 2018)
     self.gamma = gamma            # discount factor
     self.scale = reward_scale     # Important hyperparameter, needs exploring. See section 5.2 of (Haarnoja, 2018)
@@ -162,9 +169,9 @@ class Agent:
     logger.debug('.... saving all 5 models ....')
     # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
     if name is None:
-      ckpt_path = os.path.join(ckpt_path, "sac_ckpt_" + str(round(score_avg, 3)) + ".pth.tar")
+      ckpt_path = os.path.join(ckpt_path, f"{self.id}_" + str(round(score_avg, 3)) + ".pth.tar")
     else:
-      ckpt_path = os.path.join(ckpt_path, "sac_ckpt_" + name + "_" + str(round(score_avg, 3)) + ".pth.tar")
+      ckpt_path = os.path.join(ckpt_path, f"{self.id}_" + name + "_" + str(round(score_avg, 3)) + ".pth.tar")
 
     torch.save({"actor": self.actor.state_dict(),
                 "critic_1": self.critic_1.state_dict(),
@@ -217,12 +224,6 @@ class Agent:
     self.critic_1.load_checkpoint()
     self.critic_2.load_checkpoint()
 
-"""
-buffer.py
-
-Code adapted from 'Modern Reinforcement Learning: Actor-Critic Algorithms' Udemy course
-"""
-
 
 class ReplayBuffer:
   """
@@ -266,18 +267,6 @@ class ReplayBuffer:
     dones = self.terminal_memory[batch]
 
     return current_states, actions, rewards, next_states, dones
-
-"""
-networks.py
-Implementation of actor, critic, and value networks used by the soft actor-critic agent.
-
-Code adapted from 'Modern Reinforcement Learning: Actor-Critic Algorithms' Udemy course
-"""
-
-import os
-import torch.nn as nn
-import torch.optim as optim
-from torch.distributions import Normal
 
 
 class Actor(nn.Module):
@@ -374,6 +363,7 @@ class Critic(nn.Module):
 
     q = self.q(action_value)
     return q
+
 
 class ValueNetwork(nn.Module):
   """
