@@ -1,0 +1,12 @@
+Agent: VPG Agent
+
+Hyperparameters: {
+    'actor_lr': 0.0003,
+    'batch_size_in_time_steps': 5000,
+    'critic_lr': 0.001,
+    'number_of_critic_updates_per_actor_update': 100,
+    'actor_architecture': (400, 300),
+    'actor_activation_function': <class 'torch.nn.modules.activation.ReLU'>,
+    'critic_architecture': (400, 300),
+    'critic_activation_function': <class 'torch.nn.modules.activation.ReLU'>
+    }
