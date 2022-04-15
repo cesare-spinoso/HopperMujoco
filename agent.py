@@ -21,10 +21,10 @@ class Agent:
         gamma: float = 0.99,
         lambda_: float = 0.97,
         actor_lr: float = 3e-4,
-        actor_architecture: tuple = (64, 64),
+        actor_architecture: tuple = (400, 300),
         actor_activation_function: F = nn.ReLU,
         critic_lr: float = 1e-3,
-        critic_architecture: tuple = (64, 64),
+        critic_architecture: tuple = (400, 300),
         critic_activation_function: F = nn.ReLU,
         number_of_critic_updates_per_actor_update: int = 80,
         buffer_type: str = "dynamic",
@@ -94,6 +94,7 @@ class Agent:
             pretrained_model_name (str, optional): Model name e.g. vpg_ckpt_98.888. Defaults to None.
         """
         if pretrained_model_name is None:
+            pretrained_model_name = "submitted_model"
             pretrained_model_path = os.path.join(root_path, "submitted_model.pth.tar")
         else:
             pretrained_model_path = os.path.join(
