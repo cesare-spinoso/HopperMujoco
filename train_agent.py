@@ -54,7 +54,7 @@ def train_agent(agent,
   random.seed(seed)
   np.random.seed(seed)
   torch.manual_seed(seed)
-  tf.random.set_seed(seed)
+  # tf.random.set_seed(seed)
   env.seed(seed)
   env_eval.seed(seed)
   
