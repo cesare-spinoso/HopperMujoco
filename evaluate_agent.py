@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("--root_path", type=str, help="root path that should go into load_weights", required=True)
     args = parser.parse_args()
 
-    path = "./"
+    path = "./" + args.group + "/"
     files = [f for f in listdir(path) if isfile(join(path, f))]
     if ("agent.py" not in files) or ("env_info.txt" not in files):
         print("Your GROUP folder does not contain agent.py or env_info.txt!")
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             "observation_space": env.observation_space,
             "action_space": env.action_space,
         }
-    agent_module = importlib.import_module(".agent")
+    agent_module = importlib.import_module(args.group + ".agent")
     agent = agent_module.Agent(env_specs)
     agent.load_weights(args.root_path)
 
