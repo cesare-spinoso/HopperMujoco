@@ -1,10 +1,11 @@
 import os
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.distributions.normal import Normal
-from typing import Tuple
+from torch import nn
+from torch.functional import F
 import numpy as np
+
+from typing import Tuple
+from copy import deepcopy
 
 
 class Agent:
@@ -13,76 +14,85 @@ class Agent:
     want to this class.
     """
 
-    TOTAL_TIMESTEPS = 2100000
-
     def __init__(
         self,
-        env_specs: dict,
+        env_specs,
         gamma: float = 0.99,
-        lambda_: float = 0.97,
-        actor_lr: float = 3e-4,
-        actor_architecture: tuple = (400, 300),
-        actor_activation_function: F = nn.ReLU,
-        critic_lr: float = 1e-3,
-        critic_architecture: tuple = (400, 300),
-        critic_activation_function: F = nn.ReLU,
-        number_of_critic_updates_per_actor_update: int = 80,
-        buffer_type: str = "dynamic",
-        batch_size_in_time_steps: int = 5000,
-        advantage_computation_method: str = "generalized-advantage-estimation",
-        normalize_advantage: bool = False,
-        batching_method: str = "most-recent",
+        polyak: float = 0.995,
+        q_lr: float = 1e-3,
+        q_architecture: tuple = (64, 64),
+        q_activation_function: F = nn.ReLU,
+        policy_lr: float = 1e-3,
+        policy_architecture: tuple = (64, 64),
+        policy_activation_function: F = nn.ReLU,
+        buffer_size: int = 1_000_000,
+        action_noise_scale: float = 0.1,
+        action_noise_rescaling: int = 1,
+        action_noise_rescaling_frequency: int = 500_000,
+        exploration_timesteps: int = 10_000,
+        update_frequency_in_episodes: int = 50,
+        update_start_in_episodes: int = 1_000,
+        number_of_batch_updates: int = 1_000,
+        batch_size: int = 100,
     ):
-        """VPG Agent, implementation similar to OpenAI's spin-up. NOTE: Make sure to cite it!"""
         ### ENVIRONMENT VARIABLES ###
         self.env_specs = env_specs
         # Number of observations (states) and actions
         self.num_obs = env_specs["observation_space"].shape[0]
         self.num_actions = env_specs["action_space"].shape[0]
-        # Keep track of the timestep of the last episode (for the return and advantage computation)
-        self.timestep_of_last_episode = 0
-        self.time_since_last_update = 0
+        self.action_limit = env_specs["action_space"].high[0]
+        # Tracking variables
+        self.current_timestep = 0
+        self.current_episode = 0
+        self.episode_of_last_update = None
+        # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        ### GENERAL HYPERPARAMETERS ###
+        ### HYPERPARAMETERS ###
         self.gamma = gamma
-        self.lambda_ = lambda_
-        ### ACTOR ###
-        self.actor_model = Actor(
+        self.polyak = polyak
+        # For the rescaling of noise in the exploration phase
+        self.action_noise_scale = action_noise_scale
+        self.action_noise_rescaling = action_noise_rescaling
+        self.action_noise_rescaling_frequency = action_noise_rescaling_frequency
+        # Number of time steps where sample actions randomly
+        self.exploration_timesteps = exploration_timesteps
+        # Frequency, start and size of updates
+        self.update_frequency_in_episodes = update_frequency_in_episodes
+        self.update_start_in_episodes = update_start_in_episodes
+        self.number_of_batch_updates = number_of_batch_updates
+        self.batch_size = batch_size
+        ### Q-NETWORK ###
+        self.q_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
-            architecture=actor_architecture,
-            activation_function=actor_activation_function,
+            architecture=q_architecture,
+            activation_function=q_activation_function,
         )
-        self.actor_learning_rate = actor_lr
-        self.actor_optimizer = torch.optim.Adam(
-            self.actor_model.parameters(), lr=self.actor_learning_rate
-        )
-        ### CRITIC ###
-        self.critic_model = Critic(
+        self.q_optimizer = torch.optim.Adam(self.q_network.parameters(), lr=q_lr)
+        # Create q target network and freeze gradients
+        self.q_network_target = deepcopy(self.q_network)
+        self._freeze_network(self.q_network_target)
+        ### POLICY NETWORK ###
+        self.policy_network = PolicyNetwork(
             num_obs=self.num_obs,
-            architecture=critic_architecture,
-            activation_function=critic_activation_function,
+            num_actions=self.num_actions,
+            action_limit=self.action_limit,
+            architecture=policy_architecture,
+            activation_function=policy_activation_function,
         )
-        self.critic_learning_rate = critic_lr  # Critic should stabilize faster
-        self.critic_optimizer = torch.optim.Adam(
-            self.critic_model.parameters(), lr=self.critic_learning_rate
+        self.policy_optimizer = torch.optim.Adam(
+            self.policy_network.parameters(), lr=policy_lr
         )
-        # OpenAI Uses 80, another hyperparameter
-        self.number_of_critic_updates_per_actor_update = (
-            number_of_critic_updates_per_actor_update
-        )
+        # Create the target network and freeze its gradients
+        self.policy_network_target = deepcopy(self.policy_network)
+        self._freeze_network(self.policy_network_target)
         ### BUFFER ###
-        self.buffer = Buffer(
+        self.buffer = DDPGBuffer(
             number_obs=self.num_obs,
             number_actions=self.num_actions,
+            size=buffer_size,
             gamma=self.gamma,
-            lambda_=self.lambda_,
-            total_timesteps=Agent.TOTAL_TIMESTEPS,
-            buffer_type=buffer_type,
-            batch_size_in_time_steps=batch_size_in_time_steps,
-            advantage_computation_method=advantage_computation_method,
-            normalize_advantage=normalize_advantage,
-            batching_method=batching_method,
+            batch_size=self.batch_size,
         )
 
     def load_weights(self, root_path: str, pretrained_model_name: str = None) -> None:
@@ -94,7 +104,6 @@ class Agent:
             pretrained_model_name (str, optional): Model name e.g. vpg_ckpt_98.888. Defaults to None.
         """
         if pretrained_model_name is None:
-            pretrained_model_name = "submitted_model"
             pretrained_model_path = os.path.join(root_path, "submitted_model.pth.tar")
         else:
             pretrained_model_path = os.path.join(
@@ -102,16 +111,22 @@ class Agent:
             )
 
         try:
-            pretrained_model = torch.load(pretrained_model_path, map_location=torch.device(self.device))
+            pretrained_model = torch.load(
+                pretrained_model_path, map_location=torch.device(self.device)
+            )
         except:
             raise Exception(
                 "Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
                 \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/vpg_ckpt_98.888"
             )
 
-        # load state dict for actor and critic
-        self.actor_model.load_state_dict(pretrained_model["actor"])
-        self.critic_model.load_state_dict(pretrained_model["critic"])
+        # load state dict for the 4 networks
+        self.q_network.load_state_dict(pretrained_model["q_network"])
+        self.policy_network.load_state_dict(pretrained_model["policy_network"])
+        self.q_network_target.load_state_dict(pretrained_model["q_network_target"])
+        self.policy_network_target.load_state_dict(
+            pretrained_model["policy_network_target"]
+        )
 
         print("Loaded {} OK".format(pretrained_model_name))
 
@@ -124,18 +139,20 @@ class Agent:
         # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
         if name == None:
             ckpt_path = os.path.join(
-                ckpt_path, "vpg_ckpt_" + str(round(score_avg, 3)) + ".pth.tar"
+                ckpt_path, "ddpg_ckpt_" + str(round(score_avg, 3)) + ".pth.tar"
             )
         else:
             ckpt_path = os.path.join(
                 ckpt_path,
-                "vpg_ckpt_" + name + ".pth.tar",
+                "ddpg_ckpt_" + name + "_" + str(round(score_avg, 3)) + ".pth.tar",
             )
 
         torch.save(
             {
-                "actor": self.actor_model.state_dict(),
-                "critic": self.critic_model.state_dict(),
+                "q_network": self.q_network.state_dict(),
+                "policy_network": self.policy_network.state_dict(),
+                "q_network_target": self.q_network_target.state_dict(),
+                "policy_network_target": self.policy_network_target.state_dict(),
                 "score": score_avg,
             },
             ckpt_path,
@@ -143,151 +160,148 @@ class Agent:
 
         return ckpt_path
 
-    def act(self, curr_obs: np.array, mode: str = "eval") -> np.array:
-        """Return the action for the current observation. Returns a sample if training
-        and the mean if evaluating."""
-        sample_action_as_array = torch.zeros(self.num_actions)
+    def act(self, curr_obs, mode="eval"):
         with torch.no_grad():
-            # We can use no grad for both train and eval because we're not
-            # keeping track of gradients here so this should make things
-            # run faster
-            self.actor_model.to(self.device)
             curr_obs = torch.from_numpy(curr_obs).float().to(self.device)
-            action_distribution = self.actor_model(curr_obs)
             if mode == "train":
-                sample_action = action_distribution.sample()
-                sample_action_as_array = sample_action.data.cpu().numpy()
+                if self.current_timestep < self.exploration_timesteps:
+                    # Do exploration at the beginning of training
+                    action = self.env_specs["action_space"].sample()
+                else:
+                    if (
+                        self.current_timestep % self.action_noise_rescaling_frequency
+                        == 0
+                    ):
+                        self.action_noise_scale = (
+                            self.action_noise_scale / self.action_noise_rescaling
+                        )
+                    noise = (
+                        self.action_noise_scale * torch.randn(self.num_actions)
+                    ).to(self.device)
+                    noised_action = self.policy_network(curr_obs) + noise
+                    action = torch.clip(
+                        noised_action, -self.action_limit, self.action_limit
+                    )
+                    action = action.data.cpu().numpy()
             else:
-                sample_action = action_distribution.mean
-                sample_action_as_array = sample_action.data.cpu().numpy()
+                action = torch.clip(
+                    self.policy_network(curr_obs), -self.action_limit, self.action_limit
+                )
+                action = action.data.cpu().numpy()
+            return action
 
-        return sample_action_as_array
-
-    def update(
-        self,
-        curr_obs: np.array,
-        action: np.array,
-        reward: np.array,
-        next_obs: np.array,
-        done: bool,
-        timestep: int,
-    ) -> None:
-        """Update the agent by doing 1 vanilla policy gradient update  + n number of critic updates."""
-        # Convert the observations to tensors
+    def update(self, curr_obs, action, reward, next_obs, done, timestep):
+        # Store experience in buffer
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
         next_obs = torch.from_numpy(next_obs).float()
-        # Store the latest observation, action and reward
-        self.buffer.store_experience(obs=curr_obs, action=action, reward=reward)
+        self.buffer.store_experience(curr_obs, action, reward, next_obs, done)
+        # Track the current timestep
+        self.current_timestep = timestep
         if done:
-            start = (
-                0
-                if self.timestep_of_last_episode == 0
-                else self.timestep_of_last_episode + 1
-            )
-            end = timestep + 1
-            reward_data = self.buffer.get_reward_data(start=start, end=end)
-            obs_data = self.buffer.get_obs_data(start=start, end=end)
-            # Compute and store the return and advantage
-            self.buffer.compute_and_store_return(
-                rewards=reward_data, start=start, end=end
-            )
-            self.buffer.compute_and_store_advantage(
-                critic=self.critic_model,
-                obs_data=obs_data,
-                reward_data=reward_data,
-                start=start,
-                end=end,
-            )
-            if self.is_ready_to_train():
-                start = timestep - self.time_since_last_update
-                end = timestep + 1
-                # Train the actor
-                (
-                    action_data,
-                    obs_data,
-                    advantage_data,
-                ) = self.buffer.get_data_for_training_actor(start=start, end=end)
-                self.train_actor(
-                    action_data=action_data,
-                    obs_data=obs_data,
-                    advantage_data=advantage_data,
-                )
-                # Train the critic
-                obs_data, return_data = self.buffer.get_data_for_training_critic(
-                    start=start, end=end
-                )
-                self.train_critic(
-                    obs_data=obs_data,
-                    return_data=return_data,
-                    iterations=self.number_of_critic_updates_per_actor_update,
-                )
-                # Reset last time you trained a batch
-                self.time_since_last_update = 0
-                # Reset buffer
-                self.buffer.reset()
-            # Move episode pointer
-            self.timestep_of_last_episode = timestep
-        self.time_since_last_update += 1
+            self.current_episode += 1
+        if self.is_ready_to_train():
+            self.train()
+            self.episode_of_last_update = self.current_episode
 
-    def is_ready_to_train(self) -> bool:
-        """Return if the agent is ready to train <=> If the last update was more than batch time steps away."""
-        return (
-            int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
-        )
+    def is_ready_to_train(self):
+        if self.episode_of_last_update is None:
+            return self.current_episode > self.update_start_in_episodes
+        else:
+            return (
+                self.current_episode > self.episode_of_last_update
+                and self.current_episode % self.update_frequency_in_episodes == 0
+            )
 
-    def train_actor(
+    def train(self):
+        for _ in range(self.number_of_batch_updates):
+            # Get training batch
+            (
+                obs_data,
+                action_data,
+                reward_data,
+                next_obs_data,
+                done_data,
+            ) = self.buffer.get_training_batch()
+            # Get the training targets
+            y = self.compute_targets(reward_data, next_obs_data, done_data)
+            # Train the Q-network
+            self.train_q_network(obs_data, action_data, y)
+            # Train the policy network
+            self.train_policy_network(obs_data)
+            # Update the target networks
+            self.update_target_networks()
+
+    def compute_targets(
         self,
-        action_data: torch.Tensor,
-        obs_data: torch.Tensor,
-        advantage_data: torch.Tensor,
-    ) -> None:
-        """Do a vanilla policy gradient update on the actor."""
-        self.actor_optimizer.zero_grad()
-        # Torch device moving
-        self.actor_model.to(self.device)
-        advantage_data = advantage_data.to(self.device)
-        action_data = action_data.to(self.device)
-        obs_data = obs_data.to(self.device)
-        # Apply a new forward pass with the batched data
-        distribution_of_obs = self.actor_model(obs_data)
-        # Compute the log_proba of the distribution using the actions
-        log_proba = distribution_of_obs.log_prob(action_data).sum(axis=-1)
-        # Compute the per time step loss
-        per_time_step_loss = -log_proba * advantage_data
-        # Compute the mean loss
-        mean_loss = per_time_step_loss.mean()
-        # Backpropagate the loss
-        mean_loss.backward()
-        # Update the parameters
-        self.actor_optimizer.step()
-        # Put back on cpu
-        self.actor_model.to("cpu")
+        reward_data: torch.Tensor,
+        next_obs_data: torch.Tensor,
+        done_data: torch.Tensor,
+    ) -> torch.Tensor:
+        """Compute the targets for the Q network."""
+        with torch.no_grad():
+            return reward_data + self.gamma * (1 - done_data) * self.q_network_target(
+                next_obs_data, self.policy_network_target(next_obs_data)
+            ).squeeze(-1)
 
-    def train_critic(
-        self, obs_data: torch.Tensor, return_data: torch.Tensor, iterations: int
-    ) -> None:
-        """Do a critic update i.e. update the value function. Done by using a regression
-        objective between the prediction and the observed return. The critic is trained for
-        n iterations."""
-        self.critic_model.to(self.device)
-        obs_data = obs_data.to(self.device)
-        return_data = return_data.to(self.device)
-        for _ in range(iterations):
-            self.critic_model.zero_grad()
-            # Apply a new forward pass with the batched data
-            estimated_value = self.critic_model(obs_data)
-            # Compute the loss
-            loss = F.mse_loss(estimated_value.squeeze(-1), return_data)
-            # Backpropagate the loss
-            loss.backward()
-            # Update the parameters
-            self.critic_optimizer.step()
-        # Put back on cpu
-        self.critic_model.to("cpu")
+    def train_q_network(self, obs_data, action_data, y):
+        # Train the Q-network
+        self.q_network.zero_grad()
+        # Compute q-values
+        q_values = self.q_network(obs_data, action_data).squeeze(-1)
+        # Compute loss
+        loss = F.mse_loss(q_values, y)
+        # Backpropagate
+        loss.backward()
+        # Take a step
+        self.q_optimizer.step()
+
+    def train_policy_network(self, obs_data):
+        # Freeze the Q-network
+        self._freeze_network(self.q_network)
+        # Train the policy network
+        self.policy_network.zero_grad()
+        # Want the policy network to maximize the q-network
+        # so minimize the negative of the q-network
+        q_values = self.q_network(obs_data, self.policy_network(obs_data)).squeeze(-1)
+        # Compute loss
+        loss = -torch.mean(q_values)
+        # Backpropagate
+        loss.backward()
+        # Take a step
+        self.policy_optimizer.step()
+        # Unfreeze the Q-network
+        self._unfreeze_network(self.q_network)
+
+    def _freeze_network(self, network):
+        """Freeze the gradients of the network so that loss cannot backprop
+        through it."""
+        for param in network.parameters():
+            param.requires_grad = False
+
+    def _unfreeze_network(self, network):
+        """Unfreeze the network gradients."""
+        for param in network.parameters():
+            param.requires_grad = True
+
+    def update_target_networks(self):
+        """Update the target networks for the q-network and the policy-network via
+        a moving average."""
+        with torch.no_grad():
+            self._polyak_average_update(self.q_network, self.q_network_target)
+            self._polyak_average_update(self.policy_network, self.policy_network_target)
+
+    def _polyak_average_update(self, network, target_network):
+        """Polyak averaging of network."""
+        for target_param, param in zip(
+            target_network.parameters(), network.parameters()
+        ):
+            # Use OpenAI's in-place trick
+            target_param.data.mul_(self.polyak)
+            target_param.data.add_((1 - self.polyak) * param.data)
 
 
-class Actor(nn.Module):
+class QNetwork(nn.Module):
     def __init__(
         self,
         num_obs: int,
@@ -295,30 +309,13 @@ class Actor(nn.Module):
         architecture: tuple,
         activation_function: F,
     ) -> None:
-        """Standard MLP takes in observations and outputs action distribution."""
-        super(Actor, self).__init__()
-        layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
-        for input_dimension, output_dimension in zip(
-            architecture[0:], architecture[1:]
-        ):
-            layers.append(nn.Linear(input_dimension, output_dimension))
-            layers.append(activation_function())
-        layers.append(nn.Linear(architecture[-1], num_actions))
-        self.network = nn.Sequential(*layers)
-
-    def forward(self, x: torch.Tensor) -> Normal:
-        mu = self.network(x)
-        # NOTE: The forward returns a distribution
-        return Normal(mu, torch.ones_like(mu))
-
-
-class Critic(nn.Module):
-    def __init__(
-        self, num_obs: int, architecture: tuple, activation_function: F
-    ) -> None:
-        """Standard MLP for the value function."""
-        super(Critic, self).__init__()
-        layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
+        """Standard MLP for the Q-Network takes in observations and actions and
+        outputs estimate q-value."""
+        super(QNetwork, self).__init__()
+        layers = [
+            nn.Linear(num_obs + num_actions, architecture[0]),
+            activation_function(),
+        ]
         for input_dimension, output_dimension in zip(
             architecture[0:], architecture[1:]
         ):
@@ -326,212 +323,106 @@ class Critic(nn.Module):
             layers.append(activation_function())
         layers.append(nn.Linear(architecture[-1], 1))
         self.network = nn.Sequential(*layers)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.to(self.device)
+
+    def forward(self, s: torch.Tensor, a: torch.Tensor) -> torch.Tensor:
+        # Expecte batch_size x (num_obs + num_actions)
+        return self.network(torch.hstack((s, a)))
+
+
+class PolicyNetwork(nn.Module):
+    def __init__(
+        self,
+        num_obs: int,
+        num_actions: int,
+        action_limit: float,
+        architecture: tuple,
+        activation_function: F,
+    ) -> None:
+        super().__init__()
+        """Standard MLP for the policy takes in an observation and outputs an action."""
+        super(PolicyNetwork, self).__init__()
+        layers = [nn.Linear(num_obs, architecture[0]), activation_function()]
+        for input_dimension, output_dimension in zip(
+            architecture[0:], architecture[1:]
+        ):
+            layers.append(nn.Linear(input_dimension, output_dimension))
+            layers.append(activation_function())
+        layers.append(nn.Linear(architecture[-1], num_actions))
+        # Specific to Mujoco, add tanh activation as the output activation
+        # and rescale it by the action limit
+        self.action_limit = action_limit
+        layers.append(nn.Tanh())
+        self.network = nn.Sequential(*layers)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.to(self.device)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.network(x)
+        return self.action_limit * self.network(x)
 
 
-class Buffer:
-    ADVANTAGE_COMPUTATION_METHODS = ["td-error", "generalized-advantage-estimation"]
-    BATCHING_METHOD = ["most-recent", "random"]
-    BUFFER_TYPES = ["static", "dynamic"]
-
+class DDPGBuffer:
     def __init__(
         self,
         number_obs: int,
         number_actions: int,
         gamma: float,
-        lambda_: float,
-        total_timesteps: int,
-        buffer_type: str = "dynamic",
-        batch_size_in_time_steps: int = 4000,
-        advantage_computation_method: str = "generalized-advantage-estimation",
-        normalize_advantage: bool = True,
-        batching_method: str = "most-recent",
+        size: int = 1_000_000,
+        batch_size: int = 100,
     ) -> None:
-        """Buffer responsible for storing the experience and computing returns and advantages
-        as well as fetching the appropriate data for training. The recommended buffer type is dynamic
-        as it will use less memory.
+        """Buffer responsible for storing the experience and the Q target.
+        Unlike the VPG and PPO buffer, this buffer is static because random sampling
+        is used to train the agent.
         """
         # Number of states, actions and total number of time steps
         self.number_obs = number_obs
         self.number_actions = number_actions
-        self.total_timesteps = total_timesteps
-        self.gamma = gamma
-        self.lambda_ = lambda_
-        self.buffer_type = buffer_type
-        # NOTE: Unlike OpenAI, we do not include state values and log_p in the buffer
-        if self.buffer_type == "static":
-            self.action_buffer = torch.zeros(
-                (self.total_timesteps, self.number_actions)
-            )
-            self.obs_buffer = torch.zeros((self.total_timesteps, self.number_obs))
-            self.reward_buffer = torch.zeros(self.total_timesteps)
-            self.experience_pointer = 0
-            self.return_buffer = torch.zeros(self.total_timesteps)
-            self.advantage_buffer = torch.zeros(self.total_timesteps)
-        else:
-            self.action_buffer = []
-            self.obs_buffer = []
-            self.reward_buffer = []
-            self.return_buffer = []
-            self.advantage_buffer = []
+        self.size = size
+        # Create state, action, next_state, reward, done buffers
+        self.action_buffer = torch.zeros((self.size, self.number_actions))
+        self.obs_buffer = torch.zeros((self.size, self.number_obs))
+        self.next_obs_buffer = torch.zeros((self.size, self.number_obs))
+        self.reward_buffer = torch.zeros(self.size)
+        self.done_buffer = torch.zeros(self.size)
+        self.experience_pointer = 0
+        self.effective_size = 0
+        # Device
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # Hyperparameters
-        self.advantage_computation_method = advantage_computation_method
-        self.normalize_advantage = normalize_advantage
-        self.batch_size_in_time_steps = batch_size_in_time_steps
-        self.batching_method = batching_method
+        self.gamma = gamma
+        self.batch_size = batch_size
 
     def store_experience(
-        self, obs: torch.Tensor, action: torch.Tensor, reward: float
-    ) -> None:
-        """Store the experience differently based on the type of buffer"""
-        if self.buffer_type == "static":
-            self.obs_buffer[self.experience_pointer, :] = obs
-            self.action_buffer[self.experience_pointer, :] = action
-            self.reward_buffer[self.experience_pointer] = reward
-            self.experience_pointer += 1
-        else:
-            self.obs_buffer.append(obs)
-            self.action_buffer.append(action)
-            self.reward_buffer.append(reward)
-
-    def reset(self):
-        """Empty the buffer if it's dynamic. Should be called once the agent trains on the batch."""
-        if self.buffer_type == "dynamic":
-            self.action_buffer = []
-            self.obs_buffer = []
-            self.reward_buffer = []
-            self.return_buffer = []
-            self.advantage_buffer = []
-
-    def compute_and_store_return(
-        self, rewards: torch.Tensor, start: int, end: int
-    ) -> None:
-        """Compute the return based on the rewards received during the episode and store
-        the returns in the buffer. Slightly different computations for static vs dynamic buffers.
-        """
-        t = end - start
-        assert t == len(
-            rewards
-        ), f"The length of the rewards tensor ({len(rewards)}) does not match end - start = {end - start}"
-        running_returns = 0
-        temporary_return_buffer = [0] * t
-
-        for i in reversed(range(0, t)):
-            running_returns = rewards[i] + self.gamma * running_returns
-            temporary_return_buffer[i] = running_returns
-
-        if self.buffer_type == "static":
-            self.return_buffer[start:end] = torch.tensor(
-                temporary_return_buffer
-            ).float()
-        else:
-            self.return_buffer.extend(temporary_return_buffer)
-
-    def compute_and_store_advantage(
         self,
-        critic: nn.Module,
-        obs_data: torch.Tensor,
-        reward_data: torch.Tensor,
-        start: int,
-        end: int,
+        obs: torch.Tensor,
+        action: torch.Tensor,
+        reward: float,
+        next_obs: torch.Tensor,
+        done: bool,
     ) -> None:
-        """Compute and store the advantage which is either a standard 1 step TD error or lambda-return."""
-        if self.advantage_computation_method == "td-error":
-            advantage = self._compute_td_error_advantage(critic, obs_data, reward_data)
-        elif self.advantage_computation_method == "generalized-advantage-estimation":
-            advantage = self._compute_generalized_advantage_estimation_advantage(
-                critic, obs_data, reward_data
-            )
-        else:
-            raise ValueError("Unknown advantage computation method")
-        if self.buffer_type == "static":
-            self.advantage_buffer[start:end] = advantage
-        else:
-            self.advantage_buffer.append(advantage)
+        """Store the experience and increment pointer. Once the pointer reaches the
+        end of the buffer reset it to 0. In this way the buffer acts as a queue."""
+        self.action_buffer[self.experience_pointer, :] = action
+        self.obs_buffer[self.experience_pointer, :] = obs
+        self.next_obs_buffer[self.experience_pointer, :] = next_obs
+        self.reward_buffer[self.experience_pointer] = reward
+        self.done_buffer[self.experience_pointer] = int(done)
+        self.experience_pointer = (self.experience_pointer + 1) % self.size
+        self.effective_size = min(self.effective_size + 1, self.size)
 
-    def _compute_td_error_advantage(
-        self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
-    ) -> torch.Tensor:
-        """Compute the TD error based R_t + gamma * V(S_t+1) - V(S_t) where V is returned by the critic."""
-        with torch.no_grad():
-            # Compute the TD error
-            # FIXME: OpenAI's implementation suggests that the value of the final state
-            # should be 0 (line 298 of vpg.py)
-            # print(reward_data)
-            rewards = torch.cat((reward_data, torch.tensor([0.0])))
-            estimated_values = torch.cat(
-                (critic(obs_data).squeeze(-1), torch.tensor([0.0]))
-            )
-            td_error = (
-                rewards[:-1] + self.gamma * estimated_values[1:] - estimated_values[:-1]
-            )
-            return td_error
-
-    def _compute_generalized_advantage_estimation_advantage(
-        self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
-    ) -> torch.Tensor:
-        """Compute lambda-error which is a weighted cumulative sum of returns."""
-        # TODO: OpenAI's implementation of the advantage uses something like a lambda-return
-        td_error = self._compute_td_error_advantage(critic, obs_data, reward_data)
-        generalized_advantage = torch.zeros_like(td_error)
-        running_advantage = 0
-        for i in reversed(range(0, len(generalized_advantage))):
-            running_advantage = (
-                td_error[i] + self.gamma * self.lambda_ * running_advantage
-            )
-            generalized_advantage[i] = running_advantage
-        return generalized_advantage
-
-    def get_reward_data(self, start: int, end: int) -> torch.Tensor:
-        """Get reward data."""
-        if self.buffer_type == "static":
-            return self.reward_buffer[start:end]
-        else:
-            return torch.tensor(self.reward_buffer[-(end - start) :]).float()
-
-    def get_obs_data(self, start: int, end: int) -> torch.Tensor:
-        """Get observation data."""
-        if self.buffer_type == "static":
-            return self.obs_buffer[start:end]
-        else:
-            return torch.stack(self.obs_buffer[-(end - start) :]).float()
-
-    def get_data_for_training_actor(
-        self, start: int, end: int
-    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        """Get data to train the actor which includes states, actions and advantages."""
-        # FIXME: OpenAI standardizes the advantage
-        if self.buffer_type == "static":
-            action_buffer, obs_buffer, advantage_buffer = (
-                self.action_buffer[start:end, :],
-                self.obs_buffer[start:end, :],
-                self.advantage_buffer[start:end],
-            )
-        else:
-            action_buffer, obs_buffer, advantage_buffer = (
-                torch.stack(self.action_buffer).float(),
-                torch.stack(self.obs_buffer).float(),
-                torch.cat(tuple(self.advantage_buffer)).float(),
-            )
-        if self.normalize_advantage:
-            advantage_buffer = (advantage_buffer - advantage_buffer.mean()) / (
-                advantage_buffer.std() + 1e-8
-            )
-        return action_buffer, obs_buffer, advantage_buffer
-
-    def get_data_for_training_critic(
-        self, start: int, end: int
-    ) -> Tuple[torch.Tensor, torch.Tensor]:
-        """Get data to train critic which includes states and returns."""
-        if self.buffer_type == "static":
-            return (
-                self.obs_buffer[start:end, :],
-                self.return_buffer[start:end],
-            )
-        else:
-            return (
-                torch.stack(self.obs_buffer).float(),
-                torch.tensor(self.return_buffer).float(),
-            )
+    def get_training_batch(
+        self,
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Sample (batch_size) number of data points from (0, self.experience_pointer - 1)
+        and returns tensors for s, a, s', r, and done."""
+        sample_index = np.random.choice(
+            np.arange(self.effective_size), self.batch_size, replace=False
+        )
+        return (
+            self.obs_buffer[sample_index, :].to(self.device),
+            self.action_buffer[sample_index, :].to(self.device),
+            self.reward_buffer[sample_index].to(self.device),
+            self.next_obs_buffer[sample_index, :].to(self.device),
+            self.done_buffer[sample_index].to(self.device),
+        )
