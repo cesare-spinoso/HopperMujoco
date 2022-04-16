@@ -14,6 +14,8 @@ class Agent:
     """The agent class that is to be filled.
     You are allowed to add any method you
     want to this class.
+
+    Implemented following the pseudocode here: https://spinningup.openai.com/en/latest/algorithms/sac.html
     """
 
     def __init__(
@@ -35,6 +37,18 @@ class Agent:
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
     ):
+        """Creates an SAC agent. Some of the more obscure parameters are explained below.
+
+        Args:
+            alpha (float, optional): Fixed KL threshold. The Udemy implementation uses a variable KL. Defaults to 0.2.
+            exploration_timesteps (int, optional): How many timesteps does the agent use at the beginning
+            for uniform exploration. Defaults to 10_000.
+            update_frequency_in_episodes (int, optional): Frequency (in episodes) of the number of times that
+            the agent takes gradient steps. Defaults to 50.
+            update_start_in_episodes (int, optional): NUmber of episodes required before the agent starts taking gradient
+            steps for its networks. This is mostly here to ensure that the buffer is full enough to batching. Defaults to 1_000.
+            number_of_batch_updates (int, optional): Number of gradient updates to take. Defaults to 1_000.
+        """
         ### ENVIRONMENT VARIABLES ###
         self.env_specs = env_specs
         # Number of observations (states) and actions
@@ -214,13 +228,13 @@ class Agent:
                 next_obs_data,
                 done_data,
             ) = self.buffer.get_training_batch()
-            # Get the training targets
+            # Get the training targets (Line 12 of the OpenAI pseudocode)
             y = self.compute_targets(reward_data, next_obs_data, done_data)
-            # Train the Q-network
+            # Train the Q-network (Line 13 of the OpenAI pseudocode)
             self.train_q_networks(obs_data, action_data, y)
-            # Train the policy network
+            # Train the policy network (Line 14 of the OpenAI pseudocode)
             self.train_policy_network(obs_data)
-            # Update the target networks
+            # Update the target networks (Line 15 of the OpenAI pseudocode)
             self.update_target_networks()
 
     def compute_targets(
