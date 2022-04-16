@@ -17,11 +17,6 @@ import torch.nn.functional as F
 
 from typing import Tuple
 
-import logging
-logger = logging.getLogger()
-logger.addHandler(logging.StreamHandler())    # prints to stderr
-logger.setLevel(logging.INFO)                 # change to logging.DEBUG or logging.WARNING for more/less messages
-
 
 class Agent:
   """
@@ -167,7 +162,6 @@ class Agent:
     then use its score as the name.
     """
 
-    logger.debug('.... saving all 5 models ....')
     # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
     if name is None:
       ckpt_path = os.path.join(ckpt_path, f"{self.id}_" + str(round(score_avg, 3)) + ".pth.tar")
@@ -181,8 +175,6 @@ class Agent:
                 "target_value": self.target_value.state_dict(),
                 "score": score_avg},
                ckpt_path)
-
-    logger.debug('done.')
 
     return ckpt_path
 
@@ -214,11 +206,10 @@ class Agent:
     self.value.load_state_dict(pretrained_model["value"])
     self.target_value.load_state_dict(pretrained_model["target_value"])
 
-    logger.info(f"Loaded {pretrained_model_name} OK")
+    print(f"Loaded {pretrained_model_name} OK")
 
   def load_checkpoint(self):
     """Loads parameters of all 5 models. Filepaths to weights are created in the constructor of each model"""
-    logger.debug('... loading models ...')
     self.actor.load_checkpoint()
     self.value.load_checkpoint()
     self.target_value.load_checkpoint()
