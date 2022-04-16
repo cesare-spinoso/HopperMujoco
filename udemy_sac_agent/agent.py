@@ -57,6 +57,7 @@ class Agent:
     self.value = ValueNetwork(input_dims, layer1_size, layer2_size, critic_lr, name=id+'_value')
     self.target_value = ValueNetwork(input_dims, layer1_size, layer2_size, critic_lr, name=id+'_target_value')
 
+    # Initialize target network parameters as a copy of the value network
     self.update_target_network_parameters(tau=1)
 
     self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
