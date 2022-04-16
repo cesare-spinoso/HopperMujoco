@@ -27,7 +27,7 @@ class Agent:
         critic_architecture: tuple = (400, 300),
         critic_activation_function: F = nn.ReLU,
         number_of_critic_updates_per_actor_update: int = 80,
-        buffer_type: str = "dynamic",
+        buffer_type: str = "static",
         batch_size_in_time_steps: int = 5000,
         advantage_computation_method: str = "generalized-advantage-estimation",
         normalize_advantage: bool = False,
