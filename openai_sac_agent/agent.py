@@ -23,17 +23,19 @@ class Agent:
         env_specs,
         gamma: float = 0.99,
         polyak: float = 0.995,
-        q_lr: float = 5e-3,
+        q_lr: float = 5e-4,
         q_architecture: tuple = (64, 64),
         q_activation_function: F = nn.Tanh,
-        policy_lr: float = 5e-3,
+        policy_lr: float = 5e-4,
+        # TODO: CHANGE THESE BACK SOMEONE TELL
+        # ME TO DO THIS ON THE PR THANKS
         policy_architecture: tuple = (64, 64),
         policy_activation_function: F = nn.Tanh,
         buffer_size: int = 1_000_000,
         alpha: float = 0.2,
         exploration_timesteps: int = 0,
         update_frequency_in_episodes: int = 50,
-        update_start_in_episodes: int = 1_000,
+        update_start_in_episodes: int = 15,
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
     ):
@@ -205,6 +207,8 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
+            if self.current_episode % 15 == 0:
+                print(self.current_episode, self.current_timestep)
         if self.is_ready_to_train():
             self.train()
             self.episode_of_last_update = self.current_episode
