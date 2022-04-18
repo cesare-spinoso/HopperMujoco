@@ -1,10 +1,10 @@
-Agent: DDPG Agent
+Agent: SAC Agent
 
-Model: m_0
+Model: m_5
 
 Hyperparameters: {
-    'actor_architecture': (64, 64), 
-    'actor_activation_function': <class 'torch.nn.modules.activation.ReLU'>, 
-    'critic_architecture': (64, 64), 
-    'critic_activation_function': <class 'torch.nn.modules.activation.ReLU'>
+    'actor_architecture': (400, 300), 
+    'actor_activation_function': <class 'torch.nn.modules.activation.Tanh'>, 
+    'critic_architecture': (400, 300), 
+    'critic_activation_function': <class 'torch.nn.modules.activation.Tanh'>
     }
