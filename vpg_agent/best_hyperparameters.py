@@ -1,4 +1,5 @@
-"""Hyperparameters for VPG found from this paper: https://arxiv.org/pdf/1709.06560.pdf
+"""
+Best hyperparameters from VPG hyperparameter tuning experiment.
 """
 import torch
 import sklearn.model_selection
