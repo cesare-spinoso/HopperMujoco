@@ -1,5 +1,5 @@
 """
-Best hyperparameters from VPG hyperparameter tuning experiment.
+Best hyperparameters from VPG hyperparameter tuning experiment. (m_0)
 """
 import torch
 import sklearn.model_selection

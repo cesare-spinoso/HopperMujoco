@@ -235,17 +235,17 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
 
 
 if __name__ == '__main__':
-    loaded_json = get_json_data("vpg_agent/results/log.json")
+    loaded_json = get_json_data("ddpg_agent/results/log.json")
 
     reward_lists, names = [], []
     for m in loaded_json:
         names.append(m['model_name'])
         reward_lists.append(m['list_of_rewards'])
 
-    save_location = "vpg_agent/results/"
+    save_location = "ddpg_agent/results/"
 
     plot_rewards(reward_lists, save_location, names)
 
-    json_list = ["ppo_agent/results/log.json", "ddpg_agent/results/log.json"]
-    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'ddpg'], time_step=1000) # i.e. eval freq
+    json_list = ["ppo_agent/results/best_model/log_best_model.json", "vpg_agent/results/best_model/log_best_model.json"]
+    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg'], time_step=1000) # i.e. eval freq
     # if only one name, still input it in a list (eg. ['ppo'])
