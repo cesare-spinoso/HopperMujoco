@@ -103,7 +103,6 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
-# TODO: add implementation for this method to take multiple json files so all models can be graphed together
 def plot_best_model_rewards(json_location, save_location, model_names, time_step=None):
     """
     Graphs the average and cumulative reward plots for 5 runs of the best model.
@@ -246,6 +245,7 @@ if __name__ == '__main__':
 
     plot_rewards(reward_lists, save_location, names)
 
-    json_list = ["ppo_agent/results/best_model/log_best_model.json", "vpg_agent/results/best_model/log_best_model.json"]
-    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg'], time_step=1000) # i.e. eval freq
+    json_list = ["ppo_agent/results/best_model/log_best_model.json", "vpg_agent/results/best_model/log_best_model.json",
+        "ddpg_agent/results/best_model/log_best_model.json"]
+    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg', 'ddpg'], time_step=1000) # i.e. eval freq
     # if only one name, still input it in a list (eg. ['ppo'])
