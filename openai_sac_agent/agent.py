@@ -1,4 +1,3 @@
-from ast import Return
 import os
 import torch
 from torch import nn
@@ -23,19 +22,18 @@ class Agent:
         env_specs,
         gamma: float = 0.99,
         polyak: float = 0.995,
-        q_lr: float = 5e-4,
+        q_lr: float = 1e-3,
         q_architecture: tuple = (64, 64),
         q_activation_function: F = nn.Tanh,
-        policy_lr: float = 5e-4,
-        # TODO: CHANGE THESE BACK SOMEONE TELL
-        # ME TO DO THIS ON THE PR THANKS
+        policy_lr: float = 1e-3,
         policy_architecture: tuple = (64, 64),
         policy_activation_function: F = nn.Tanh,
         buffer_size: int = 1_000_000,
         alpha: float = 0.2,
-        exploration_timesteps: int = 0,
+        update_alpha: bool = True,
+        exploration_timesteps: int = 10_000,
         update_frequency_in_episodes: int = 50,
-        update_start_in_episodes: int = 15,
+        update_start_in_episodes: int = 1_000,
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
     ):
@@ -66,7 +64,6 @@ class Agent:
         ### HYPERPARAMETERS ###
         self.gamma = gamma
         self.polyak = polyak
-        self.alpha = alpha  # entropy parameter
         # Number of time steps where sample actions randomly
         self.exploration_timesteps = exploration_timesteps
         # Frequency, start and size of updates
@@ -105,6 +102,18 @@ class Agent:
         self.policy_optimizer = torch.optim.Adam(
             self.policy_network.parameters(), lr=policy_lr
         )
+        ### ADPTABLE ALPHA ###
+        self.alpha = alpha  # entropy parameter
+        self.update_alpha = update_alpha
+        if self.update_alpha:
+            # Use a heuristic for the entropy target
+            self.entropy_target = -np.prod(self.env_specs["action_space"].shape)
+            # Set the initial alpha to 1
+            self.log_alpha = torch.tensor(0.0, requires_grad=True)
+            self.alpha = torch.exp(self.log_alpha)
+            # Optimizer
+            self.alpha_lr = 1e-3
+            self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=self.alpha_lr)
         ### BUFFER ###
         self.buffer = SACBuffer(
             number_obs=self.num_obs,
@@ -207,8 +216,6 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
-            if self.current_episode % 15 == 0:
-                print(self.current_episode, self.current_timestep)
         if self.is_ready_to_train():
             self.train()
             self.episode_of_last_update = self.current_episode
@@ -238,6 +245,8 @@ class Agent:
             self.train_q_networks(obs_data, action_data, y)
             # Train the policy network (Line 14 of the OpenAI pseudocode)
             self.train_policy_network(obs_data)
+            # "Train" the alpha
+            self.train_alpha(obs_data)
             # Update the target networks (Line 15 of the OpenAI pseudocode)
             self.update_target_networks()
 
@@ -264,7 +273,7 @@ class Agent:
             (self.q2_network, self.q2_optimizer),
         ]:
             # Train the Q-network
-            q_network.zero_grad()
+            q_optimizer.zero_grad()
             # Compute q-values
             q_values = q_network(obs_data, action_data).squeeze(-1)
             # Compute loss
@@ -278,8 +287,9 @@ class Agent:
         # Freeze the Q-networks
         self._freeze_network(self.q1_network)
         self._freeze_network(self.q2_network)
+        self._freeze_alpha()
         # Train the policy network
-        self.policy_network.zero_grad()
+        self.policy_optimizer.zero_grad()
         # Compute the policy target
         actions, log_proba = self.policy_network(obs_data)
         q1_values = self.q1_network(obs_data, actions).squeeze(-1)
@@ -294,6 +304,23 @@ class Agent:
         # Unfreeze the Q-network
         self._unfreeze_network(self.q1_network)
         self._unfreeze_network(self.q2_network)
+        self._unfreeze_alpha()
+    
+    def train_alpha(self, obs_data):
+        if self.update_alpha:
+            # # Zero grad
+            self.alpha_optimizer.zero_grad()
+            # Get the alpha targets
+            with torch.no_grad():
+                _, log_proba = self.policy_network(obs_data)
+            targets = -torch.exp(self.log_alpha) * (log_proba + self.entropy_target)
+            alpha_loss = targets.mean()
+            # Backpropagate
+            alpha_loss.backward()
+            # Take a step
+            self.alpha_optimizer.step()
+            # Update the alpha, is this line necessary?
+            self.alpha = torch.exp(self.log_alpha)
 
     def _freeze_network(self, network):
         """Freeze the gradients of the network so that loss cannot backprop
@@ -321,6 +348,14 @@ class Agent:
             # Use OpenAI's in-place trick
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
+    
+    def _freeze_alpha(self):
+        if self.update_alpha:
+            self.log_alpha.requires_grad = False
+
+    def _unfreeze_alpha(self):
+        if self.update_alpha:
+            self.log_alpha.requires_grad = True
 
 
 class QNetwork(nn.Module):
