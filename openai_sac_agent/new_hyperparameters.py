@@ -6,9 +6,9 @@ import sklearn.model_selection
 grid = {
     "architecture": [(128, 32), (128, 64), (64, 64)],
     "activation": [torch.nn.ReLU],
-    "update_start_in_episodes": 100,
-    "update_frequency": 25,
-    "update_alpha": True
+    "update_start_in_episodes": [100],
+    "update_frequency": [25],
+    "update_alpha": [True]
 }
 
 grid = sklearn.model_selection.ParameterGrid(grid)
