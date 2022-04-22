@@ -1,0 +1,2324 @@
+09:01:35,490 root INFO Training start for the following model run 0 ... 
+09:01:35,492 root INFO {'env_specs': {'observation_space': Box(-inf, inf, (11,), float64), 'action_space': Box(-1.0, 1.0, (3,), float32)}, 'num_obs': 11, 'num_actions': 3, 'action_limit': 1.0, 'current_timestep': 0, 'current_episode': 0, 'episode_of_last_update': None, 'device': device(type='cuda'), 'gamma': 0.99, 'polyak': 0.995, 'action_noise_scale': 0.1, 'action_noise_rescaling': 1, 'action_noise_rescaling_frequency': 500000, 'target_noise_scale': 0.2, 'target_noise_clip': 0.5, 'policy_delay': 2, 'exploration_timesteps': 10000, 'update_frequency_in_episodes': 50, 'update_start_in_episodes': 1000, 'number_of_batch_updates': 1000, 'batch_size': 100, 'q1_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=100, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=100, out_features=50, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=50, out_features=25, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=25, out_features=1, bias=True)
+  )
+), 'q1_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q2_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=100, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=100, out_features=50, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=50, out_features=25, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=25, out_features=1, bias=True)
+  )
+), 'q2_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q1_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=100, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=100, out_features=50, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=50, out_features=25, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=25, out_features=1, bias=True)
+  )
+), 'q2_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=100, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=100, out_features=50, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=50, out_features=25, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=25, out_features=1, bias=True)
+  )
+), 'policy_network': PolicyNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=11, out_features=100, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=100, out_features=50, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=50, out_features=25, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=25, out_features=3, bias=True)
+    (7): Tanh()
+  )
+), 'policy_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'policy_network_target': PolicyNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=11, out_features=100, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=100, out_features=50, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=50, out_features=25, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=25, out_features=3, bias=True)
+    (7): Tanh()
+  )
+), 'buffer': <td3_agent.agent.TD3Buffer object at 0x7fdb86973940>}
+09:01:36,110 root INFO timestep: 1000, acc_reward: 10.37
+09:01:36,127 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_10.366.pth.tar
+09:01:36,699 root INFO timestep: 2000, acc_reward: 10.39
+09:01:36,707 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_10.393.pth.tar
+09:01:37,251 root INFO timestep: 3000, acc_reward: 10.31
+09:01:37,804 root INFO timestep: 4000, acc_reward: 10.34
+09:01:38,373 root INFO timestep: 5000, acc_reward: 10.35
+09:01:38,926 root INFO timestep: 6000, acc_reward: 10.36
+09:01:39,475 root INFO timestep: 7000, acc_reward: 10.37
+09:01:40,30 root INFO timestep: 8000, acc_reward: 10.32
+09:01:40,586 root INFO timestep: 9000, acc_reward: 10.34
+09:01:41,148 root INFO timestep: 10000, acc_reward: 10.32
+09:01:41,890 root INFO timestep: 11000, acc_reward: 10.33
+09:01:42,631 root INFO timestep: 12000, acc_reward: 10.33
+09:01:43,381 root INFO timestep: 13000, acc_reward: 10.32
+09:01:44,138 root INFO timestep: 14000, acc_reward: 10.34
+09:01:44,893 root INFO timestep: 15000, acc_reward: 10.32
+09:01:45,649 root INFO timestep: 16000, acc_reward: 10.35
+09:01:46,398 root INFO timestep: 17000, acc_reward: 10.41
+09:01:46,406 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_10.414.pth.tar
+09:01:47,151 root INFO timestep: 18000, acc_reward: 10.33
+09:01:47,890 root INFO timestep: 19000, acc_reward: 10.40
+09:01:48,641 root INFO timestep: 20000, acc_reward: 10.31
+09:01:49,390 root INFO timestep: 21000, acc_reward: 10.32
+09:01:50,137 root INFO timestep: 22000, acc_reward: 10.41
+09:01:50,880 root INFO timestep: 23000, acc_reward: 10.36
+09:01:59,395 root INFO timestep: 24000, acc_reward: 38.93
+09:01:59,403 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_38.931.pth.tar
+09:02:07,799 root INFO timestep: 25000, acc_reward: 38.85
+09:02:17,2 root INFO timestep: 26000, acc_reward: 187.79
+09:02:17,10 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_187.786.pth.tar
+09:02:18,491 root INFO timestep: 27000, acc_reward: 186.00
+09:02:19,969 root INFO timestep: 28000, acc_reward: 185.53
+09:02:21,443 root INFO timestep: 29000, acc_reward: 185.28
+09:02:22,921 root INFO timestep: 30000, acc_reward: 186.53
+09:02:24,365 root INFO timestep: 31000, acc_reward: 185.93
+09:02:32,639 root INFO timestep: 32000, acc_reward: 172.71
+09:02:33,910 root INFO timestep: 33000, acc_reward: 172.85
+09:02:35,174 root INFO timestep: 34000, acc_reward: 172.64
+09:02:36,453 root INFO timestep: 35000, acc_reward: 172.74
+09:02:45,770 root INFO timestep: 36000, acc_reward: 179.54
+09:02:47,61 root INFO timestep: 37000, acc_reward: 180.06
+09:02:48,323 root INFO timestep: 38000, acc_reward: 180.27
+09:02:49,601 root INFO timestep: 39000, acc_reward: 180.89
+09:02:59,162 root INFO timestep: 40000, acc_reward: 176.79
+09:03:00,466 root INFO timestep: 41000, acc_reward: 176.45
+09:03:01,765 root INFO timestep: 42000, acc_reward: 176.65
+09:03:03,80 root INFO timestep: 43000, acc_reward: 176.56
+09:03:04,488 root INFO timestep: 44000, acc_reward: 176.58
+09:03:13,286 root INFO timestep: 45000, acc_reward: 176.01
+09:03:14,611 root INFO timestep: 46000, acc_reward: 175.69
+09:03:15,921 root INFO timestep: 47000, acc_reward: 175.35
+09:03:17,211 root INFO timestep: 48000, acc_reward: 175.94
+09:03:26,755 root INFO timestep: 49000, acc_reward: 173.39
+09:03:28,31 root INFO timestep: 50000, acc_reward: 173.39
+09:03:29,300 root INFO timestep: 51000, acc_reward: 173.68
+09:03:30,612 root INFO timestep: 52000, acc_reward: 173.83
+09:03:39,301 root INFO timestep: 53000, acc_reward: 196.77
+09:03:39,308 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_196.766.pth.tar
+09:03:40,603 root INFO timestep: 54000, acc_reward: 196.80
+09:03:40,610 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_196.8.pth.tar
+09:03:41,910 root INFO timestep: 55000, acc_reward: 196.97
+09:03:41,917 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_196.97.pth.tar
+09:03:43,233 root INFO timestep: 56000, acc_reward: 197.01
+09:03:43,241 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_197.007.pth.tar
+09:03:44,585 root INFO timestep: 57000, acc_reward: 197.17
+09:03:44,593 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_197.173.pth.tar
+09:03:53,830 root INFO timestep: 58000, acc_reward: 186.77
+09:03:55,97 root INFO timestep: 59000, acc_reward: 186.44
+09:03:56,375 root INFO timestep: 60000, acc_reward: 186.29
+09:03:57,645 root INFO timestep: 61000, acc_reward: 186.48
+09:04:06,594 root INFO timestep: 62000, acc_reward: 189.17
+09:04:07,901 root INFO timestep: 63000, acc_reward: 187.74
+09:04:09,198 root INFO timestep: 64000, acc_reward: 188.26
+09:04:10,501 root INFO timestep: 65000, acc_reward: 188.42
+09:04:11,800 root INFO timestep: 66000, acc_reward: 188.83
+09:04:21,511 root INFO timestep: 67000, acc_reward: 187.43
+09:04:22,814 root INFO timestep: 68000, acc_reward: 187.77
+09:04:24,95 root INFO timestep: 69000, acc_reward: 187.22
+09:04:25,387 root INFO timestep: 70000, acc_reward: 186.36
+09:04:35,235 root INFO timestep: 71000, acc_reward: 217.92
+09:04:35,243 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_217.922.pth.tar
+09:04:36,637 root INFO timestep: 72000, acc_reward: 218.19
+09:04:36,646 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_218.188.pth.tar
+09:04:38,42 root INFO timestep: 73000, acc_reward: 218.14
+09:04:39,419 root INFO timestep: 74000, acc_reward: 218.63
+09:04:39,426 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_218.63.pth.tar
+09:04:40,787 root INFO timestep: 75000, acc_reward: 218.25
+09:04:49,297 root INFO timestep: 76000, acc_reward: 233.74
+09:04:49,304 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_233.743.pth.tar
+09:04:50,772 root INFO timestep: 77000, acc_reward: 234.07
+09:04:50,780 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_234.075.pth.tar
+09:04:52,252 root INFO timestep: 78000, acc_reward: 234.83
+09:04:52,260 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_234.829.pth.tar
+09:04:53,712 root INFO timestep: 79000, acc_reward: 231.57
+09:04:55,190 root INFO timestep: 80000, acc_reward: 235.12
+09:04:55,197 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_235.119.pth.tar
+09:05:03,191 root INFO timestep: 81000, acc_reward: 175.25
+09:05:04,454 root INFO timestep: 82000, acc_reward: 178.20
+09:05:05,711 root INFO timestep: 83000, acc_reward: 178.31
+09:05:06,969 root INFO timestep: 84000, acc_reward: 179.07
+09:05:17,110 root INFO timestep: 85000, acc_reward: 201.49
+09:05:18,672 root INFO timestep: 86000, acc_reward: 200.98
+09:05:20,245 root INFO timestep: 87000, acc_reward: 199.95
+09:05:21,828 root INFO timestep: 88000, acc_reward: 200.38
+09:05:23,418 root INFO timestep: 89000, acc_reward: 202.77
+09:05:24,986 root INFO timestep: 90000, acc_reward: 199.27
+09:05:40,47 root INFO timestep: 91000, acc_reward: 1088.86
+09:05:40,55 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1088.857.pth.tar
+09:05:46,178 root INFO timestep: 92000, acc_reward: 984.57
+09:05:52,103 root INFO timestep: 93000, acc_reward: 969.74
+09:05:58,676 root INFO timestep: 94000, acc_reward: 1067.75
+09:06:05,825 root INFO timestep: 95000, acc_reward: 1181.29
+09:06:05,833 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1181.288.pth.tar
+09:06:11,268 root INFO timestep: 96000, acc_reward: 862.31
+09:06:17,832 root INFO timestep: 97000, acc_reward: 1078.68
+09:06:24,449 root INFO timestep: 98000, acc_reward: 1090.74
+09:06:31,99 root INFO timestep: 99000, acc_reward: 1087.33
+09:06:37,92 root INFO timestep: 100000, acc_reward: 958.75
+09:06:43,104 root INFO timestep: 101000, acc_reward: 968.14
+09:06:48,326 root INFO timestep: 102000, acc_reward: 834.03
+09:06:55,802 root INFO timestep: 103000, acc_reward: 1239.45
+09:06:55,810 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1239.449.pth.tar
+09:07:02,537 root INFO timestep: 104000, acc_reward: 1099.79
+09:07:09,355 root INFO timestep: 105000, acc_reward: 1105.42
+09:07:15,639 root INFO timestep: 106000, acc_reward: 1005.58
+09:07:21,889 root INFO timestep: 107000, acc_reward: 1004.19
+09:07:27,801 root INFO timestep: 108000, acc_reward: 971.76
+09:07:33,380 root INFO timestep: 109000, acc_reward: 890.19
+09:07:38,700 root INFO timestep: 110000, acc_reward: 826.87
+09:07:44,18 root INFO timestep: 111000, acc_reward: 842.06
+09:07:49,611 root INFO timestep: 112000, acc_reward: 888.47
+09:07:55,729 root INFO timestep: 113000, acc_reward: 986.49
+09:08:01,939 root INFO timestep: 114000, acc_reward: 990.63
+09:08:08,383 root INFO timestep: 115000, acc_reward: 1045.40
+09:08:14,264 root INFO timestep: 116000, acc_reward: 943.49
+09:08:20,563 root INFO timestep: 117000, acc_reward: 1014.91
+09:08:26,717 root INFO timestep: 118000, acc_reward: 975.34
+09:08:31,990 root INFO timestep: 119000, acc_reward: 834.43
+09:08:38,641 root INFO timestep: 120000, acc_reward: 1105.87
+09:08:49,318 root INFO timestep: 121000, acc_reward: 343.07
+09:08:51,363 root INFO timestep: 122000, acc_reward: 342.66
+09:08:53,430 root INFO timestep: 123000, acc_reward: 344.67
+09:08:55,521 root INFO timestep: 124000, acc_reward: 339.07
+09:08:57,625 root INFO timestep: 125000, acc_reward: 342.15
+09:08:59,727 root INFO timestep: 126000, acc_reward: 343.07
+09:09:01,810 root INFO timestep: 127000, acc_reward: 341.61
+09:09:03,915 root INFO timestep: 128000, acc_reward: 344.02
+09:09:06,10 root INFO timestep: 129000, acc_reward: 343.53
+09:09:16,494 root INFO timestep: 130000, acc_reward: 258.30
+09:09:18,45 root INFO timestep: 131000, acc_reward: 256.76
+09:09:19,573 root INFO timestep: 132000, acc_reward: 255.03
+09:09:21,140 root INFO timestep: 133000, acc_reward: 256.36
+09:09:22,718 root INFO timestep: 134000, acc_reward: 257.06
+09:09:24,291 root INFO timestep: 135000, acc_reward: 254.35
+09:09:34,216 root INFO timestep: 136000, acc_reward: 246.59
+09:09:35,718 root INFO timestep: 137000, acc_reward: 249.10
+09:09:37,229 root INFO timestep: 138000, acc_reward: 251.34
+09:09:38,732 root INFO timestep: 139000, acc_reward: 248.54
+09:09:40,261 root INFO timestep: 140000, acc_reward: 245.69
+09:09:41,774 root INFO timestep: 141000, acc_reward: 246.67
+09:09:50,505 root INFO timestep: 142000, acc_reward: 172.47
+09:09:51,778 root INFO timestep: 143000, acc_reward: 164.92
+09:09:53,35 root INFO timestep: 144000, acc_reward: 162.22
+09:09:54,314 root INFO timestep: 145000, acc_reward: 165.05
+09:09:55,628 root INFO timestep: 146000, acc_reward: 175.91
+09:10:05,764 root INFO timestep: 147000, acc_reward: 251.59
+09:10:07,331 root INFO timestep: 148000, acc_reward: 259.95
+09:10:08,847 root INFO timestep: 149000, acc_reward: 248.11
+09:10:10,400 root INFO timestep: 150000, acc_reward: 261.33
+09:10:11,910 root INFO timestep: 151000, acc_reward: 247.20
+09:10:13,468 root INFO timestep: 152000, acc_reward: 263.54
+09:10:22,827 root INFO timestep: 153000, acc_reward: 180.91
+09:10:24,137 root INFO timestep: 154000, acc_reward: 180.75
+09:10:25,449 root INFO timestep: 155000, acc_reward: 183.71
+09:10:26,746 root INFO timestep: 156000, acc_reward: 177.24
+09:10:28,55 root INFO timestep: 157000, acc_reward: 180.58
+09:10:37,656 root INFO timestep: 158000, acc_reward: 162.23
+09:10:38,913 root INFO timestep: 159000, acc_reward: 175.94
+09:10:40,121 root INFO timestep: 160000, acc_reward: 169.25
+09:10:41,340 root INFO timestep: 161000, acc_reward: 172.10
+09:10:50,689 root INFO timestep: 162000, acc_reward: 211.52
+09:10:52,143 root INFO timestep: 163000, acc_reward: 214.98
+09:10:53,574 root INFO timestep: 164000, acc_reward: 214.77
+09:10:54,982 root INFO timestep: 165000, acc_reward: 206.42
+09:10:56,430 root INFO timestep: 166000, acc_reward: 208.28
+09:11:06,190 root INFO timestep: 167000, acc_reward: 217.85
+09:11:07,697 root INFO timestep: 168000, acc_reward: 216.86
+09:11:09,200 root INFO timestep: 169000, acc_reward: 216.57
+09:11:10,710 root INFO timestep: 170000, acc_reward: 218.31
+09:11:12,183 root INFO timestep: 171000, acc_reward: 216.55
+09:11:22,516 root INFO timestep: 172000, acc_reward: 194.83
+09:11:23,896 root INFO timestep: 173000, acc_reward: 193.23
+09:11:25,286 root INFO timestep: 174000, acc_reward: 192.59
+09:11:26,625 root INFO timestep: 175000, acc_reward: 192.73
+09:11:28,5 root INFO timestep: 176000, acc_reward: 195.51
+09:11:38,378 root INFO timestep: 177000, acc_reward: 171.17
+09:11:39,676 root INFO timestep: 178000, acc_reward: 168.49
+09:11:40,954 root INFO timestep: 179000, acc_reward: 169.72
+09:11:42,232 root INFO timestep: 180000, acc_reward: 170.80
+09:11:43,512 root INFO timestep: 181000, acc_reward: 172.47
+09:11:54,349 root INFO timestep: 182000, acc_reward: 231.13
+09:11:55,839 root INFO timestep: 183000, acc_reward: 229.19
+09:11:57,325 root INFO timestep: 184000, acc_reward: 229.49
+09:11:58,814 root INFO timestep: 185000, acc_reward: 230.21
+09:12:00,307 root INFO timestep: 186000, acc_reward: 229.91
+09:12:11,270 root INFO timestep: 187000, acc_reward: 258.54
+09:12:12,820 root INFO timestep: 188000, acc_reward: 259.10
+09:12:14,374 root INFO timestep: 189000, acc_reward: 257.81
+09:12:15,958 root INFO timestep: 190000, acc_reward: 258.04
+09:12:17,518 root INFO timestep: 191000, acc_reward: 258.02
+09:12:19,115 root INFO timestep: 192000, acc_reward: 258.51
+09:12:29,744 root INFO timestep: 193000, acc_reward: 259.14
+09:12:31,307 root INFO timestep: 194000, acc_reward: 258.25
+09:12:32,822 root INFO timestep: 195000, acc_reward: 258.81
+09:12:34,379 root INFO timestep: 196000, acc_reward: 258.30
+09:12:35,955 root INFO timestep: 197000, acc_reward: 260.46
+09:12:37,482 root INFO timestep: 198000, acc_reward: 255.73
+09:12:47,683 root INFO timestep: 199000, acc_reward: 267.45
+09:12:49,302 root INFO timestep: 200000, acc_reward: 264.98
+09:12:50,913 root INFO timestep: 201000, acc_reward: 265.06
+09:12:52,557 root INFO timestep: 202000, acc_reward: 267.41
+09:12:54,164 root INFO timestep: 203000, acc_reward: 266.50
+09:12:55,785 root INFO timestep: 204000, acc_reward: 265.45
+09:13:05,714 root INFO timestep: 205000, acc_reward: 250.73
+09:13:07,259 root INFO timestep: 206000, acc_reward: 250.56
+09:13:08,806 root INFO timestep: 207000, acc_reward: 250.74
+09:13:10,328 root INFO timestep: 208000, acc_reward: 251.93
+09:13:11,841 root INFO timestep: 209000, acc_reward: 251.23
+09:13:13,377 root INFO timestep: 210000, acc_reward: 252.44
+09:13:22,846 root INFO timestep: 211000, acc_reward: 231.28
+09:13:24,325 root INFO timestep: 212000, acc_reward: 228.22
+09:13:25,795 root INFO timestep: 213000, acc_reward: 229.48
+09:13:27,289 root INFO timestep: 214000, acc_reward: 230.36
+09:13:28,773 root INFO timestep: 215000, acc_reward: 230.80
+09:13:30,230 root INFO timestep: 216000, acc_reward: 230.64
+09:13:40,535 root INFO timestep: 217000, acc_reward: 232.71
+09:13:42,9 root INFO timestep: 218000, acc_reward: 230.97
+09:13:43,475 root INFO timestep: 219000, acc_reward: 230.54
+09:13:44,941 root INFO timestep: 220000, acc_reward: 231.41
+09:13:46,413 root INFO timestep: 221000, acc_reward: 230.47
+09:13:58,155 root INFO timestep: 222000, acc_reward: 254.96
+09:13:59,649 root INFO timestep: 223000, acc_reward: 256.90
+09:14:01,152 root INFO timestep: 224000, acc_reward: 257.16
+09:14:02,653 root INFO timestep: 225000, acc_reward: 256.51
+09:14:04,153 root INFO timestep: 226000, acc_reward: 256.31
+09:14:05,665 root INFO timestep: 227000, acc_reward: 257.28
+09:14:16,361 root INFO timestep: 228000, acc_reward: 247.46
+09:14:17,840 root INFO timestep: 229000, acc_reward: 245.60
+09:14:19,346 root INFO timestep: 230000, acc_reward: 244.61
+09:14:20,865 root INFO timestep: 231000, acc_reward: 244.46
+09:14:22,363 root INFO timestep: 232000, acc_reward: 242.08
+09:14:33,459 root INFO timestep: 233000, acc_reward: 250.00
+09:14:35,21 root INFO timestep: 234000, acc_reward: 250.70
+09:14:36,581 root INFO timestep: 235000, acc_reward: 249.49
+09:14:38,149 root INFO timestep: 236000, acc_reward: 250.85
+09:14:39,757 root INFO timestep: 237000, acc_reward: 249.96
+09:14:41,320 root INFO timestep: 238000, acc_reward: 249.02
+09:14:52,497 root INFO timestep: 239000, acc_reward: 214.81
+09:14:53,928 root INFO timestep: 240000, acc_reward: 210.06
+09:14:55,360 root INFO timestep: 241000, acc_reward: 210.53
+09:14:56,767 root INFO timestep: 242000, acc_reward: 203.58
+09:14:58,177 root INFO timestep: 243000, acc_reward: 200.73
+09:15:09,842 root INFO timestep: 244000, acc_reward: 238.81
+09:15:11,325 root INFO timestep: 245000, acc_reward: 237.77
+09:15:12,820 root INFO timestep: 246000, acc_reward: 236.08
+09:15:14,336 root INFO timestep: 247000, acc_reward: 233.33
+09:15:15,869 root INFO timestep: 248000, acc_reward: 238.55
+09:15:17,400 root INFO timestep: 249000, acc_reward: 236.73
+09:15:28,705 root INFO timestep: 250000, acc_reward: 243.49
+09:15:30,166 root INFO timestep: 251000, acc_reward: 243.18
+09:15:31,620 root INFO timestep: 252000, acc_reward: 241.49
+09:15:33,70 root INFO timestep: 253000, acc_reward: 243.00
+09:15:34,563 root INFO timestep: 254000, acc_reward: 242.88
+09:15:36,54 root INFO timestep: 255000, acc_reward: 241.33
+09:15:47,409 root INFO timestep: 256000, acc_reward: 272.67
+09:15:48,937 root INFO timestep: 257000, acc_reward: 272.16
+09:15:50,465 root INFO timestep: 258000, acc_reward: 273.07
+09:15:51,987 root INFO timestep: 259000, acc_reward: 272.28
+09:15:53,515 root INFO timestep: 260000, acc_reward: 275.01
+09:15:55,42 root INFO timestep: 261000, acc_reward: 271.63
+09:16:05,494 root INFO timestep: 262000, acc_reward: 251.22
+09:16:07,136 root INFO timestep: 263000, acc_reward: 253.91
+09:16:08,711 root INFO timestep: 264000, acc_reward: 253.80
+09:16:10,267 root INFO timestep: 265000, acc_reward: 252.89
+09:16:11,812 root INFO timestep: 266000, acc_reward: 252.05
+09:16:23,940 root INFO timestep: 267000, acc_reward: 275.63
+09:16:25,470 root INFO timestep: 268000, acc_reward: 275.10
+09:16:27,12 root INFO timestep: 269000, acc_reward: 272.50
+09:16:28,548 root INFO timestep: 270000, acc_reward: 272.36
+09:16:30,72 root INFO timestep: 271000, acc_reward: 271.64
+09:16:31,585 root INFO timestep: 272000, acc_reward: 275.65
+09:16:44,91 root INFO timestep: 273000, acc_reward: 295.24
+09:16:45,698 root INFO timestep: 274000, acc_reward: 293.35
+09:16:47,341 root INFO timestep: 275000, acc_reward: 295.08
+09:16:48,995 root INFO timestep: 276000, acc_reward: 292.00
+09:16:50,618 root INFO timestep: 277000, acc_reward: 295.09
+09:16:52,293 root INFO timestep: 278000, acc_reward: 295.80
+09:16:53,947 root INFO timestep: 279000, acc_reward: 293.37
+09:17:05,959 root INFO timestep: 280000, acc_reward: 267.04
+09:17:07,517 root INFO timestep: 281000, acc_reward: 265.40
+09:17:09,82 root INFO timestep: 282000, acc_reward: 268.10
+09:17:10,621 root INFO timestep: 283000, acc_reward: 265.87
+09:17:12,176 root INFO timestep: 284000, acc_reward: 267.63
+09:17:13,725 root INFO timestep: 285000, acc_reward: 267.52
+09:17:25,404 root INFO timestep: 286000, acc_reward: 291.77
+09:17:27,10 root INFO timestep: 287000, acc_reward: 278.42
+09:17:28,634 root INFO timestep: 288000, acc_reward: 287.60
+09:17:30,266 root INFO timestep: 289000, acc_reward: 292.60
+09:17:31,890 root INFO timestep: 290000, acc_reward: 282.31
+09:17:33,484 root INFO timestep: 291000, acc_reward: 279.89
+09:17:45,190 root INFO timestep: 292000, acc_reward: 266.41
+09:17:46,635 root INFO timestep: 293000, acc_reward: 237.88
+09:17:48,124 root INFO timestep: 294000, acc_reward: 246.86
+09:17:49,617 root INFO timestep: 295000, acc_reward: 261.97
+09:17:51,129 root INFO timestep: 296000, acc_reward: 257.17
+09:18:03,94 root INFO timestep: 297000, acc_reward: 251.60
+09:18:04,610 root INFO timestep: 298000, acc_reward: 252.06
+09:18:06,166 root INFO timestep: 299000, acc_reward: 251.85
+09:18:07,721 root INFO timestep: 300000, acc_reward: 253.12
+09:18:09,264 root INFO timestep: 301000, acc_reward: 248.98
+09:18:10,817 root INFO timestep: 302000, acc_reward: 252.41
+09:18:12,398 root INFO timestep: 303000, acc_reward: 255.18
+09:18:24,710 root INFO timestep: 304000, acc_reward: 275.05
+09:18:26,295 root INFO timestep: 305000, acc_reward: 274.56
+09:18:27,886 root INFO timestep: 306000, acc_reward: 275.96
+09:18:29,528 root INFO timestep: 307000, acc_reward: 282.77
+09:18:31,136 root INFO timestep: 308000, acc_reward: 280.17
+09:18:32,791 root INFO timestep: 309000, acc_reward: 283.41
+09:18:44,843 root INFO timestep: 310000, acc_reward: 289.26
+09:18:46,504 root INFO timestep: 311000, acc_reward: 293.04
+09:18:48,154 root INFO timestep: 312000, acc_reward: 292.43
+09:18:49,819 root INFO timestep: 313000, acc_reward: 295.60
+09:18:51,467 root INFO timestep: 314000, acc_reward: 289.06
+09:18:53,120 root INFO timestep: 315000, acc_reward: 290.41
+09:18:54,753 root INFO timestep: 316000, acc_reward: 292.01
+09:19:07,630 root INFO timestep: 317000, acc_reward: 205.57
+09:19:09,28 root INFO timestep: 318000, acc_reward: 207.10
+09:19:10,402 root INFO timestep: 319000, acc_reward: 205.50
+09:19:11,777 root INFO timestep: 320000, acc_reward: 205.43
+09:19:13,172 root INFO timestep: 321000, acc_reward: 207.27
+09:19:26,205 root INFO timestep: 322000, acc_reward: 290.59
+09:19:27,862 root INFO timestep: 323000, acc_reward: 296.61
+09:19:29,481 root INFO timestep: 324000, acc_reward: 283.72
+09:19:31,82 root INFO timestep: 325000, acc_reward: 284.46
+09:19:32,692 root INFO timestep: 326000, acc_reward: 284.10
+09:19:34,351 root INFO timestep: 327000, acc_reward: 302.48
+09:19:47,235 root INFO timestep: 328000, acc_reward: 229.92
+09:19:48,763 root INFO timestep: 329000, acc_reward: 230.34
+09:19:50,276 root INFO timestep: 330000, acc_reward: 226.43
+09:19:51,788 root INFO timestep: 331000, acc_reward: 234.11
+09:19:53,297 root INFO timestep: 332000, acc_reward: 222.96
+09:19:54,842 root INFO timestep: 333000, acc_reward: 240.00
+09:20:07,654 root INFO timestep: 334000, acc_reward: 212.65
+09:20:09,76 root INFO timestep: 335000, acc_reward: 210.22
+09:20:10,553 root INFO timestep: 336000, acc_reward: 213.22
+09:20:12,9 root INFO timestep: 337000, acc_reward: 210.34
+09:20:13,467 root INFO timestep: 338000, acc_reward: 209.89
+09:20:14,934 root INFO timestep: 339000, acc_reward: 211.53
+09:20:27,770 root INFO timestep: 340000, acc_reward: 263.49
+09:20:29,308 root INFO timestep: 341000, acc_reward: 263.89
+09:20:30,847 root INFO timestep: 342000, acc_reward: 263.62
+09:20:32,363 root INFO timestep: 343000, acc_reward: 263.46
+09:20:33,884 root INFO timestep: 344000, acc_reward: 263.62
+09:20:47,704 root INFO timestep: 345000, acc_reward: 261.64
+09:20:49,421 root INFO timestep: 346000, acc_reward: 264.91
+09:20:51,114 root INFO timestep: 347000, acc_reward: 265.41
+09:20:52,805 root INFO timestep: 348000, acc_reward: 263.75
+09:20:54,509 root INFO timestep: 349000, acc_reward: 265.01
+09:20:56,171 root INFO timestep: 350000, acc_reward: 259.12
+09:21:09,241 root INFO timestep: 351000, acc_reward: 280.27
+09:21:10,846 root INFO timestep: 352000, acc_reward: 281.28
+09:21:12,477 root INFO timestep: 353000, acc_reward: 279.77
+09:21:14,117 root INFO timestep: 354000, acc_reward: 280.44
+09:21:15,772 root INFO timestep: 355000, acc_reward: 282.13
+09:21:17,431 root INFO timestep: 356000, acc_reward: 283.84
+09:21:19,91 root INFO timestep: 357000, acc_reward: 285.42
+09:21:32,737 root INFO timestep: 358000, acc_reward: 297.02
+09:21:34,437 root INFO timestep: 359000, acc_reward: 297.23
+09:21:36,117 root INFO timestep: 360000, acc_reward: 295.85
+09:21:37,764 root INFO timestep: 361000, acc_reward: 295.87
+09:21:39,405 root INFO timestep: 362000, acc_reward: 294.26
+09:21:41,74 root INFO timestep: 363000, acc_reward: 295.41
+09:21:55,36 root INFO timestep: 364000, acc_reward: 283.23
+09:21:56,711 root INFO timestep: 365000, acc_reward: 284.35
+09:21:58,360 root INFO timestep: 366000, acc_reward: 286.36
+09:22:00,38 root INFO timestep: 367000, acc_reward: 285.37
+09:22:01,872 root INFO timestep: 368000, acc_reward: 286.14
+09:22:03,550 root INFO timestep: 369000, acc_reward: 282.89
+09:22:05,231 root INFO timestep: 370000, acc_reward: 284.77
+09:22:19,195 root INFO timestep: 371000, acc_reward: 308.07
+09:22:21,24 root INFO timestep: 372000, acc_reward: 296.68
+09:22:22,765 root INFO timestep: 373000, acc_reward: 276.30
+09:22:24,606 root INFO timestep: 374000, acc_reward: 303.63
+09:22:26,388 root INFO timestep: 375000, acc_reward: 287.54
+09:22:28,115 root INFO timestep: 376000, acc_reward: 268.21
+09:22:29,945 root INFO timestep: 377000, acc_reward: 298.77
+09:22:44,382 root INFO timestep: 378000, acc_reward: 288.10
+09:22:46,124 root INFO timestep: 379000, acc_reward: 305.25
+09:22:47,826 root INFO timestep: 380000, acc_reward: 286.14
+09:22:49,546 root INFO timestep: 381000, acc_reward: 301.36
+09:22:51,193 root INFO timestep: 382000, acc_reward: 283.11
+09:22:52,887 root INFO timestep: 383000, acc_reward: 292.21
+09:22:54,558 root INFO timestep: 384000, acc_reward: 282.85
+09:23:08,822 root INFO timestep: 385000, acc_reward: 328.59
+09:23:10,527 root INFO timestep: 386000, acc_reward: 285.49
+09:23:12,177 root INFO timestep: 387000, acc_reward: 276.24
+09:23:13,862 root INFO timestep: 388000, acc_reward: 282.76
+09:23:15,491 root INFO timestep: 389000, acc_reward: 266.36
+09:23:29,336 root INFO timestep: 390000, acc_reward: 309.50
+09:23:31,4 root INFO timestep: 391000, acc_reward: 307.72
+09:23:32,673 root INFO timestep: 392000, acc_reward: 307.54
+09:23:34,345 root INFO timestep: 393000, acc_reward: 310.66
+09:23:36,1 root INFO timestep: 394000, acc_reward: 307.61
+09:23:37,632 root INFO timestep: 395000, acc_reward: 308.13
+09:23:52,201 root INFO timestep: 396000, acc_reward: 312.00
+09:23:54,85 root INFO timestep: 397000, acc_reward: 315.85
+09:23:55,957 root INFO timestep: 398000, acc_reward: 314.15
+09:23:57,882 root INFO timestep: 399000, acc_reward: 312.45
+09:23:59,761 root INFO timestep: 400000, acc_reward: 314.55
+09:24:01,620 root INFO timestep: 401000, acc_reward: 314.50
+09:24:03,461 root INFO timestep: 402000, acc_reward: 312.07
+09:24:05,327 root INFO timestep: 403000, acc_reward: 314.03
+09:24:19,306 root INFO timestep: 404000, acc_reward: 299.01
+09:24:20,978 root INFO timestep: 405000, acc_reward: 300.22
+09:24:22,672 root INFO timestep: 406000, acc_reward: 303.05
+09:24:24,361 root INFO timestep: 407000, acc_reward: 299.23
+09:24:25,995 root INFO timestep: 408000, acc_reward: 298.84
+09:24:27,643 root INFO timestep: 409000, acc_reward: 302.33
+09:24:29,289 root INFO timestep: 410000, acc_reward: 298.77
+09:24:43,733 root INFO timestep: 411000, acc_reward: 310.76
+09:24:45,597 root INFO timestep: 412000, acc_reward: 313.37
+09:24:47,452 root INFO timestep: 413000, acc_reward: 312.55
+09:24:49,306 root INFO timestep: 414000, acc_reward: 312.01
+09:24:51,161 root INFO timestep: 415000, acc_reward: 312.38
+09:24:53,26 root INFO timestep: 416000, acc_reward: 312.22
+09:24:54,857 root INFO timestep: 417000, acc_reward: 311.28
+09:25:09,933 root INFO timestep: 418000, acc_reward: 319.62
+09:25:11,876 root INFO timestep: 419000, acc_reward: 324.00
+09:25:13,837 root INFO timestep: 420000, acc_reward: 322.15
+09:25:15,749 root INFO timestep: 421000, acc_reward: 317.23
+09:25:17,669 root INFO timestep: 422000, acc_reward: 317.76
+09:25:19,580 root INFO timestep: 423000, acc_reward: 319.77
+09:25:21,484 root INFO timestep: 424000, acc_reward: 321.31
+09:25:23,413 root INFO timestep: 425000, acc_reward: 321.78
+09:25:38,332 root INFO timestep: 426000, acc_reward: 320.86
+09:25:40,309 root INFO timestep: 427000, acc_reward: 322.01
+09:25:42,262 root INFO timestep: 428000, acc_reward: 321.09
+09:25:44,225 root INFO timestep: 429000, acc_reward: 320.32
+09:25:46,225 root INFO timestep: 430000, acc_reward: 321.65
+09:25:48,228 root INFO timestep: 431000, acc_reward: 321.30
+09:25:50,185 root INFO timestep: 432000, acc_reward: 321.14
+09:25:52,171 root INFO timestep: 433000, acc_reward: 320.25
+09:25:54,143 root INFO timestep: 434000, acc_reward: 320.55
+09:26:09,113 root INFO timestep: 435000, acc_reward: 361.58
+09:26:11,421 root INFO timestep: 436000, acc_reward: 374.53
+09:26:13,700 root INFO timestep: 437000, acc_reward: 372.54
+09:26:15,991 root INFO timestep: 438000, acc_reward: 372.35
+09:26:18,214 root INFO timestep: 439000, acc_reward: 363.67
+09:26:20,609 root INFO timestep: 440000, acc_reward: 377.36
+09:26:22,947 root INFO timestep: 441000, acc_reward: 377.41
+09:26:25,235 root INFO timestep: 442000, acc_reward: 373.97
+09:26:27,567 root INFO timestep: 443000, acc_reward: 373.61
+09:26:29,804 root INFO timestep: 444000, acc_reward: 365.36
+09:26:32,152 root INFO timestep: 445000, acc_reward: 372.78
+09:26:48,355 root INFO timestep: 446000, acc_reward: 381.91
+09:26:50,758 root INFO timestep: 447000, acc_reward: 383.05
+09:26:53,102 root INFO timestep: 448000, acc_reward: 377.54
+09:26:55,501 root INFO timestep: 449000, acc_reward: 382.95
+09:26:57,860 root INFO timestep: 450000, acc_reward: 378.55
+09:27:00,194 root INFO timestep: 451000, acc_reward: 374.99
+09:27:02,530 root INFO timestep: 452000, acc_reward: 374.76
+09:27:04,894 root INFO timestep: 453000, acc_reward: 382.86
+09:27:07,236 root INFO timestep: 454000, acc_reward: 374.71
+09:27:23,399 root INFO timestep: 455000, acc_reward: 316.55
+09:27:25,203 root INFO timestep: 456000, acc_reward: 307.95
+09:27:27,16 root INFO timestep: 457000, acc_reward: 312.92
+09:27:28,822 root INFO timestep: 458000, acc_reward: 311.31
+09:27:30,711 root INFO timestep: 459000, acc_reward: 314.40
+09:27:32,577 root INFO timestep: 460000, acc_reward: 311.28
+09:27:34,453 root INFO timestep: 461000, acc_reward: 312.49
+09:27:36,331 root INFO timestep: 462000, acc_reward: 312.18
+09:27:51,509 root INFO timestep: 463000, acc_reward: 317.13
+09:27:53,369 root INFO timestep: 464000, acc_reward: 314.34
+09:27:55,210 root INFO timestep: 465000, acc_reward: 311.48
+09:27:57,107 root INFO timestep: 466000, acc_reward: 318.36
+09:27:58,978 root INFO timestep: 467000, acc_reward: 317.50
+09:28:00,807 root INFO timestep: 468000, acc_reward: 315.47
+09:28:02,642 root INFO timestep: 469000, acc_reward: 313.13
+09:28:18,179 root INFO timestep: 470000, acc_reward: 301.57
+09:28:19,945 root INFO timestep: 471000, acc_reward: 302.22
+09:28:21,721 root INFO timestep: 472000, acc_reward: 302.71
+09:28:23,478 root INFO timestep: 473000, acc_reward: 300.27
+09:28:25,225 root INFO timestep: 474000, acc_reward: 298.56
+09:28:27,12 root INFO timestep: 475000, acc_reward: 301.17
+09:28:28,818 root INFO timestep: 476000, acc_reward: 306.31
+09:28:44,270 root INFO timestep: 477000, acc_reward: 100.83
+09:28:45,409 root INFO timestep: 478000, acc_reward: 101.53
+09:28:46,544 root INFO timestep: 479000, acc_reward: 100.24
+09:29:02,156 root INFO timestep: 480000, acc_reward: 290.23
+09:29:03,877 root INFO timestep: 481000, acc_reward: 294.30
+09:29:05,570 root INFO timestep: 482000, acc_reward: 293.44
+09:29:07,277 root INFO timestep: 483000, acc_reward: 294.25
+09:29:09,23 root INFO timestep: 484000, acc_reward: 294.21
+09:29:10,769 root INFO timestep: 485000, acc_reward: 292.97
+09:29:12,459 root INFO timestep: 486000, acc_reward: 292.71
+09:29:28,109 root INFO timestep: 487000, acc_reward: 360.93
+09:29:30,237 root INFO timestep: 488000, acc_reward: 348.32
+09:29:32,431 root INFO timestep: 489000, acc_reward: 351.27
+09:29:34,546 root INFO timestep: 490000, acc_reward: 343.79
+09:29:36,708 root INFO timestep: 491000, acc_reward: 351.74
+09:29:38,831 root INFO timestep: 492000, acc_reward: 347.50
+09:29:40,985 root INFO timestep: 493000, acc_reward: 350.94
+09:29:43,121 root INFO timestep: 494000, acc_reward: 348.36
+09:29:45,256 root INFO timestep: 495000, acc_reward: 347.91
+09:30:01,887 root INFO timestep: 496000, acc_reward: 344.90
+09:30:04,2 root INFO timestep: 497000, acc_reward: 303.71
+09:30:06,113 root INFO timestep: 498000, acc_reward: 321.45
+09:30:08,163 root INFO timestep: 499000, acc_reward: 309.02
+09:30:10,154 root INFO timestep: 500000, acc_reward: 296.81
+09:30:12,40 root INFO timestep: 501000, acc_reward: 274.07
+09:30:14,236 root INFO timestep: 502000, acc_reward: 334.20
+09:30:16,539 root INFO timestep: 503000, acc_reward: 344.45
+09:30:18,402 root INFO timestep: 504000, acc_reward: 259.34
+09:30:34,549 root INFO timestep: 505000, acc_reward: 297.46
+09:30:36,283 root INFO timestep: 506000, acc_reward: 292.41
+09:30:38,24 root INFO timestep: 507000, acc_reward: 291.41
+09:30:39,781 root INFO timestep: 508000, acc_reward: 292.81
+09:30:41,548 root INFO timestep: 509000, acc_reward: 295.40
+09:30:43,295 root INFO timestep: 510000, acc_reward: 292.55
+09:30:45,35 root INFO timestep: 511000, acc_reward: 289.82
+09:31:01,608 root INFO timestep: 512000, acc_reward: 324.63
+09:31:03,567 root INFO timestep: 513000, acc_reward: 325.62
+09:31:05,509 root INFO timestep: 514000, acc_reward: 324.18
+09:31:07,475 root INFO timestep: 515000, acc_reward: 328.09
+09:31:09,441 root INFO timestep: 516000, acc_reward: 327.23
+09:31:11,402 root INFO timestep: 517000, acc_reward: 327.59
+09:31:13,346 root INFO timestep: 518000, acc_reward: 324.42
+09:31:15,301 root INFO timestep: 519000, acc_reward: 326.30
+09:31:30,937 root INFO timestep: 520000, acc_reward: 300.10
+09:31:32,709 root INFO timestep: 521000, acc_reward: 298.95
+09:31:34,489 root INFO timestep: 522000, acc_reward: 299.82
+09:31:36,275 root INFO timestep: 523000, acc_reward: 301.23
+09:31:38,43 root INFO timestep: 524000, acc_reward: 299.93
+09:31:39,796 root INFO timestep: 525000, acc_reward: 299.41
+09:31:41,564 root INFO timestep: 526000, acc_reward: 300.06
+09:31:57,833 root INFO timestep: 527000, acc_reward: 304.98
+09:31:59,782 root INFO timestep: 528000, acc_reward: 286.33
+09:32:02,24 root INFO timestep: 529000, acc_reward: 344.19
+09:32:04,52 root INFO timestep: 530000, acc_reward: 308.59
+09:32:06,116 root INFO timestep: 531000, acc_reward: 320.46
+09:32:08,228 root INFO timestep: 532000, acc_reward: 319.93
+09:32:10,565 root INFO timestep: 533000, acc_reward: 368.20
+09:32:12,867 root INFO timestep: 534000, acc_reward: 360.17
+09:32:15,100 root INFO timestep: 535000, acc_reward: 351.32
+09:32:31,336 root INFO timestep: 536000, acc_reward: 267.25
+09:32:32,914 root INFO timestep: 537000, acc_reward: 264.36
+09:32:34,474 root INFO timestep: 538000, acc_reward: 264.33
+09:32:36,37 root INFO timestep: 539000, acc_reward: 265.70
+09:32:37,564 root INFO timestep: 540000, acc_reward: 262.37
+09:32:39,116 root INFO timestep: 541000, acc_reward: 266.10
+09:32:56,130 root INFO timestep: 542000, acc_reward: 236.45
+09:32:57,630 root INFO timestep: 543000, acc_reward: 237.04
+09:32:59,134 root INFO timestep: 544000, acc_reward: 237.84
+09:33:00,633 root INFO timestep: 545000, acc_reward: 236.17
+09:33:02,129 root INFO timestep: 546000, acc_reward: 234.80
+09:33:19,548 root INFO timestep: 547000, acc_reward: 252.20
+09:33:21,150 root INFO timestep: 548000, acc_reward: 256.27
+09:33:22,729 root INFO timestep: 549000, acc_reward: 255.33
+09:33:24,302 root INFO timestep: 550000, acc_reward: 255.42
+09:33:25,895 root INFO timestep: 551000, acc_reward: 253.64
+09:33:27,467 root INFO timestep: 552000, acc_reward: 251.20
+09:33:44,415 root INFO timestep: 553000, acc_reward: 293.91
+09:33:46,271 root INFO timestep: 554000, acc_reward: 297.52
+09:33:48,125 root INFO timestep: 555000, acc_reward: 297.00
+09:33:49,989 root INFO timestep: 556000, acc_reward: 297.42
+09:33:51,832 root INFO timestep: 557000, acc_reward: 294.25
+09:33:53,707 root INFO timestep: 558000, acc_reward: 297.17
+09:33:55,578 root INFO timestep: 559000, acc_reward: 298.27
+09:33:57,445 root INFO timestep: 560000, acc_reward: 297.56
+09:34:14,540 root INFO timestep: 561000, acc_reward: 262.39
+09:34:16,197 root INFO timestep: 562000, acc_reward: 254.16
+09:34:17,869 root INFO timestep: 563000, acc_reward: 256.38
+09:34:19,562 root INFO timestep: 564000, acc_reward: 264.23
+09:34:21,217 root INFO timestep: 565000, acc_reward: 253.37
+09:34:22,925 root INFO timestep: 566000, acc_reward: 266.73
+09:34:40,324 root INFO timestep: 567000, acc_reward: 255.57
+09:34:42,404 root INFO timestep: 568000, acc_reward: 314.72
+09:34:44,146 root INFO timestep: 569000, acc_reward: 250.83
+09:34:45,876 root INFO timestep: 570000, acc_reward: 248.86
+09:34:47,621 root INFO timestep: 571000, acc_reward: 253.91
+09:34:49,185 root INFO timestep: 572000, acc_reward: 205.68
+09:34:50,897 root INFO timestep: 573000, acc_reward: 236.64
+09:34:52,633 root INFO timestep: 574000, acc_reward: 244.58
+09:35:13,198 root INFO timestep: 575000, acc_reward: 674.03
+09:35:18,596 root INFO timestep: 576000, acc_reward: 806.58
+09:35:23,314 root INFO timestep: 577000, acc_reward: 713.34
+09:35:28,793 root INFO timestep: 578000, acc_reward: 802.55
+09:35:34,734 root INFO timestep: 579000, acc_reward: 868.82
+09:35:41,172 root INFO timestep: 580000, acc_reward: 930.70
+09:35:46,190 root INFO timestep: 581000, acc_reward: 729.13
+09:35:50,957 root INFO timestep: 582000, acc_reward: 712.52
+09:35:56,361 root INFO timestep: 583000, acc_reward: 790.46
+09:36:01,510 root INFO timestep: 584000, acc_reward: 755.57
+09:36:07,658 root INFO timestep: 585000, acc_reward: 902.97
+09:36:12,329 root INFO timestep: 586000, acc_reward: 699.33
+09:36:18,510 root INFO timestep: 587000, acc_reward: 891.82
+09:36:23,982 root INFO timestep: 588000, acc_reward: 806.47
+09:36:30,101 root INFO timestep: 589000, acc_reward: 897.99
+09:36:35,579 root INFO timestep: 590000, acc_reward: 813.20
+09:36:40,893 root INFO timestep: 591000, acc_reward: 816.82
+09:36:45,770 root INFO timestep: 592000, acc_reward: 699.20
+09:36:50,921 root INFO timestep: 593000, acc_reward: 781.40
+09:36:57,27 root INFO timestep: 594000, acc_reward: 896.65
+09:37:01,879 root INFO timestep: 595000, acc_reward: 679.90
+09:37:06,825 root INFO timestep: 596000, acc_reward: 756.75
+09:37:12,940 root INFO timestep: 597000, acc_reward: 891.26
+09:37:18,591 root INFO timestep: 598000, acc_reward: 829.76
+09:37:23,499 root INFO timestep: 599000, acc_reward: 729.51
+09:37:29,99 root INFO timestep: 600000, acc_reward: 817.13
+09:37:35,200 root INFO timestep: 601000, acc_reward: 885.36
+09:37:54,361 root INFO timestep: 602000, acc_reward: 411.43
+09:37:56,718 root INFO timestep: 603000, acc_reward: 387.55
+09:37:58,869 root INFO timestep: 604000, acc_reward: 363.95
+09:38:01,428 root INFO timestep: 605000, acc_reward: 408.47
+09:38:03,796 root INFO timestep: 606000, acc_reward: 387.54
+09:38:06,36 root INFO timestep: 607000, acc_reward: 372.76
+09:38:08,566 root INFO timestep: 608000, acc_reward: 400.81
+09:38:11,122 root INFO timestep: 609000, acc_reward: 408.37
+09:38:13,524 root INFO timestep: 610000, acc_reward: 387.92
+09:38:15,935 root INFO timestep: 611000, acc_reward: 388.01
+09:38:18,371 root INFO timestep: 612000, acc_reward: 394.65
+09:38:20,725 root INFO timestep: 613000, acc_reward: 381.30
+09:38:40,257 root INFO timestep: 614000, acc_reward: 441.89
+09:38:42,880 root INFO timestep: 615000, acc_reward: 409.29
+09:38:45,516 root INFO timestep: 616000, acc_reward: 419.35
+09:38:48,170 root INFO timestep: 617000, acc_reward: 418.30
+09:38:50,830 root INFO timestep: 618000, acc_reward: 413.08
+09:38:53,345 root INFO timestep: 619000, acc_reward: 396.47
+09:38:55,995 root INFO timestep: 620000, acc_reward: 411.03
+09:38:58,625 root INFO timestep: 621000, acc_reward: 408.82
+09:39:01,275 root INFO timestep: 622000, acc_reward: 411.11
+09:39:04,7 root INFO timestep: 623000, acc_reward: 422.67
+09:39:06,508 root INFO timestep: 624000, acc_reward: 396.16
+09:39:25,508 root INFO timestep: 625000, acc_reward: 299.54
+09:39:27,303 root INFO timestep: 626000, acc_reward: 297.42
+09:39:29,107 root INFO timestep: 627000, acc_reward: 301.63
+09:39:30,914 root INFO timestep: 628000, acc_reward: 301.00
+09:39:32,706 root INFO timestep: 629000, acc_reward: 299.02
+09:39:34,497 root INFO timestep: 630000, acc_reward: 299.30
+09:39:36,302 root INFO timestep: 631000, acc_reward: 300.99
+09:39:55,785 root INFO timestep: 632000, acc_reward: 377.26
+09:39:58,378 root INFO timestep: 633000, acc_reward: 396.40
+09:40:00,774 root INFO timestep: 634000, acc_reward: 379.90
+09:40:03,121 root INFO timestep: 635000, acc_reward: 366.86
+09:40:05,680 root INFO timestep: 636000, acc_reward: 390.59
+09:40:08,244 root INFO timestep: 637000, acc_reward: 392.65
+09:40:10,865 root INFO timestep: 638000, acc_reward: 398.99
+09:40:13,286 root INFO timestep: 639000, acc_reward: 375.63
+09:40:15,525 root INFO timestep: 640000, acc_reward: 354.21
+09:40:17,990 root INFO timestep: 641000, acc_reward: 380.23
+09:40:20,422 root INFO timestep: 642000, acc_reward: 378.39
+09:40:22,711 root INFO timestep: 643000, acc_reward: 363.90
+09:40:25,132 root INFO timestep: 644000, acc_reward: 374.18
+09:40:44,572 root INFO timestep: 645000, acc_reward: 355.05
+09:40:46,692 root INFO timestep: 646000, acc_reward: 357.21
+09:40:48,742 root INFO timestep: 647000, acc_reward: 347.99
+09:40:50,848 root INFO timestep: 648000, acc_reward: 352.39
+09:40:52,871 root INFO timestep: 649000, acc_reward: 345.00
+09:40:54,917 root INFO timestep: 650000, acc_reward: 345.66
+09:40:57,485 root INFO timestep: 651000, acc_reward: 395.46
+09:40:59,643 root INFO timestep: 652000, acc_reward: 359.22
+09:41:01,731 root INFO timestep: 653000, acc_reward: 349.67
+09:41:22,161 root INFO timestep: 654000, acc_reward: 470.62
+09:41:24,991 root INFO timestep: 655000, acc_reward: 425.78
+09:41:27,870 root INFO timestep: 656000, acc_reward: 428.07
+09:41:30,66 root INFO timestep: 657000, acc_reward: 365.27
+09:41:32,851 root INFO timestep: 658000, acc_reward: 419.63
+09:41:36,933 root INFO timestep: 659000, acc_reward: 545.36
+09:41:39,41 root INFO timestep: 660000, acc_reward: 358.11
+09:41:42,982 root INFO timestep: 661000, acc_reward: 533.55
+09:41:46,178 root INFO timestep: 662000, acc_reward: 461.67
+09:41:50,537 root INFO timestep: 663000, acc_reward: 559.42
+09:41:53,3 root INFO timestep: 664000, acc_reward: 387.48
+09:41:55,762 root INFO timestep: 665000, acc_reward: 416.32
+09:41:58,733 root INFO timestep: 666000, acc_reward: 438.66
+09:42:18,493 root INFO timestep: 667000, acc_reward: 341.16
+09:42:20,419 root INFO timestep: 668000, acc_reward: 340.13
+09:42:22,347 root INFO timestep: 669000, acc_reward: 339.08
+09:42:24,286 root INFO timestep: 670000, acc_reward: 340.82
+09:42:26,209 root INFO timestep: 671000, acc_reward: 338.08
+09:42:28,144 root INFO timestep: 672000, acc_reward: 340.54
+09:42:30,40 root INFO timestep: 673000, acc_reward: 339.12
+09:42:31,935 root INFO timestep: 674000, acc_reward: 338.27
+09:42:51,420 root INFO timestep: 675000, acc_reward: 342.19
+09:42:53,328 root INFO timestep: 676000, acc_reward: 342.22
+09:42:55,239 root INFO timestep: 677000, acc_reward: 342.07
+09:42:57,155 root INFO timestep: 678000, acc_reward: 341.46
+09:42:59,67 root INFO timestep: 679000, acc_reward: 342.85
+09:43:00,984 root INFO timestep: 680000, acc_reward: 342.46
+09:43:02,895 root INFO timestep: 681000, acc_reward: 342.79
+09:43:23,313 root INFO timestep: 682000, acc_reward: 320.55
+09:43:25,120 root INFO timestep: 683000, acc_reward: 321.26
+09:43:26,900 root INFO timestep: 684000, acc_reward: 319.49
+09:43:28,747 root INFO timestep: 685000, acc_reward: 320.33
+09:43:30,532 root INFO timestep: 686000, acc_reward: 320.80
+09:43:32,311 root INFO timestep: 687000, acc_reward: 321.47
+09:43:34,96 root INFO timestep: 688000, acc_reward: 319.69
+09:43:35,941 root INFO timestep: 689000, acc_reward: 321.48
+09:43:56,450 root INFO timestep: 690000, acc_reward: 338.07
+09:43:58,426 root INFO timestep: 691000, acc_reward: 338.32
+09:44:00,402 root INFO timestep: 692000, acc_reward: 338.66
+09:44:02,358 root INFO timestep: 693000, acc_reward: 338.00
+09:44:04,276 root INFO timestep: 694000, acc_reward: 338.76
+09:44:06,241 root INFO timestep: 695000, acc_reward: 337.42
+09:44:08,196 root INFO timestep: 696000, acc_reward: 336.25
+09:44:10,97 root INFO timestep: 697000, acc_reward: 337.11
+09:44:30,432 root INFO timestep: 698000, acc_reward: 346.69
+09:44:32,417 root INFO timestep: 699000, acc_reward: 347.47
+09:44:34,390 root INFO timestep: 700000, acc_reward: 347.14
+09:44:36,356 root INFO timestep: 701000, acc_reward: 346.70
+09:44:38,290 root INFO timestep: 702000, acc_reward: 343.46
+09:44:40,220 root INFO timestep: 703000, acc_reward: 342.61
+09:44:42,157 root INFO timestep: 704000, acc_reward: 343.34
+09:44:44,129 root INFO timestep: 705000, acc_reward: 348.81
+09:45:03,974 root INFO timestep: 706000, acc_reward: 349.73
+09:45:05,974 root INFO timestep: 707000, acc_reward: 352.15
+09:45:07,904 root INFO timestep: 708000, acc_reward: 345.59
+09:45:09,837 root INFO timestep: 709000, acc_reward: 345.44
+09:45:11,765 root INFO timestep: 710000, acc_reward: 347.66
+09:45:13,700 root INFO timestep: 711000, acc_reward: 347.77
+09:45:15,679 root INFO timestep: 712000, acc_reward: 348.93
+09:45:17,631 root INFO timestep: 713000, acc_reward: 347.80
+09:45:39,170 root INFO timestep: 714000, acc_reward: 333.88
+09:45:41,78 root INFO timestep: 715000, acc_reward: 331.98
+09:45:43,3 root INFO timestep: 716000, acc_reward: 331.35
+09:45:44,920 root INFO timestep: 717000, acc_reward: 332.38
+09:45:46,815 root INFO timestep: 718000, acc_reward: 331.29
+09:45:48,709 root INFO timestep: 719000, acc_reward: 335.06
+09:45:50,568 root INFO timestep: 720000, acc_reward: 332.93
+09:45:52,411 root INFO timestep: 721000, acc_reward: 331.32
+09:46:13,463 root INFO timestep: 722000, acc_reward: 321.90
+09:46:15,266 root INFO timestep: 723000, acc_reward: 321.59
+09:46:17,68 root INFO timestep: 724000, acc_reward: 321.21
+09:46:18,891 root INFO timestep: 725000, acc_reward: 324.72
+09:46:20,686 root INFO timestep: 726000, acc_reward: 321.44
+09:46:22,523 root INFO timestep: 727000, acc_reward: 322.92
+09:46:24,334 root INFO timestep: 728000, acc_reward: 321.77
+09:46:26,138 root INFO timestep: 729000, acc_reward: 322.25
+09:46:47,782 root INFO timestep: 730000, acc_reward: 328.17
+09:46:49,587 root INFO timestep: 731000, acc_reward: 327.67
+09:46:51,337 root INFO timestep: 732000, acc_reward: 326.99
+09:46:53,98 root INFO timestep: 733000, acc_reward: 327.73
+09:46:54,886 root INFO timestep: 734000, acc_reward: 327.02
+09:46:56,708 root INFO timestep: 735000, acc_reward: 328.40
+09:46:58,530 root INFO timestep: 736000, acc_reward: 328.05
+09:47:19,661 root INFO timestep: 737000, acc_reward: 332.52
+09:47:21,453 root INFO timestep: 738000, acc_reward: 330.73
+09:47:23,259 root INFO timestep: 739000, acc_reward: 331.97
+09:47:25,88 root INFO timestep: 740000, acc_reward: 331.45
+09:47:26,924 root INFO timestep: 741000, acc_reward: 332.13
+09:47:28,757 root INFO timestep: 742000, acc_reward: 331.19
+09:47:30,583 root INFO timestep: 743000, acc_reward: 329.54
+09:47:52,451 root INFO timestep: 744000, acc_reward: 445.67
+09:47:55,826 root INFO timestep: 745000, acc_reward: 486.55
+09:47:58,490 root INFO timestep: 746000, acc_reward: 420.16
+09:48:01,857 root INFO timestep: 747000, acc_reward: 485.18
+09:48:04,843 root INFO timestep: 748000, acc_reward: 449.68
+09:48:09,200 root INFO timestep: 749000, acc_reward: 576.12
+09:48:12,476 root INFO timestep: 750000, acc_reward: 475.78
+09:48:15,372 root INFO timestep: 751000, acc_reward: 436.28
+09:48:18,237 root INFO timestep: 752000, acc_reward: 432.99
+09:48:20,855 root INFO timestep: 753000, acc_reward: 413.82
+09:48:23,424 root INFO timestep: 754000, acc_reward: 406.82
+09:48:26,98 root INFO timestep: 755000, acc_reward: 417.55
+09:48:47,408 root INFO timestep: 756000, acc_reward: 337.77
+09:48:49,349 root INFO timestep: 757000, acc_reward: 343.00
+09:48:51,249 root INFO timestep: 758000, acc_reward: 340.40
+09:48:53,151 root INFO timestep: 759000, acc_reward: 339.66
+09:48:55,35 root INFO timestep: 760000, acc_reward: 338.29
+09:48:56,933 root INFO timestep: 761000, acc_reward: 340.05
+09:48:58,841 root INFO timestep: 762000, acc_reward: 340.79
+09:49:00,758 root INFO timestep: 763000, acc_reward: 341.68
+09:49:22,999 root INFO timestep: 764000, acc_reward: 456.35
+09:49:25,414 root INFO timestep: 765000, acc_reward: 442.15
+09:49:27,887 root INFO timestep: 766000, acc_reward: 456.60
+09:49:30,381 root INFO timestep: 767000, acc_reward: 456.40
+09:49:32,863 root INFO timestep: 768000, acc_reward: 459.19
+09:49:35,384 root INFO timestep: 769000, acc_reward: 463.27
+09:49:37,859 root INFO timestep: 770000, acc_reward: 464.22
+09:49:40,368 root INFO timestep: 771000, acc_reward: 461.56
+09:49:42,944 root INFO timestep: 772000, acc_reward: 463.85
+09:49:45,558 root INFO timestep: 773000, acc_reward: 471.48
+09:49:47,979 root INFO timestep: 774000, acc_reward: 456.55
+09:49:50,817 root INFO timestep: 775000, acc_reward: 487.76
+09:50:12,314 root INFO timestep: 776000, acc_reward: 376.00
+09:50:14,406 root INFO timestep: 777000, acc_reward: 365.75
+09:50:16,557 root INFO timestep: 778000, acc_reward: 373.96
+09:50:18,674 root INFO timestep: 779000, acc_reward: 368.40
+09:50:20,784 root INFO timestep: 780000, acc_reward: 367.38
+09:50:22,911 root INFO timestep: 781000, acc_reward: 369.20
+09:50:25,31 root INFO timestep: 782000, acc_reward: 372.01
+09:50:27,167 root INFO timestep: 783000, acc_reward: 368.32
+09:50:29,310 root INFO timestep: 784000, acc_reward: 368.51
+09:50:51,232 root INFO timestep: 785000, acc_reward: 428.48
+09:50:53,624 root INFO timestep: 786000, acc_reward: 426.78
+09:50:56,17 root INFO timestep: 787000, acc_reward: 420.64
+09:50:58,466 root INFO timestep: 788000, acc_reward: 439.99
+09:51:00,877 root INFO timestep: 789000, acc_reward: 424.79
+09:51:03,235 root INFO timestep: 790000, acc_reward: 417.72
+09:51:05,991 root INFO timestep: 791000, acc_reward: 474.23
+09:51:08,360 root INFO timestep: 792000, acc_reward: 426.83
+09:51:10,818 root INFO timestep: 793000, acc_reward: 460.51
+09:51:13,259 root INFO timestep: 794000, acc_reward: 447.78
+09:51:15,608 root INFO timestep: 795000, acc_reward: 422.05
+09:51:37,339 root INFO timestep: 796000, acc_reward: 219.77
+09:51:38,879 root INFO timestep: 797000, acc_reward: 240.14
+09:51:40,358 root INFO timestep: 798000, acc_reward: 230.80
+09:51:41,836 root INFO timestep: 799000, acc_reward: 229.75
+09:51:43,355 root INFO timestep: 800000, acc_reward: 242.76
+09:52:03,507 root INFO timestep: 801000, acc_reward: 335.33
+09:52:05,352 root INFO timestep: 802000, acc_reward: 322.63
+09:52:07,250 root INFO timestep: 803000, acc_reward: 335.79
+09:52:09,149 root INFO timestep: 804000, acc_reward: 335.42
+09:52:11,53 root INFO timestep: 805000, acc_reward: 337.43
+09:52:12,935 root INFO timestep: 806000, acc_reward: 333.12
+09:52:14,816 root INFO timestep: 807000, acc_reward: 333.03
+09:52:16,690 root INFO timestep: 808000, acc_reward: 335.28
+09:52:39,455 root INFO timestep: 809000, acc_reward: 319.77
+09:52:41,254 root INFO timestep: 810000, acc_reward: 311.02
+09:52:43,82 root INFO timestep: 811000, acc_reward: 320.64
+09:52:44,926 root INFO timestep: 812000, acc_reward: 322.92
+09:52:46,754 root INFO timestep: 813000, acc_reward: 320.33
+09:52:48,590 root INFO timestep: 814000, acc_reward: 322.15
+09:52:50,423 root INFO timestep: 815000, acc_reward: 320.50
+09:53:15,939 root INFO timestep: 816000, acc_reward: 641.32
+09:53:20,929 root INFO timestep: 817000, acc_reward: 649.94
+09:53:25,940 root INFO timestep: 818000, acc_reward: 652.27
+09:53:32,394 root INFO timestep: 819000, acc_reward: 784.37
+09:53:38,244 root INFO timestep: 820000, acc_reward: 732.26
+09:53:43,178 root INFO timestep: 821000, acc_reward: 650.36
+09:53:48,131 root INFO timestep: 822000, acc_reward: 652.41
+09:53:52,128 root INFO timestep: 823000, acc_reward: 559.14
+09:53:55,903 root INFO timestep: 824000, acc_reward: 540.68
+09:54:00,554 root INFO timestep: 825000, acc_reward: 619.25
+09:54:04,915 root INFO timestep: 826000, acc_reward: 589.88
+09:54:09,617 root INFO timestep: 827000, acc_reward: 624.38
+09:54:14,957 root INFO timestep: 828000, acc_reward: 680.82
+09:54:19,1 root INFO timestep: 829000, acc_reward: 564.66
+09:54:23,775 root INFO timestep: 830000, acc_reward: 640.89
+09:54:29,289 root INFO timestep: 831000, acc_reward: 701.87
+09:54:34,135 root INFO timestep: 832000, acc_reward: 639.47
+09:54:40,437 root INFO timestep: 833000, acc_reward: 771.34
+09:54:44,842 root INFO timestep: 834000, acc_reward: 598.04
+09:54:49,218 root INFO timestep: 835000, acc_reward: 594.05
+09:54:54,465 root INFO timestep: 836000, acc_reward: 669.94
+09:54:59,806 root INFO timestep: 837000, acc_reward: 681.45
+09:55:03,914 root INFO timestep: 838000, acc_reward: 568.85
+09:55:08,221 root INFO timestep: 839000, acc_reward: 593.32
+09:55:12,149 root INFO timestep: 840000, acc_reward: 550.56
+09:55:17,460 root INFO timestep: 841000, acc_reward: 683.22
+09:55:21,992 root INFO timestep: 842000, acc_reward: 611.49
+09:55:27,246 root INFO timestep: 843000, acc_reward: 671.99
+09:55:32,556 root INFO timestep: 844000, acc_reward: 677.94
+09:55:37,971 root INFO timestep: 845000, acc_reward: 689.60
+09:55:42,379 root INFO timestep: 846000, acc_reward: 597.55
+09:55:47,808 root INFO timestep: 847000, acc_reward: 690.32
+09:56:10,325 root INFO timestep: 848000, acc_reward: 329.06
+09:56:12,164 root INFO timestep: 849000, acc_reward: 332.48
+09:56:13,999 root INFO timestep: 850000, acc_reward: 331.71
+09:56:15,836 root INFO timestep: 851000, acc_reward: 331.46
+09:56:17,675 root INFO timestep: 852000, acc_reward: 332.43
+09:56:19,505 root INFO timestep: 853000, acc_reward: 330.46
+09:56:21,335 root INFO timestep: 854000, acc_reward: 331.52
+09:56:23,171 root INFO timestep: 855000, acc_reward: 332.02
+09:56:47,247 root INFO timestep: 856000, acc_reward: 318.76
+09:56:48,975 root INFO timestep: 857000, acc_reward: 320.13
+09:56:50,692 root INFO timestep: 858000, acc_reward: 318.90
+09:56:52,412 root INFO timestep: 859000, acc_reward: 320.10
+09:56:54,129 root INFO timestep: 860000, acc_reward: 319.31
+09:56:55,846 root INFO timestep: 861000, acc_reward: 319.63
+09:57:18,839 root INFO timestep: 862000, acc_reward: 309.79
+09:57:20,465 root INFO timestep: 863000, acc_reward: 308.17
+09:57:22,90 root INFO timestep: 864000, acc_reward: 303.62
+09:57:23,737 root INFO timestep: 865000, acc_reward: 309.44
+09:57:25,390 root INFO timestep: 866000, acc_reward: 306.28
+09:57:27,55 root INFO timestep: 867000, acc_reward: 309.55
+09:57:28,704 root INFO timestep: 868000, acc_reward: 304.27
+09:57:51,524 root INFO timestep: 869000, acc_reward: 313.91
+09:57:53,203 root INFO timestep: 870000, acc_reward: 302.12
+09:57:54,944 root INFO timestep: 871000, acc_reward: 314.23
+09:57:56,548 root INFO timestep: 872000, acc_reward: 273.13
+09:57:58,226 root INFO timestep: 873000, acc_reward: 300.10
+09:57:59,713 root INFO timestep: 874000, acc_reward: 243.74
+09:58:01,463 root INFO timestep: 875000, acc_reward: 316.73
+09:58:24,258 root INFO timestep: 876000, acc_reward: 295.76
+09:58:25,921 root INFO timestep: 877000, acc_reward: 315.75
+09:58:27,584 root INFO timestep: 878000, acc_reward: 304.69
+09:58:29,284 root INFO timestep: 879000, acc_reward: 318.38
+09:58:30,964 root INFO timestep: 880000, acc_reward: 316.47
+09:58:32,662 root INFO timestep: 881000, acc_reward: 319.40
+09:58:55,311 root INFO timestep: 882000, acc_reward: 223.20
+09:58:56,816 root INFO timestep: 883000, acc_reward: 251.12
+09:58:58,367 root INFO timestep: 884000, acc_reward: 257.93
+09:58:59,891 root INFO timestep: 885000, acc_reward: 258.14
+09:59:01,462 root INFO timestep: 886000, acc_reward: 275.65
+09:59:02,913 root INFO timestep: 887000, acc_reward: 233.16
+09:59:26,450 root INFO timestep: 888000, acc_reward: 298.87
+09:59:28,26 root INFO timestep: 889000, acc_reward: 299.12
+09:59:29,600 root INFO timestep: 890000, acc_reward: 298.31
+09:59:31,171 root INFO timestep: 891000, acc_reward: 298.61
+09:59:32,746 root INFO timestep: 892000, acc_reward: 299.00
+09:59:34,321 root INFO timestep: 893000, acc_reward: 298.39
+09:59:58,718 root INFO timestep: 894000, acc_reward: 284.90
+10:00:00,243 root INFO timestep: 895000, acc_reward: 285.53
+10:00:01,821 root INFO timestep: 896000, acc_reward: 285.32
+10:00:03,310 root INFO timestep: 897000, acc_reward: 285.50
+10:00:04,781 root INFO timestep: 898000, acc_reward: 284.95
+10:00:06,295 root INFO timestep: 899000, acc_reward: 286.84
+10:00:29,904 root INFO timestep: 900000, acc_reward: 301.24
+10:00:31,464 root INFO timestep: 901000, acc_reward: 302.15
+10:00:33,27 root INFO timestep: 902000, acc_reward: 300.93
+10:00:34,577 root INFO timestep: 903000, acc_reward: 302.01
+10:00:36,123 root INFO timestep: 904000, acc_reward: 301.29
+10:00:58,484 root INFO timestep: 905000, acc_reward: 318.39
+10:01:00,73 root INFO timestep: 906000, acc_reward: 317.67
+10:01:01,660 root INFO timestep: 907000, acc_reward: 318.42
+10:01:03,231 root INFO timestep: 908000, acc_reward: 317.58
+10:01:04,800 root INFO timestep: 909000, acc_reward: 319.26
+10:01:06,366 root INFO timestep: 910000, acc_reward: 318.66
+10:01:07,930 root INFO timestep: 911000, acc_reward: 317.84
+10:01:31,484 root INFO timestep: 912000, acc_reward: 274.83
+10:01:33,75 root INFO timestep: 913000, acc_reward: 274.95
+10:01:34,660 root INFO timestep: 914000, acc_reward: 276.74
+10:01:36,240 root INFO timestep: 915000, acc_reward: 277.40
+10:01:37,800 root INFO timestep: 916000, acc_reward: 275.22
+10:02:01,645 root INFO timestep: 917000, acc_reward: 317.51
+10:02:03,328 root INFO timestep: 918000, acc_reward: 318.67
+10:02:05,1 root INFO timestep: 919000, acc_reward: 315.82
+10:02:06,711 root INFO timestep: 920000, acc_reward: 320.02
+10:02:08,401 root INFO timestep: 921000, acc_reward: 319.34
+10:02:10,92 root INFO timestep: 922000, acc_reward: 320.35
+10:02:11,789 root INFO timestep: 923000, acc_reward: 323.66
+10:02:35,323 root INFO timestep: 924000, acc_reward: 290.31
+10:02:36,906 root INFO timestep: 925000, acc_reward: 286.76
+10:02:38,488 root INFO timestep: 926000, acc_reward: 288.51
+10:02:40,72 root INFO timestep: 927000, acc_reward: 289.52
+10:02:41,677 root INFO timestep: 928000, acc_reward: 291.73
+10:02:43,257 root INFO timestep: 929000, acc_reward: 288.66
+10:03:06,587 root INFO timestep: 930000, acc_reward: 279.88
+10:03:08,186 root INFO timestep: 931000, acc_reward: 292.93
+10:03:09,778 root INFO timestep: 932000, acc_reward: 290.36
+10:03:11,417 root INFO timestep: 933000, acc_reward: 293.58
+10:03:13,43 root INFO timestep: 934000, acc_reward: 290.49
+10:03:14,675 root INFO timestep: 935000, acc_reward: 291.86
+10:03:38,374 root INFO timestep: 936000, acc_reward: 345.57
+10:03:40,138 root INFO timestep: 937000, acc_reward: 343.64
+10:03:41,900 root INFO timestep: 938000, acc_reward: 344.90
+10:03:43,662 root INFO timestep: 939000, acc_reward: 345.28
+10:03:45,436 root INFO timestep: 940000, acc_reward: 348.04
+10:03:47,199 root INFO timestep: 941000, acc_reward: 346.49
+10:03:48,968 root INFO timestep: 942000, acc_reward: 347.66
+10:04:13,535 root INFO timestep: 943000, acc_reward: 314.07
+10:04:15,206 root INFO timestep: 944000, acc_reward: 312.01
+10:04:16,921 root INFO timestep: 945000, acc_reward: 312.56
+10:04:18,639 root INFO timestep: 946000, acc_reward: 313.50
+10:04:20,337 root INFO timestep: 947000, acc_reward: 311.51
+10:04:22,15 root INFO timestep: 948000, acc_reward: 313.01
+10:04:23,700 root INFO timestep: 949000, acc_reward: 312.60
+10:04:47,733 root INFO timestep: 950000, acc_reward: 309.53
+10:04:49,353 root INFO timestep: 951000, acc_reward: 310.19
+10:04:50,980 root INFO timestep: 952000, acc_reward: 306.83
+10:04:52,589 root INFO timestep: 953000, acc_reward: 307.15
+10:04:54,203 root INFO timestep: 954000, acc_reward: 309.39
+10:04:55,813 root INFO timestep: 955000, acc_reward: 309.10
+10:05:19,519 root INFO timestep: 956000, acc_reward: 311.72
+10:05:21,186 root INFO timestep: 957000, acc_reward: 311.97
+10:05:22,863 root INFO timestep: 958000, acc_reward: 310.13
+10:05:24,538 root INFO timestep: 959000, acc_reward: 309.31
+10:05:26,213 root INFO timestep: 960000, acc_reward: 310.18
+10:05:27,875 root INFO timestep: 961000, acc_reward: 310.65
+10:05:29,511 root INFO timestep: 962000, acc_reward: 310.52
+10:05:54,367 root INFO timestep: 963000, acc_reward: 336.49
+10:05:56,136 root INFO timestep: 964000, acc_reward: 340.13
+10:05:57,906 root INFO timestep: 965000, acc_reward: 341.89
+10:05:59,648 root INFO timestep: 966000, acc_reward: 340.45
+10:06:01,413 root INFO timestep: 967000, acc_reward: 342.47
+10:06:03,191 root INFO timestep: 968000, acc_reward: 340.94
+10:06:04,956 root INFO timestep: 969000, acc_reward: 341.59
+10:06:28,970 root INFO timestep: 970000, acc_reward: 340.50
+10:06:30,708 root INFO timestep: 971000, acc_reward: 342.04
+10:06:32,444 root INFO timestep: 972000, acc_reward: 341.63
+10:06:34,184 root INFO timestep: 973000, acc_reward: 343.22
+10:06:35,923 root INFO timestep: 974000, acc_reward: 342.08
+10:06:37,663 root INFO timestep: 975000, acc_reward: 342.76
+10:06:39,404 root INFO timestep: 976000, acc_reward: 342.43
+10:07:04,712 root INFO timestep: 977000, acc_reward: 330.43
+10:07:06,445 root INFO timestep: 978000, acc_reward: 330.32
+10:07:08,174 root INFO timestep: 979000, acc_reward: 330.60
+10:07:09,918 root INFO timestep: 980000, acc_reward: 330.90
+10:07:11,675 root INFO timestep: 981000, acc_reward: 330.92
+10:07:13,415 root INFO timestep: 982000, acc_reward: 330.50
+10:07:38,920 root INFO timestep: 983000, acc_reward: 330.10
+10:07:40,673 root INFO timestep: 984000, acc_reward: 329.62
+10:07:42,423 root INFO timestep: 985000, acc_reward: 330.04
+10:07:44,173 root INFO timestep: 986000, acc_reward: 328.77
+10:07:45,923 root INFO timestep: 987000, acc_reward: 329.81
+10:07:47,680 root INFO timestep: 988000, acc_reward: 328.71
+10:07:49,409 root INFO timestep: 989000, acc_reward: 328.40
+10:08:14,861 root INFO timestep: 990000, acc_reward: 361.74
+10:08:16,634 root INFO timestep: 991000, acc_reward: 356.21
+10:08:18,405 root INFO timestep: 992000, acc_reward: 355.35
+10:08:20,180 root INFO timestep: 993000, acc_reward: 357.13
+10:08:21,954 root INFO timestep: 994000, acc_reward: 356.02
+10:08:23,727 root INFO timestep: 995000, acc_reward: 357.62
+10:08:25,501 root INFO timestep: 996000, acc_reward: 359.85
+10:08:27,275 root INFO timestep: 997000, acc_reward: 356.37
+10:08:53,421 root INFO timestep: 998000, acc_reward: 333.40
+10:08:55,58 root INFO timestep: 999000, acc_reward: 333.90
+10:08:56,732 root INFO timestep: 1000000, acc_reward: 333.76
+10:08:58,410 root INFO timestep: 1001000, acc_reward: 333.33
+10:09:00,106 root INFO timestep: 1002000, acc_reward: 334.67
+10:09:01,804 root INFO timestep: 1003000, acc_reward: 334.42
+10:09:27,63 root INFO timestep: 1004000, acc_reward: 328.77
+10:09:28,746 root INFO timestep: 1005000, acc_reward: 330.03
+10:09:30,454 root INFO timestep: 1006000, acc_reward: 329.85
+10:09:32,141 root INFO timestep: 1007000, acc_reward: 325.09
+10:09:33,839 root INFO timestep: 1008000, acc_reward: 326.26
+10:09:35,530 root INFO timestep: 1009000, acc_reward: 334.91
+10:09:37,230 root INFO timestep: 1010000, acc_reward: 329.33
+10:10:02,143 root INFO timestep: 1011000, acc_reward: 334.92
+10:10:03,775 root INFO timestep: 1012000, acc_reward: 334.96
+10:10:05,448 root INFO timestep: 1013000, acc_reward: 335.69
+10:10:07,107 root INFO timestep: 1014000, acc_reward: 335.25
+10:10:08,749 root INFO timestep: 1015000, acc_reward: 336.66
+10:10:10,467 root INFO timestep: 1016000, acc_reward: 335.76
+10:10:35,733 root INFO timestep: 1017000, acc_reward: 316.16
+10:10:37,407 root INFO timestep: 1018000, acc_reward: 316.73
+10:10:39,78 root INFO timestep: 1019000, acc_reward: 316.01
+10:10:40,751 root INFO timestep: 1020000, acc_reward: 315.89
+10:10:42,418 root INFO timestep: 1021000, acc_reward: 315.65
+10:10:44,87 root INFO timestep: 1022000, acc_reward: 315.75
+10:10:45,760 root INFO timestep: 1023000, acc_reward: 316.11
+10:11:10,295 root INFO timestep: 1024000, acc_reward: 420.59
+10:11:12,174 root INFO timestep: 1025000, acc_reward: 418.80
+10:11:14,59 root INFO timestep: 1026000, acc_reward: 422.46
+10:11:15,943 root INFO timestep: 1027000, acc_reward: 422.58
+10:11:17,823 root INFO timestep: 1028000, acc_reward: 417.07
+10:11:19,732 root INFO timestep: 1029000, acc_reward: 427.73
+10:11:21,616 root INFO timestep: 1030000, acc_reward: 419.33
+10:11:23,498 root INFO timestep: 1031000, acc_reward: 417.08
+10:11:48,333 root INFO timestep: 1032000, acc_reward: 367.17
+10:11:50,114 root INFO timestep: 1033000, acc_reward: 367.21
+10:11:51,899 root INFO timestep: 1034000, acc_reward: 368.79
+10:11:53,683 root INFO timestep: 1035000, acc_reward: 368.88
+10:11:55,460 root INFO timestep: 1036000, acc_reward: 367.57
+10:11:57,238 root INFO timestep: 1037000, acc_reward: 367.71
+10:11:59,19 root INFO timestep: 1038000, acc_reward: 368.64
+10:12:23,785 root INFO timestep: 1039000, acc_reward: 384.25
+10:12:25,555 root INFO timestep: 1040000, acc_reward: 383.04
+10:12:27,335 root INFO timestep: 1041000, acc_reward: 384.58
+10:12:29,114 root INFO timestep: 1042000, acc_reward: 386.81
+10:12:30,888 root INFO timestep: 1043000, acc_reward: 384.83
+10:12:32,661 root INFO timestep: 1044000, acc_reward: 383.06
+10:12:34,435 root INFO timestep: 1045000, acc_reward: 384.91
+10:12:59,648 root INFO timestep: 1046000, acc_reward: 316.41
+10:13:01,292 root INFO timestep: 1047000, acc_reward: 315.71
+10:13:02,898 root INFO timestep: 1048000, acc_reward: 315.60
+10:13:04,564 root INFO timestep: 1049000, acc_reward: 316.05
+10:13:06,208 root INFO timestep: 1050000, acc_reward: 315.80
+10:13:07,829 root INFO timestep: 1051000, acc_reward: 315.92
+10:13:31,794 root INFO timestep: 1052000, acc_reward: 13.81
+10:13:56,892 root INFO timestep: 1053000, acc_reward: 319.45
+10:13:58,542 root INFO timestep: 1054000, acc_reward: 322.27
+10:14:00,188 root INFO timestep: 1055000, acc_reward: 321.59
+10:14:01,837 root INFO timestep: 1056000, acc_reward: 321.92
+10:14:03,480 root INFO timestep: 1057000, acc_reward: 320.10
+10:14:05,126 root INFO timestep: 1058000, acc_reward: 321.49
+10:14:29,958 root INFO timestep: 1059000, acc_reward: 352.49
+10:14:31,641 root INFO timestep: 1060000, acc_reward: 353.86
+10:14:33,351 root INFO timestep: 1061000, acc_reward: 353.51
+10:14:35,63 root INFO timestep: 1062000, acc_reward: 355.87
+10:14:36,776 root INFO timestep: 1063000, acc_reward: 353.92
+10:14:38,495 root INFO timestep: 1064000, acc_reward: 355.98
+10:14:40,197 root INFO timestep: 1065000, acc_reward: 352.20
+10:15:04,810 root INFO timestep: 1066000, acc_reward: 335.91
+10:15:06,429 root INFO timestep: 1067000, acc_reward: 334.79
+10:15:08,87 root INFO timestep: 1068000, acc_reward: 338.10
+10:15:09,754 root INFO timestep: 1069000, acc_reward: 338.94
+10:15:11,414 root INFO timestep: 1070000, acc_reward: 336.30
+10:15:13,72 root INFO timestep: 1071000, acc_reward: 334.77
+10:15:38,607 root INFO timestep: 1072000, acc_reward: 369.85
+10:15:40,344 root INFO timestep: 1073000, acc_reward: 371.80
+10:15:42,59 root INFO timestep: 1074000, acc_reward: 375.39
+10:15:43,753 root INFO timestep: 1075000, acc_reward: 371.79
+10:15:45,447 root INFO timestep: 1076000, acc_reward: 371.25
+10:15:47,167 root INFO timestep: 1077000, acc_reward: 373.03
+10:15:48,905 root INFO timestep: 1078000, acc_reward: 374.87
+10:16:13,942 root INFO timestep: 1079000, acc_reward: 319.84
+10:16:15,601 root INFO timestep: 1080000, acc_reward: 317.32
+10:16:17,253 root INFO timestep: 1081000, acc_reward: 319.60
+10:16:18,900 root INFO timestep: 1082000, acc_reward: 317.97
+10:16:20,556 root INFO timestep: 1083000, acc_reward: 319.00
+10:16:22,215 root INFO timestep: 1084000, acc_reward: 320.13
+10:16:23,881 root INFO timestep: 1085000, acc_reward: 318.42
+10:16:47,987 root INFO timestep: 1086000, acc_reward: 103.20
+10:16:49,15 root INFO timestep: 1087000, acc_reward: 103.31
+10:16:50,0 root INFO timestep: 1088000, acc_reward: 88.54
+10:17:13,740 root INFO timestep: 1089000, acc_reward: 361.00
+10:17:15,416 root INFO timestep: 1090000, acc_reward: 362.83
+10:17:17,85 root INFO timestep: 1091000, acc_reward: 357.62
+10:17:18,758 root INFO timestep: 1092000, acc_reward: 358.87
+10:17:20,497 root INFO timestep: 1093000, acc_reward: 372.46
+10:17:22,192 root INFO timestep: 1094000, acc_reward: 368.54
+10:17:23,859 root INFO timestep: 1095000, acc_reward: 358.72
+10:17:48,916 root INFO timestep: 1096000, acc_reward: 300.54
+10:17:50,538 root INFO timestep: 1097000, acc_reward: 299.85
+10:17:52,157 root INFO timestep: 1098000, acc_reward: 298.49
+10:17:53,784 root INFO timestep: 1099000, acc_reward: 302.30
+10:17:55,404 root INFO timestep: 1100000, acc_reward: 299.98
+10:17:57,33 root INFO timestep: 1101000, acc_reward: 302.01
+10:18:22,142 root INFO timestep: 1102000, acc_reward: 369.78
+10:18:23,941 root INFO timestep: 1103000, acc_reward: 372.57
+10:18:25,739 root INFO timestep: 1104000, acc_reward: 372.17
+10:18:27,523 root INFO timestep: 1105000, acc_reward: 368.50
+10:18:29,290 root INFO timestep: 1106000, acc_reward: 358.69
+10:18:31,87 root INFO timestep: 1107000, acc_reward: 371.98
+10:18:32,885 root INFO timestep: 1108000, acc_reward: 372.80
+10:18:57,677 root INFO timestep: 1109000, acc_reward: 316.43
+10:18:59,311 root INFO timestep: 1110000, acc_reward: 310.66
+10:19:00,933 root INFO timestep: 1111000, acc_reward: 306.70
+10:19:02,567 root INFO timestep: 1112000, acc_reward: 311.82
+10:19:04,203 root INFO timestep: 1113000, acc_reward: 311.90
+10:19:05,846 root INFO timestep: 1114000, acc_reward: 312.95
+10:19:07,480 root INFO timestep: 1115000, acc_reward: 310.81
+10:19:32,965 root INFO timestep: 1116000, acc_reward: 363.32
+10:19:34,706 root INFO timestep: 1117000, acc_reward: 363.31
+10:19:36,450 root INFO timestep: 1118000, acc_reward: 360.92
+10:19:38,198 root INFO timestep: 1119000, acc_reward: 364.38
+10:19:39,948 root INFO timestep: 1120000, acc_reward: 363.44
+10:19:41,696 root INFO timestep: 1121000, acc_reward: 361.51
+10:20:06,182 root INFO timestep: 1122000, acc_reward: 362.13
+10:20:08,9 root INFO timestep: 1123000, acc_reward: 362.92
+10:20:09,810 root INFO timestep: 1124000, acc_reward: 358.87
+10:20:11,619 root INFO timestep: 1125000, acc_reward: 359.98
+10:20:13,369 root INFO timestep: 1126000, acc_reward: 360.97
+10:20:15,146 root INFO timestep: 1127000, acc_reward: 362.54
+10:20:16,953 root INFO timestep: 1128000, acc_reward: 358.61
+10:20:18,753 root INFO timestep: 1129000, acc_reward: 357.64
+10:20:43,556 root INFO timestep: 1130000, acc_reward: 343.94
+10:20:45,279 root INFO timestep: 1131000, acc_reward: 342.04
+10:20:46,970 root INFO timestep: 1132000, acc_reward: 340.67
+10:20:48,682 root INFO timestep: 1133000, acc_reward: 340.72
+10:20:50,392 root INFO timestep: 1134000, acc_reward: 339.51
+10:20:52,105 root INFO timestep: 1135000, acc_reward: 341.21
+10:20:53,810 root INFO timestep: 1136000, acc_reward: 340.12
+10:21:19,692 root INFO timestep: 1137000, acc_reward: 462.88
+10:21:21,751 root INFO timestep: 1138000, acc_reward: 471.31
+10:21:23,799 root INFO timestep: 1139000, acc_reward: 469.05
+10:21:25,884 root INFO timestep: 1140000, acc_reward: 484.07
+10:21:27,895 root INFO timestep: 1141000, acc_reward: 447.74
+10:21:29,910 root INFO timestep: 1142000, acc_reward: 465.05
+10:21:31,976 root INFO timestep: 1143000, acc_reward: 472.93
+10:21:34,23 root INFO timestep: 1144000, acc_reward: 463.72
+10:21:59,202 root INFO timestep: 1145000, acc_reward: 408.91
+10:22:01,92 root INFO timestep: 1146000, acc_reward: 412.31
+10:22:02,949 root INFO timestep: 1147000, acc_reward: 411.61
+10:22:04,845 root INFO timestep: 1148000, acc_reward: 411.03
+10:22:06,737 root INFO timestep: 1149000, acc_reward: 411.53
+10:22:08,616 root INFO timestep: 1150000, acc_reward: 407.95
+10:22:10,506 root INFO timestep: 1151000, acc_reward: 410.93
+10:22:12,393 root INFO timestep: 1152000, acc_reward: 411.06
+10:22:37,260 root INFO timestep: 1153000, acc_reward: 351.93
+10:22:39,33 root INFO timestep: 1154000, acc_reward: 350.31
+10:22:40,804 root INFO timestep: 1155000, acc_reward: 349.90
+10:22:42,575 root INFO timestep: 1156000, acc_reward: 350.11
+10:22:44,349 root INFO timestep: 1157000, acc_reward: 350.85
+10:22:46,121 root INFO timestep: 1158000, acc_reward: 349.08
+10:22:47,888 root INFO timestep: 1159000, acc_reward: 348.49
+10:23:13,934 root INFO timestep: 1160000, acc_reward: 475.86
+10:23:15,934 root INFO timestep: 1161000, acc_reward: 461.40
+10:23:17,981 root INFO timestep: 1162000, acc_reward: 469.39
+10:23:19,984 root INFO timestep: 1163000, acc_reward: 485.39
+10:23:21,956 root INFO timestep: 1164000, acc_reward: 460.88
+10:23:23,985 root INFO timestep: 1165000, acc_reward: 481.51
+10:23:25,969 root INFO timestep: 1166000, acc_reward: 481.93
+10:23:27,947 root INFO timestep: 1167000, acc_reward: 469.82
+10:23:29,948 root INFO timestep: 1168000, acc_reward: 467.38
+10:23:55,22 root INFO timestep: 1169000, acc_reward: 460.09
+10:23:56,977 root INFO timestep: 1170000, acc_reward: 454.82
+10:23:58,942 root INFO timestep: 1171000, acc_reward: 467.13
+10:24:00,864 root INFO timestep: 1172000, acc_reward: 461.29
+10:24:02,784 root INFO timestep: 1173000, acc_reward: 460.03
+10:24:04,734 root INFO timestep: 1174000, acc_reward: 461.63
+10:24:06,675 root INFO timestep: 1175000, acc_reward: 463.24
+10:24:08,665 root INFO timestep: 1176000, acc_reward: 458.97
+10:24:34,101 root INFO timestep: 1177000, acc_reward: 336.95
+10:24:35,837 root INFO timestep: 1178000, acc_reward: 375.59
+10:24:37,641 root INFO timestep: 1179000, acc_reward: 407.96
+10:24:39,413 root INFO timestep: 1180000, acc_reward: 386.43
+10:24:41,172 root INFO timestep: 1181000, acc_reward: 380.47
+10:24:43,11 root INFO timestep: 1182000, acc_reward: 412.15
+10:24:44,754 root INFO timestep: 1183000, acc_reward: 368.53
+10:25:10,234 root INFO timestep: 1184000, acc_reward: 503.32
+10:25:12,244 root INFO timestep: 1185000, acc_reward: 497.50
+10:25:14,283 root INFO timestep: 1186000, acc_reward: 498.77
+10:25:16,327 root INFO timestep: 1187000, acc_reward: 505.26
+10:25:18,370 root INFO timestep: 1188000, acc_reward: 498.05
+10:25:20,382 root INFO timestep: 1189000, acc_reward: 496.94
+10:25:22,439 root INFO timestep: 1190000, acc_reward: 504.31
+10:25:24,508 root INFO timestep: 1191000, acc_reward: 499.08
+10:25:26,581 root INFO timestep: 1192000, acc_reward: 505.09
+10:25:51,676 root INFO timestep: 1193000, acc_reward: 381.16
+10:25:53,391 root INFO timestep: 1194000, acc_reward: 371.24
+10:25:55,130 root INFO timestep: 1195000, acc_reward: 385.57
+10:25:56,849 root INFO timestep: 1196000, acc_reward: 370.95
+10:25:58,633 root INFO timestep: 1197000, acc_reward: 375.32
+10:26:00,390 root INFO timestep: 1198000, acc_reward: 375.12
+10:26:02,179 root INFO timestep: 1199000, acc_reward: 383.20
+10:26:28,97 root INFO timestep: 1200000, acc_reward: 350.53
+10:26:29,817 root INFO timestep: 1201000, acc_reward: 350.62
+10:26:31,539 root INFO timestep: 1202000, acc_reward: 350.08
+10:26:33,269 root INFO timestep: 1203000, acc_reward: 353.38
+10:26:35,13 root INFO timestep: 1204000, acc_reward: 357.60
+10:26:36,729 root INFO timestep: 1205000, acc_reward: 347.91
+10:26:38,449 root INFO timestep: 1206000, acc_reward: 351.22
+10:27:03,888 root INFO timestep: 1207000, acc_reward: 388.28
+10:27:05,718 root INFO timestep: 1208000, acc_reward: 387.85
+10:27:07,525 root INFO timestep: 1209000, acc_reward: 389.80
+10:27:09,328 root INFO timestep: 1210000, acc_reward: 390.21
+10:27:11,105 root INFO timestep: 1211000, acc_reward: 382.39
+10:27:12,891 root INFO timestep: 1212000, acc_reward: 390.39
+10:27:14,689 root INFO timestep: 1213000, acc_reward: 388.13
+10:27:39,65 root INFO timestep: 1214000, acc_reward: 355.60
+10:27:40,814 root INFO timestep: 1215000, acc_reward: 354.77
+10:27:42,559 root INFO timestep: 1216000, acc_reward: 351.74
+10:27:44,333 root INFO timestep: 1217000, acc_reward: 360.86
+10:27:46,87 root INFO timestep: 1218000, acc_reward: 358.43
+10:27:47,840 root INFO timestep: 1219000, acc_reward: 354.93
+10:27:49,616 root INFO timestep: 1220000, acc_reward: 359.35
+10:28:14,892 root INFO timestep: 1221000, acc_reward: 283.99
+10:28:16,445 root INFO timestep: 1222000, acc_reward: 270.27
+10:28:18,64 root INFO timestep: 1223000, acc_reward: 289.24
+10:28:19,709 root INFO timestep: 1224000, acc_reward: 301.33
+10:28:21,312 root INFO timestep: 1225000, acc_reward: 289.93
+10:28:22,904 root INFO timestep: 1226000, acc_reward: 280.80
+10:28:24,561 root INFO timestep: 1227000, acc_reward: 305.14
+10:28:48,768 root INFO timestep: 1228000, acc_reward: 339.42
+10:28:50,484 root INFO timestep: 1229000, acc_reward: 334.01
+10:28:52,230 root INFO timestep: 1230000, acc_reward: 343.41
+10:28:53,962 root INFO timestep: 1231000, acc_reward: 337.20
+10:28:55,729 root INFO timestep: 1232000, acc_reward: 349.81
+10:28:57,491 root INFO timestep: 1233000, acc_reward: 347.31
+10:28:59,263 root INFO timestep: 1234000, acc_reward: 353.63
+10:29:24,646 root INFO timestep: 1235000, acc_reward: 359.65
+10:29:26,439 root INFO timestep: 1236000, acc_reward: 364.07
+10:29:28,216 root INFO timestep: 1237000, acc_reward: 360.44
+10:29:29,987 root INFO timestep: 1238000, acc_reward: 362.69
+10:29:31,764 root INFO timestep: 1239000, acc_reward: 370.31
+10:29:33,528 root INFO timestep: 1240000, acc_reward: 360.66
+10:29:35,277 root INFO timestep: 1241000, acc_reward: 365.30
+10:30:00,894 root INFO timestep: 1242000, acc_reward: 443.57
+10:30:02,928 root INFO timestep: 1243000, acc_reward: 449.95
+10:30:04,922 root INFO timestep: 1244000, acc_reward: 432.74
+10:30:06,948 root INFO timestep: 1245000, acc_reward: 449.88
+10:30:08,943 root INFO timestep: 1246000, acc_reward: 433.49
+10:30:10,951 root INFO timestep: 1247000, acc_reward: 439.70
+10:30:12,960 root INFO timestep: 1248000, acc_reward: 440.33
+10:30:14,915 root INFO timestep: 1249000, acc_reward: 419.63
+10:30:16,887 root INFO timestep: 1250000, acc_reward: 433.82
+10:30:42,109 root INFO timestep: 1251000, acc_reward: 568.92
+10:30:44,398 root INFO timestep: 1252000, acc_reward: 562.66
+10:30:46,495 root INFO timestep: 1253000, acc_reward: 497.41
+10:30:48,714 root INFO timestep: 1254000, acc_reward: 553.14
+10:30:50,962 root INFO timestep: 1255000, acc_reward: 552.35
+10:30:53,196 root INFO timestep: 1256000, acc_reward: 531.83
+10:30:55,452 root INFO timestep: 1257000, acc_reward: 531.06
+10:30:57,724 root INFO timestep: 1258000, acc_reward: 549.66
+10:30:59,917 root INFO timestep: 1259000, acc_reward: 519.13
+10:31:26,227 root INFO timestep: 1260000, acc_reward: 652.09
+10:31:28,478 root INFO timestep: 1261000, acc_reward: 598.53
+10:31:30,800 root INFO timestep: 1262000, acc_reward: 617.42
+10:31:33,225 root INFO timestep: 1263000, acc_reward: 642.88
+10:31:35,587 root INFO timestep: 1264000, acc_reward: 617.56
+10:31:37,919 root INFO timestep: 1265000, acc_reward: 612.90
+10:31:40,216 root INFO timestep: 1266000, acc_reward: 594.10
+10:31:42,481 root INFO timestep: 1267000, acc_reward: 581.71
+10:31:44,819 root INFO timestep: 1268000, acc_reward: 619.78
+10:31:47,67 root INFO timestep: 1269000, acc_reward: 576.91
+10:31:49,359 root INFO timestep: 1270000, acc_reward: 597.93
+10:32:15,13 root INFO timestep: 1271000, acc_reward: 399.35
+10:32:16,843 root INFO timestep: 1272000, acc_reward: 398.09
+10:32:18,717 root INFO timestep: 1273000, acc_reward: 406.80
+10:32:20,583 root INFO timestep: 1274000, acc_reward: 402.49
+10:32:22,426 root INFO timestep: 1275000, acc_reward: 395.52
+10:32:24,284 root INFO timestep: 1276000, acc_reward: 400.49
+10:32:26,127 root INFO timestep: 1277000, acc_reward: 393.91
+10:32:51,252 root INFO timestep: 1278000, acc_reward: 381.96
+10:32:53,86 root INFO timestep: 1279000, acc_reward: 384.56
+10:32:54,923 root INFO timestep: 1280000, acc_reward: 381.34
+10:32:56,722 root INFO timestep: 1281000, acc_reward: 377.33
+10:32:58,504 root INFO timestep: 1282000, acc_reward: 380.67
+10:33:00,327 root INFO timestep: 1283000, acc_reward: 386.07
+10:33:02,146 root INFO timestep: 1284000, acc_reward: 384.48
+10:33:03,988 root INFO timestep: 1285000, acc_reward: 388.34
+10:33:28,827 root INFO timestep: 1286000, acc_reward: 296.06
+10:33:30,433 root INFO timestep: 1287000, acc_reward: 282.31
+10:33:32,43 root INFO timestep: 1288000, acc_reward: 280.12
+10:33:33,614 root INFO timestep: 1289000, acc_reward: 272.86
+10:33:35,202 root INFO timestep: 1290000, acc_reward: 278.18
+10:33:36,794 root INFO timestep: 1291000, acc_reward: 278.05
+10:34:02,629 root INFO timestep: 1292000, acc_reward: 447.91
+10:34:04,576 root INFO timestep: 1293000, acc_reward: 439.85
+10:34:06,500 root INFO timestep: 1294000, acc_reward: 428.18
+10:34:08,516 root INFO timestep: 1295000, acc_reward: 450.30
+10:34:10,468 root INFO timestep: 1296000, acc_reward: 438.85
+10:34:12,426 root INFO timestep: 1297000, acc_reward: 448.31
+10:34:14,368 root INFO timestep: 1298000, acc_reward: 441.52
+10:34:16,323 root INFO timestep: 1299000, acc_reward: 443.16
+10:34:18,303 root INFO timestep: 1300000, acc_reward: 453.04
+10:34:42,955 root INFO timestep: 1301000, acc_reward: 542.33
+10:34:45,109 root INFO timestep: 1302000, acc_reward: 561.81
+10:34:47,200 root INFO timestep: 1303000, acc_reward: 553.38
+10:34:49,278 root INFO timestep: 1304000, acc_reward: 546.16
+10:34:51,382 root INFO timestep: 1305000, acc_reward: 559.01
+10:34:53,466 root INFO timestep: 1306000, acc_reward: 548.38
+10:34:55,532 root INFO timestep: 1307000, acc_reward: 537.94
+10:34:57,635 root INFO timestep: 1308000, acc_reward: 558.43
+10:34:59,742 root INFO timestep: 1309000, acc_reward: 556.17
+10:35:24,941 root INFO timestep: 1310000, acc_reward: 455.13
+10:35:26,894 root INFO timestep: 1311000, acc_reward: 448.69
+10:35:28,836 root INFO timestep: 1312000, acc_reward: 444.28
+10:35:30,817 root INFO timestep: 1313000, acc_reward: 461.69
+10:35:32,801 root INFO timestep: 1314000, acc_reward: 460.78
+10:35:34,784 root INFO timestep: 1315000, acc_reward: 461.44
+10:35:36,741 root INFO timestep: 1316000, acc_reward: 461.41
+10:35:38,663 root INFO timestep: 1317000, acc_reward: 448.46
+10:35:40,624 root INFO timestep: 1318000, acc_reward: 448.68
+10:36:07,230 root INFO timestep: 1319000, acc_reward: 446.96
+10:36:09,213 root INFO timestep: 1320000, acc_reward: 457.03
+10:36:11,158 root INFO timestep: 1321000, acc_reward: 443.48
+10:36:13,141 root INFO timestep: 1322000, acc_reward: 458.46
+10:36:15,69 root INFO timestep: 1323000, acc_reward: 448.74
+10:36:17,24 root INFO timestep: 1324000, acc_reward: 445.28
+10:36:18,957 root INFO timestep: 1325000, acc_reward: 450.57
+10:36:20,855 root INFO timestep: 1326000, acc_reward: 438.30
+10:36:46,433 root INFO timestep: 1327000, acc_reward: 601.61
+10:36:48,688 root INFO timestep: 1328000, acc_reward: 609.31
+10:36:50,981 root INFO timestep: 1329000, acc_reward: 605.04
+10:36:53,294 root INFO timestep: 1330000, acc_reward: 603.80
+10:36:55,607 root INFO timestep: 1331000, acc_reward: 609.14
+10:36:57,902 root INFO timestep: 1332000, acc_reward: 604.33
+10:37:00,188 root INFO timestep: 1333000, acc_reward: 609.05
+10:37:02,467 root INFO timestep: 1334000, acc_reward: 600.75
+10:37:04,729 root INFO timestep: 1335000, acc_reward: 594.91
+10:37:07,5 root INFO timestep: 1336000, acc_reward: 601.77
+10:37:31,696 root INFO timestep: 1337000, acc_reward: 415.90
+10:37:33,384 root INFO timestep: 1338000, acc_reward: 372.76
+10:37:35,275 root INFO timestep: 1339000, acc_reward: 462.80
+10:37:37,175 root INFO timestep: 1340000, acc_reward: 464.79
+10:37:38,964 root INFO timestep: 1341000, acc_reward: 417.71
+10:37:40,817 root INFO timestep: 1342000, acc_reward: 441.79
+10:37:42,903 root INFO timestep: 1343000, acc_reward: 501.13
+10:37:44,907 root INFO timestep: 1344000, acc_reward: 503.86
+10:38:09,372 root INFO timestep: 1345000, acc_reward: 213.56
+10:38:10,781 root INFO timestep: 1346000, acc_reward: 226.05
+10:38:12,234 root INFO timestep: 1347000, acc_reward: 188.87
+10:38:13,606 root INFO timestep: 1348000, acc_reward: 200.68
+10:38:15,3 root INFO timestep: 1349000, acc_reward: 212.88
+10:38:41,268 root INFO timestep: 1350000, acc_reward: 700.82
+10:38:43,707 root INFO timestep: 1351000, acc_reward: 696.22
+10:38:46,151 root INFO timestep: 1352000, acc_reward: 696.87
+10:38:48,584 root INFO timestep: 1353000, acc_reward: 701.10
+10:38:51,20 root INFO timestep: 1354000, acc_reward: 693.09
+10:38:53,449 root INFO timestep: 1355000, acc_reward: 696.47
+10:38:55,899 root INFO timestep: 1356000, acc_reward: 699.38
+10:38:58,334 root INFO timestep: 1357000, acc_reward: 699.23
+10:39:00,758 root INFO timestep: 1358000, acc_reward: 681.72
+10:39:03,219 root INFO timestep: 1359000, acc_reward: 699.54
+10:39:28,212 root INFO timestep: 1360000, acc_reward: 537.77
+10:39:30,424 root INFO timestep: 1361000, acc_reward: 534.80
+10:39:32,641 root INFO timestep: 1362000, acc_reward: 537.83
+10:39:34,858 root INFO timestep: 1363000, acc_reward: 534.66
+10:39:37,61 root INFO timestep: 1364000, acc_reward: 535.02
+10:39:39,394 root INFO timestep: 1365000, acc_reward: 538.25
+10:39:41,731 root INFO timestep: 1366000, acc_reward: 537.51
+10:39:43,941 root INFO timestep: 1367000, acc_reward: 538.77
+10:39:46,172 root INFO timestep: 1368000, acc_reward: 537.06
+10:39:48,382 root INFO timestep: 1369000, acc_reward: 538.58
+10:40:19,281 root INFO timestep: 1370000, acc_reward: 615.95
+10:40:21,678 root INFO timestep: 1371000, acc_reward: 601.15
+10:40:24,92 root INFO timestep: 1372000, acc_reward: 627.23
+10:40:26,477 root INFO timestep: 1373000, acc_reward: 621.29
+10:40:28,847 root INFO timestep: 1374000, acc_reward: 607.02
+10:40:31,212 root INFO timestep: 1375000, acc_reward: 594.07
+10:40:33,575 root INFO timestep: 1376000, acc_reward: 593.58
+10:40:36,170 root INFO timestep: 1377000, acc_reward: 622.87
+10:40:38,603 root INFO timestep: 1378000, acc_reward: 588.25
+10:40:40,992 root INFO timestep: 1379000, acc_reward: 594.78
+10:40:43,378 root INFO timestep: 1380000, acc_reward: 601.36
+10:41:08,37 root INFO timestep: 1381000, acc_reward: 401.23
+10:41:10,109 root INFO timestep: 1382000, acc_reward: 516.39
+10:41:11,968 root INFO timestep: 1383000, acc_reward: 407.70
+10:41:14,17 root INFO timestep: 1384000, acc_reward: 502.34
+10:41:16,132 root INFO timestep: 1385000, acc_reward: 538.53
+10:41:18,34 root INFO timestep: 1386000, acc_reward: 438.96
+10:41:19,984 root INFO timestep: 1387000, acc_reward: 465.92
+10:41:22,203 root INFO timestep: 1388000, acc_reward: 608.76
+10:41:24,201 root INFO timestep: 1389000, acc_reward: 492.20
+10:41:50,701 root INFO timestep: 1390000, acc_reward: 786.36
+10:41:53,228 root INFO timestep: 1391000, acc_reward: 777.93
+10:41:55,801 root INFO timestep: 1392000, acc_reward: 776.68
+10:41:58,356 root INFO timestep: 1393000, acc_reward: 762.69
+10:42:00,893 root INFO timestep: 1394000, acc_reward: 763.43
+10:42:03,509 root INFO timestep: 1395000, acc_reward: 815.20
+10:42:06,85 root INFO timestep: 1396000, acc_reward: 771.13
+10:42:08,726 root INFO timestep: 1397000, acc_reward: 800.62
+10:42:11,345 root INFO timestep: 1398000, acc_reward: 790.35
+10:42:13,932 root INFO timestep: 1399000, acc_reward: 772.41
+10:42:16,513 root INFO timestep: 1400000, acc_reward: 798.42
+10:42:19,153 root INFO timestep: 1401000, acc_reward: 800.82
+10:42:45,915 root INFO timestep: 1402000, acc_reward: 566.10
+10:42:48,217 root INFO timestep: 1403000, acc_reward: 577.48
+10:42:50,497 root INFO timestep: 1404000, acc_reward: 571.99
+10:42:52,764 root INFO timestep: 1405000, acc_reward: 565.75
+10:42:55,53 root INFO timestep: 1406000, acc_reward: 577.38
+10:42:57,318 root INFO timestep: 1407000, acc_reward: 570.65
+10:42:59,549 root INFO timestep: 1408000, acc_reward: 567.15
+10:43:01,816 root INFO timestep: 1409000, acc_reward: 563.53
+10:43:04,59 root INFO timestep: 1410000, acc_reward: 563.66
+10:43:29,663 root INFO timestep: 1411000, acc_reward: 544.44
+10:43:31,879 root INFO timestep: 1412000, acc_reward: 544.49
+10:43:34,112 root INFO timestep: 1413000, acc_reward: 548.68
+10:43:36,360 root INFO timestep: 1414000, acc_reward: 552.38
+10:43:38,577 root INFO timestep: 1415000, acc_reward: 555.77
+10:43:40,784 root INFO timestep: 1416000, acc_reward: 544.95
+10:43:43,52 root INFO timestep: 1417000, acc_reward: 565.41
+10:43:45,259 root INFO timestep: 1418000, acc_reward: 552.37
+10:43:47,505 root INFO timestep: 1419000, acc_reward: 564.31
+10:43:49,753 root INFO timestep: 1420000, acc_reward: 539.06
+10:44:14,938 root INFO timestep: 1421000, acc_reward: 518.55
+10:44:17,73 root INFO timestep: 1422000, acc_reward: 513.62
+10:44:19,196 root INFO timestep: 1423000, acc_reward: 509.23
+10:44:21,322 root INFO timestep: 1424000, acc_reward: 511.87
+10:44:23,471 root INFO timestep: 1425000, acc_reward: 514.57
+10:44:25,627 root INFO timestep: 1426000, acc_reward: 513.01
+10:44:27,805 root INFO timestep: 1427000, acc_reward: 516.45
+10:44:29,960 root INFO timestep: 1428000, acc_reward: 519.33
+10:44:32,98 root INFO timestep: 1429000, acc_reward: 512.76
+10:44:57,595 root INFO timestep: 1430000, acc_reward: 506.68
+10:44:59,706 root INFO timestep: 1431000, acc_reward: 507.78
+10:45:01,826 root INFO timestep: 1432000, acc_reward: 513.44
+10:45:03,861 root INFO timestep: 1433000, acc_reward: 487.02
+10:45:05,888 root INFO timestep: 1434000, acc_reward: 484.61
+10:45:08,16 root INFO timestep: 1435000, acc_reward: 511.50
+10:45:10,157 root INFO timestep: 1436000, acc_reward: 512.82
+10:45:12,298 root INFO timestep: 1437000, acc_reward: 513.71
+10:45:14,469 root INFO timestep: 1438000, acc_reward: 513.16
+10:45:39,186 root INFO timestep: 1439000, acc_reward: 487.87
+10:45:41,261 root INFO timestep: 1440000, acc_reward: 498.66
+10:45:43,306 root INFO timestep: 1441000, acc_reward: 490.61
+10:45:45,333 root INFO timestep: 1442000, acc_reward: 483.44
+10:45:47,418 root INFO timestep: 1443000, acc_reward: 499.92
+10:45:49,455 root INFO timestep: 1444000, acc_reward: 490.43
+10:45:51,437 root INFO timestep: 1445000, acc_reward: 481.84
+10:45:53,523 root INFO timestep: 1446000, acc_reward: 498.67
+10:45:55,609 root INFO timestep: 1447000, acc_reward: 502.14
+10:46:21,62 root INFO timestep: 1448000, acc_reward: 512.07
+10:46:23,204 root INFO timestep: 1449000, acc_reward: 509.24
+10:46:25,278 root INFO timestep: 1450000, acc_reward: 493.91
+10:46:27,372 root INFO timestep: 1451000, acc_reward: 503.80
+10:46:29,549 root INFO timestep: 1452000, acc_reward: 513.92
+10:46:31,699 root INFO timestep: 1453000, acc_reward: 517.64
+10:46:33,854 root INFO timestep: 1454000, acc_reward: 516.74
+10:46:35,974 root INFO timestep: 1455000, acc_reward: 505.61
+10:46:38,81 root INFO timestep: 1456000, acc_reward: 500.04
+10:47:03,62 root INFO timestep: 1457000, acc_reward: 506.88
+10:47:05,191 root INFO timestep: 1458000, acc_reward: 521.80
+10:47:07,301 root INFO timestep: 1459000, acc_reward: 517.03
+10:47:09,518 root INFO timestep: 1460000, acc_reward: 531.40
+10:47:11,727 root INFO timestep: 1461000, acc_reward: 524.95
+10:47:13,888 root INFO timestep: 1462000, acc_reward: 512.66
+10:47:16,71 root INFO timestep: 1463000, acc_reward: 519.59
+10:47:18,286 root INFO timestep: 1464000, acc_reward: 532.24
+10:47:20,470 root INFO timestep: 1465000, acc_reward: 506.03
+10:47:22,682 root INFO timestep: 1466000, acc_reward: 520.57
+10:47:48,259 root INFO timestep: 1467000, acc_reward: 541.18
+10:47:50,455 root INFO timestep: 1468000, acc_reward: 540.57
+10:47:52,627 root INFO timestep: 1469000, acc_reward: 533.80
+10:47:54,804 root INFO timestep: 1470000, acc_reward: 537.27
+10:47:56,989 root INFO timestep: 1471000, acc_reward: 546.06
+10:47:59,122 root INFO timestep: 1472000, acc_reward: 528.78
+10:48:01,250 root INFO timestep: 1473000, acc_reward: 525.02
+10:48:03,433 root INFO timestep: 1474000, acc_reward: 537.62
+10:48:05,571 root INFO timestep: 1475000, acc_reward: 534.00
+10:48:07,732 root INFO timestep: 1476000, acc_reward: 540.54
+10:48:32,988 root INFO timestep: 1477000, acc_reward: 627.28
+10:48:35,408 root INFO timestep: 1478000, acc_reward: 625.71
+10:48:37,846 root INFO timestep: 1479000, acc_reward: 626.89
+10:48:40,283 root INFO timestep: 1480000, acc_reward: 623.72
+10:48:42,750 root INFO timestep: 1481000, acc_reward: 623.57
+10:48:45,192 root INFO timestep: 1482000, acc_reward: 625.25
+10:48:47,646 root INFO timestep: 1483000, acc_reward: 632.67
+10:48:50,75 root INFO timestep: 1484000, acc_reward: 620.68
+10:48:52,517 root INFO timestep: 1485000, acc_reward: 626.02
+10:48:54,964 root INFO timestep: 1486000, acc_reward: 623.70
+10:49:20,820 root INFO timestep: 1487000, acc_reward: 635.50
+10:49:23,45 root INFO timestep: 1488000, acc_reward: 594.29
+10:49:25,407 root INFO timestep: 1489000, acc_reward: 640.59
+10:49:27,844 root INFO timestep: 1490000, acc_reward: 665.23
+10:49:30,105 root INFO timestep: 1491000, acc_reward: 590.89
+10:49:32,459 root INFO timestep: 1492000, acc_reward: 637.49
+10:49:34,888 root INFO timestep: 1493000, acc_reward: 674.61
+10:49:37,104 root INFO timestep: 1494000, acc_reward: 585.00
+10:49:39,381 root INFO timestep: 1495000, acc_reward: 617.45
+10:50:05,889 root INFO timestep: 1496000, acc_reward: 798.06
+10:50:08,531 root INFO timestep: 1497000, acc_reward: 785.42
+10:50:11,171 root INFO timestep: 1498000, acc_reward: 802.63
+10:50:13,814 root INFO timestep: 1499000, acc_reward: 786.63
+10:50:16,455 root INFO timestep: 1500000, acc_reward: 790.02
+10:50:19,66 root INFO timestep: 1501000, acc_reward: 793.05
+10:50:21,620 root INFO timestep: 1502000, acc_reward: 782.77
+10:50:24,240 root INFO timestep: 1503000, acc_reward: 788.25
+10:50:26,897 root INFO timestep: 1504000, acc_reward: 792.95
+10:50:29,544 root INFO timestep: 1505000, acc_reward: 789.79
+10:50:32,115 root INFO timestep: 1506000, acc_reward: 783.72
+10:50:34,737 root INFO timestep: 1507000, acc_reward: 803.13
+10:51:01,41 root INFO timestep: 1508000, acc_reward: 675.05
+10:51:03,289 root INFO timestep: 1509000, acc_reward: 577.95
+10:51:05,800 root INFO timestep: 1510000, acc_reward: 689.25
+10:51:08,135 root INFO timestep: 1511000, acc_reward: 616.37
+10:51:10,535 root INFO timestep: 1512000, acc_reward: 662.17
+10:51:12,606 root INFO timestep: 1513000, acc_reward: 512.53
+10:51:14,793 root INFO timestep: 1514000, acc_reward: 554.08
+10:51:17,187 root INFO timestep: 1515000, acc_reward: 639.23
+10:51:19,501 root INFO timestep: 1516000, acc_reward: 626.81
+10:51:22,32 root INFO timestep: 1517000, acc_reward: 622.51
+10:51:47,194 root INFO timestep: 1518000, acc_reward: 825.28
+10:51:50,45 root INFO timestep: 1519000, acc_reward: 875.14
+10:51:52,855 root INFO timestep: 1520000, acc_reward: 844.29
+10:51:55,547 root INFO timestep: 1521000, acc_reward: 825.81
+10:51:58,275 root INFO timestep: 1522000, acc_reward: 842.49
+10:52:01,196 root INFO timestep: 1523000, acc_reward: 879.41
+10:52:03,960 root INFO timestep: 1524000, acc_reward: 831.43
+10:52:06,814 root INFO timestep: 1525000, acc_reward: 860.22
+10:52:09,585 root INFO timestep: 1526000, acc_reward: 829.91
+10:52:12,425 root INFO timestep: 1527000, acc_reward: 854.21
+10:52:15,189 root INFO timestep: 1528000, acc_reward: 827.06
+10:52:17,994 root INFO timestep: 1529000, acc_reward: 844.90
+10:52:20,861 root INFO timestep: 1530000, acc_reward: 845.10
+10:52:46,160 root INFO timestep: 1531000, acc_reward: 650.06
+10:52:48,181 root INFO timestep: 1532000, acc_reward: 538.27
+10:52:50,272 root INFO timestep: 1533000, acc_reward: 566.38
+10:52:52,500 root INFO timestep: 1534000, acc_reward: 611.28
+10:52:54,626 root INFO timestep: 1535000, acc_reward: 582.03
+10:52:56,925 root INFO timestep: 1536000, acc_reward: 654.67
+10:52:59,111 root INFO timestep: 1537000, acc_reward: 607.89
+10:53:01,226 root INFO timestep: 1538000, acc_reward: 597.64
+10:53:03,301 root INFO timestep: 1539000, acc_reward: 588.83
+10:53:05,609 root INFO timestep: 1540000, acc_reward: 683.58
+10:53:32,46 root INFO timestep: 1541000, acc_reward: 704.53
+10:53:34,717 root INFO timestep: 1542000, acc_reward: 791.17
+10:53:37,359 root INFO timestep: 1543000, acc_reward: 775.20
+10:53:39,913 root INFO timestep: 1544000, acc_reward: 728.02
+10:53:42,516 root INFO timestep: 1545000, acc_reward: 762.56
+10:53:45,175 root INFO timestep: 1546000, acc_reward: 780.48
+10:53:47,667 root INFO timestep: 1547000, acc_reward: 713.50
+10:53:50,188 root INFO timestep: 1548000, acc_reward: 725.94
+10:53:52,829 root INFO timestep: 1549000, acc_reward: 771.08
+10:53:55,218 root INFO timestep: 1550000, acc_reward: 671.97
+10:53:57,782 root INFO timestep: 1551000, acc_reward: 749.34
+10:54:00,468 root INFO timestep: 1552000, acc_reward: 787.75
+10:54:25,808 root INFO timestep: 1553000, acc_reward: 599.42
+10:54:27,882 root INFO timestep: 1554000, acc_reward: 547.55
+10:54:30,0 root INFO timestep: 1555000, acc_reward: 570.58
+10:54:32,106 root INFO timestep: 1556000, acc_reward: 570.38
+10:54:34,257 root INFO timestep: 1557000, acc_reward: 587.93
+10:54:36,311 root INFO timestep: 1558000, acc_reward: 533.45
+10:54:38,415 root INFO timestep: 1559000, acc_reward: 547.17
+10:54:40,610 root INFO timestep: 1560000, acc_reward: 594.36
+10:54:42,767 root INFO timestep: 1561000, acc_reward: 580.29
+10:55:08,692 root INFO timestep: 1562000, acc_reward: 692.23
+10:55:11,1 root INFO timestep: 1563000, acc_reward: 672.16
+10:55:13,291 root INFO timestep: 1564000, acc_reward: 678.71
+10:55:15,581 root INFO timestep: 1565000, acc_reward: 680.54
+10:55:17,851 root INFO timestep: 1566000, acc_reward: 663.90
+10:55:20,137 root INFO timestep: 1567000, acc_reward: 679.49
+10:55:22,402 root INFO timestep: 1568000, acc_reward: 666.01
+10:55:24,630 root INFO timestep: 1569000, acc_reward: 663.10
+10:55:26,932 root INFO timestep: 1570000, acc_reward: 685.80
+10:55:53,189 root INFO timestep: 1571000, acc_reward: 747.47
+10:55:55,592 root INFO timestep: 1572000, acc_reward: 756.75
+10:55:58,30 root INFO timestep: 1573000, acc_reward: 766.11
+10:56:00,454 root INFO timestep: 1574000, acc_reward: 761.35
+10:56:02,970 root INFO timestep: 1575000, acc_reward: 757.07
+10:56:05,431 root INFO timestep: 1576000, acc_reward: 754.65
+10:56:07,890 root INFO timestep: 1577000, acc_reward: 757.66
+10:56:10,467 root INFO timestep: 1578000, acc_reward: 764.04
+10:56:12,936 root INFO timestep: 1579000, acc_reward: 763.89
+10:56:15,435 root INFO timestep: 1580000, acc_reward: 772.93
+10:56:17,890 root INFO timestep: 1581000, acc_reward: 757.87
+10:56:43,485 root INFO timestep: 1582000, acc_reward: 464.19
+10:56:45,235 root INFO timestep: 1583000, acc_reward: 437.35
+10:56:47,95 root INFO timestep: 1584000, acc_reward: 484.54
+10:56:48,956 root INFO timestep: 1585000, acc_reward: 483.78
+10:56:50,819 root INFO timestep: 1586000, acc_reward: 481.84
+10:56:52,707 root INFO timestep: 1587000, acc_reward: 485.09
+10:56:54,555 root INFO timestep: 1588000, acc_reward: 464.70
+10:57:19,186 root INFO timestep: 1589000, acc_reward: 637.35
+10:57:21,306 root INFO timestep: 1590000, acc_reward: 630.72
+10:57:23,464 root INFO timestep: 1591000, acc_reward: 642.55
+10:57:25,651 root INFO timestep: 1592000, acc_reward: 642.31
+10:57:27,822 root INFO timestep: 1593000, acc_reward: 633.66
+10:57:29,957 root INFO timestep: 1594000, acc_reward: 638.85
+10:57:32,87 root INFO timestep: 1595000, acc_reward: 630.34
+10:57:34,242 root INFO timestep: 1596000, acc_reward: 624.36
+10:57:36,403 root INFO timestep: 1597000, acc_reward: 624.05
+10:58:01,136 root INFO timestep: 1598000, acc_reward: 388.34
+10:58:02,913 root INFO timestep: 1599000, acc_reward: 389.54
+10:58:04,708 root INFO timestep: 1600000, acc_reward: 389.00
+10:58:06,480 root INFO timestep: 1601000, acc_reward: 391.46
+10:58:08,257 root INFO timestep: 1602000, acc_reward: 389.85
+10:58:10,50 root INFO timestep: 1603000, acc_reward: 388.30
+10:58:11,845 root INFO timestep: 1604000, acc_reward: 387.71
+10:58:36,482 root INFO timestep: 1605000, acc_reward: 345.33
+10:58:38,155 root INFO timestep: 1606000, acc_reward: 345.96
+10:58:39,815 root INFO timestep: 1607000, acc_reward: 345.89
+10:58:41,431 root INFO timestep: 1608000, acc_reward: 345.13
+10:58:43,51 root INFO timestep: 1609000, acc_reward: 346.68
+10:58:44,663 root INFO timestep: 1610000, acc_reward: 344.82
+10:58:46,314 root INFO timestep: 1611000, acc_reward: 346.63
+10:59:12,157 root INFO timestep: 1612000, acc_reward: 592.55
+10:59:14,180 root INFO timestep: 1613000, acc_reward: 608.15
+10:59:16,221 root INFO timestep: 1614000, acc_reward: 613.67
+10:59:18,298 root INFO timestep: 1615000, acc_reward: 602.54
+10:59:20,175 root INFO timestep: 1616000, acc_reward: 516.87
+10:59:22,207 root INFO timestep: 1617000, acc_reward: 614.49
+10:59:24,188 root INFO timestep: 1618000, acc_reward: 591.99
+10:59:26,227 root INFO timestep: 1619000, acc_reward: 608.17
+10:59:50,3 root INFO timestep: 1620000, acc_reward: 240.81
+10:59:51,414 root INFO timestep: 1621000, acc_reward: 284.48
+10:59:52,777 root INFO timestep: 1622000, acc_reward: 261.32
+10:59:54,143 root INFO timestep: 1623000, acc_reward: 266.27
+10:59:55,403 root INFO timestep: 1624000, acc_reward: 202.79
+11:00:20,156 root INFO timestep: 1625000, acc_reward: 433.73
+11:00:21,941 root INFO timestep: 1626000, acc_reward: 457.42
+11:00:23,751 root INFO timestep: 1627000, acc_reward: 448.58
+11:00:25,490 root INFO timestep: 1628000, acc_reward: 414.52
+11:00:27,231 root INFO timestep: 1629000, acc_reward: 429.87
+11:00:29,4 root INFO timestep: 1630000, acc_reward: 432.70
+11:00:30,791 root INFO timestep: 1631000, acc_reward: 433.23
+11:00:55,978 root INFO timestep: 1632000, acc_reward: 368.77
+11:00:57,688 root INFO timestep: 1633000, acc_reward: 356.67
+11:00:59,417 root INFO timestep: 1634000, acc_reward: 371.25
+11:01:01,138 root INFO timestep: 1635000, acc_reward: 369.09
+11:01:02,804 root INFO timestep: 1636000, acc_reward: 346.43
+11:01:04,534 root INFO timestep: 1637000, acc_reward: 376.76
+11:01:29,463 root INFO timestep: 1638000, acc_reward: 345.37
+11:01:31,131 root INFO timestep: 1639000, acc_reward: 343.86
+11:01:32,833 root INFO timestep: 1640000, acc_reward: 351.13
+11:01:34,548 root INFO timestep: 1641000, acc_reward: 363.43
+11:01:36,240 root INFO timestep: 1642000, acc_reward: 352.43
+11:01:37,927 root INFO timestep: 1643000, acc_reward: 350.58
+11:01:39,617 root INFO timestep: 1644000, acc_reward: 356.34
+11:02:04,544 root INFO timestep: 1645000, acc_reward: 388.33
+11:02:06,341 root INFO timestep: 1646000, acc_reward: 392.39
+11:02:08,130 root INFO timestep: 1647000, acc_reward: 388.47
+11:02:09,940 root INFO timestep: 1648000, acc_reward: 399.45
+11:02:11,708 root INFO timestep: 1649000, acc_reward: 391.14
+11:02:13,483 root INFO timestep: 1650000, acc_reward: 391.51
+11:02:15,355 root INFO timestep: 1651000, acc_reward: 390.58
+11:02:40,637 root INFO timestep: 1652000, acc_reward: 507.37
+11:02:42,657 root INFO timestep: 1653000, acc_reward: 527.51
+11:02:44,692 root INFO timestep: 1654000, acc_reward: 516.18
+11:02:46,743 root INFO timestep: 1655000, acc_reward: 528.91
+11:02:48,807 root INFO timestep: 1656000, acc_reward: 523.80
+11:02:50,855 root INFO timestep: 1657000, acc_reward: 525.85
+11:02:52,936 root INFO timestep: 1658000, acc_reward: 539.72
+11:02:54,965 root INFO timestep: 1659000, acc_reward: 535.51
+11:02:56,990 root INFO timestep: 1660000, acc_reward: 511.46
+11:03:22,598 root INFO timestep: 1661000, acc_reward: 577.90
+11:03:24,730 root INFO timestep: 1662000, acc_reward: 585.02
+11:03:26,870 root INFO timestep: 1663000, acc_reward: 581.16
+11:03:28,991 root INFO timestep: 1664000, acc_reward: 574.43
+11:03:31,145 root INFO timestep: 1665000, acc_reward: 597.24
+11:03:33,277 root INFO timestep: 1666000, acc_reward: 577.08
+11:03:35,389 root INFO timestep: 1667000, acc_reward: 574.34
+11:03:37,542 root INFO timestep: 1668000, acc_reward: 592.06
+11:03:39,641 root INFO timestep: 1669000, acc_reward: 573.70
+11:04:04,116 root INFO timestep: 1670000, acc_reward: 599.14
+11:04:06,265 root INFO timestep: 1671000, acc_reward: 601.99
+11:04:08,433 root INFO timestep: 1672000, acc_reward: 600.81
+11:04:10,603 root INFO timestep: 1673000, acc_reward: 601.86
+11:04:12,758 root INFO timestep: 1674000, acc_reward: 595.24
+11:04:14,933 root INFO timestep: 1675000, acc_reward: 606.96
+11:04:17,116 root INFO timestep: 1676000, acc_reward: 604.47
+11:04:19,274 root INFO timestep: 1677000, acc_reward: 599.93
+11:04:21,431 root INFO timestep: 1678000, acc_reward: 593.61
+11:04:23,600 root INFO timestep: 1679000, acc_reward: 608.13
+11:04:49,324 root INFO timestep: 1680000, acc_reward: 651.88
+11:04:51,629 root INFO timestep: 1681000, acc_reward: 638.53
+11:04:53,851 root INFO timestep: 1682000, acc_reward: 627.22
+11:04:56,170 root INFO timestep: 1683000, acc_reward: 648.87
+11:04:58,482 root INFO timestep: 1684000, acc_reward: 644.99
+11:05:00,814 root INFO timestep: 1685000, acc_reward: 650.77
+11:05:03,133 root INFO timestep: 1686000, acc_reward: 645.61
+11:05:05,393 root INFO timestep: 1687000, acc_reward: 623.29
+11:05:07,682 root INFO timestep: 1688000, acc_reward: 617.44
+11:05:10,45 root INFO timestep: 1689000, acc_reward: 651.40
+11:05:35,798 root INFO timestep: 1690000, acc_reward: 607.78
+11:05:38,71 root INFO timestep: 1691000, acc_reward: 632.89
+11:05:40,282 root INFO timestep: 1692000, acc_reward: 624.38
+11:05:42,501 root INFO timestep: 1693000, acc_reward: 625.15
+11:05:44,718 root INFO timestep: 1694000, acc_reward: 620.86
+11:05:46,925 root INFO timestep: 1695000, acc_reward: 618.96
+11:05:49,188 root INFO timestep: 1696000, acc_reward: 622.29
+11:05:51,480 root INFO timestep: 1697000, acc_reward: 625.13
+11:05:53,742 root INFO timestep: 1698000, acc_reward: 628.57
+11:05:56,1 root INFO timestep: 1699000, acc_reward: 626.38
+11:06:21,347 root INFO timestep: 1700000, acc_reward: 542.51
+11:06:23,437 root INFO timestep: 1701000, acc_reward: 554.73
+11:06:25,528 root INFO timestep: 1702000, acc_reward: 552.54
+11:06:27,593 root INFO timestep: 1703000, acc_reward: 545.89
+11:06:29,663 root INFO timestep: 1704000, acc_reward: 542.55
+11:06:31,737 root INFO timestep: 1705000, acc_reward: 544.84
+11:06:33,824 root INFO timestep: 1706000, acc_reward: 556.65
+11:06:35,881 root INFO timestep: 1707000, acc_reward: 539.82
+11:06:37,916 root INFO timestep: 1708000, acc_reward: 552.15
+11:07:02,834 root INFO timestep: 1709000, acc_reward: 348.01
+11:07:04,635 root INFO timestep: 1710000, acc_reward: 341.43
+11:07:06,430 root INFO timestep: 1711000, acc_reward: 358.32
+11:07:08,229 root INFO timestep: 1712000, acc_reward: 346.47
+11:07:10,34 root INFO timestep: 1713000, acc_reward: 345.86
+11:07:11,853 root INFO timestep: 1714000, acc_reward: 346.61
+11:07:13,689 root INFO timestep: 1715000, acc_reward: 350.31
+11:07:38,970 root INFO timestep: 1716000, acc_reward: 489.31
+11:07:41,21 root INFO timestep: 1717000, acc_reward: 486.58
+11:07:43,89 root INFO timestep: 1718000, acc_reward: 493.35
+11:07:45,150 root INFO timestep: 1719000, acc_reward: 489.56
+11:07:47,224 root INFO timestep: 1720000, acc_reward: 495.53
+11:07:49,299 root INFO timestep: 1721000, acc_reward: 493.00
+11:07:51,385 root INFO timestep: 1722000, acc_reward: 497.32
+11:07:53,460 root INFO timestep: 1723000, acc_reward: 495.92
+11:07:55,526 root INFO timestep: 1724000, acc_reward: 494.86
+11:08:20,164 root INFO timestep: 1725000, acc_reward: 453.07
+11:08:22,152 root INFO timestep: 1726000, acc_reward: 453.42
+11:08:24,160 root INFO timestep: 1727000, acc_reward: 463.79
+11:08:26,158 root INFO timestep: 1728000, acc_reward: 459.87
+11:08:28,119 root INFO timestep: 1729000, acc_reward: 441.25
+11:08:30,120 root INFO timestep: 1730000, acc_reward: 464.15
+11:08:32,105 root INFO timestep: 1731000, acc_reward: 454.26
+11:08:34,115 root INFO timestep: 1732000, acc_reward: 466.23
+11:08:59,927 root INFO timestep: 1733000, acc_reward: 402.44
+11:09:01,805 root INFO timestep: 1734000, acc_reward: 398.95
+11:09:03,679 root INFO timestep: 1735000, acc_reward: 398.47
+11:09:05,543 root INFO timestep: 1736000, acc_reward: 392.68
+11:09:07,425 root INFO timestep: 1737000, acc_reward: 403.54
+11:09:09,293 root INFO timestep: 1738000, acc_reward: 397.19
+11:09:11,166 root INFO timestep: 1739000, acc_reward: 402.06
+11:09:13,45 root INFO timestep: 1740000, acc_reward: 404.30
+11:09:38,790 root INFO timestep: 1741000, acc_reward: 586.50
+11:09:40,989 root INFO timestep: 1742000, acc_reward: 584.94
+11:09:43,194 root INFO timestep: 1743000, acc_reward: 586.50
+11:09:45,405 root INFO timestep: 1744000, acc_reward: 590.87
+11:09:47,630 root INFO timestep: 1745000, acc_reward: 593.99
+11:09:49,837 root INFO timestep: 1746000, acc_reward: 581.30
+11:09:52,38 root INFO timestep: 1747000, acc_reward: 585.78
+11:09:54,239 root INFO timestep: 1748000, acc_reward: 585.51
+11:09:56,440 root INFO timestep: 1749000, acc_reward: 585.61
+11:10:20,536 root INFO timestep: 1750000, acc_reward: 343.88
+11:10:22,298 root INFO timestep: 1751000, acc_reward: 356.10
+11:10:24,30 root INFO timestep: 1752000, acc_reward: 341.87
+11:10:25,811 root INFO timestep: 1753000, acc_reward: 369.00
+11:10:27,565 root INFO timestep: 1754000, acc_reward: 352.00
+11:10:29,315 root INFO timestep: 1755000, acc_reward: 354.14
+11:10:31,66 root INFO timestep: 1756000, acc_reward: 352.31
+11:10:55,341 root INFO timestep: 1757000, acc_reward: 505.83
+11:10:57,331 root INFO timestep: 1758000, acc_reward: 476.16
+11:10:59,344 root INFO timestep: 1759000, acc_reward: 486.25
+11:11:01,421 root INFO timestep: 1760000, acc_reward: 510.45
+11:11:03,470 root INFO timestep: 1761000, acc_reward: 497.76
+11:11:05,508 root INFO timestep: 1762000, acc_reward: 495.92
+11:11:07,527 root INFO timestep: 1763000, acc_reward: 482.29
+11:11:09,580 root INFO timestep: 1764000, acc_reward: 496.62
+11:11:11,630 root INFO timestep: 1765000, acc_reward: 499.03
+11:11:36,977 root INFO timestep: 1766000, acc_reward: 651.62
+11:11:39,290 root INFO timestep: 1767000, acc_reward: 649.27
+11:11:41,601 root INFO timestep: 1768000, acc_reward: 646.66
+11:11:43,893 root INFO timestep: 1769000, acc_reward: 644.68
+11:11:46,199 root INFO timestep: 1770000, acc_reward: 650.06
+11:11:48,505 root INFO timestep: 1771000, acc_reward: 649.34
+11:11:50,815 root INFO timestep: 1772000, acc_reward: 646.15
+11:11:53,138 root INFO timestep: 1773000, acc_reward: 654.34
+11:11:55,455 root INFO timestep: 1774000, acc_reward: 652.80
+11:11:57,756 root INFO timestep: 1775000, acc_reward: 645.68
+11:12:22,696 root INFO timestep: 1776000, acc_reward: 465.37
+11:12:24,645 root INFO timestep: 1777000, acc_reward: 453.77
+11:12:26,603 root INFO timestep: 1778000, acc_reward: 457.83
+11:12:28,583 root INFO timestep: 1779000, acc_reward: 470.41
+11:12:30,564 root INFO timestep: 1780000, acc_reward: 472.42
+11:12:32,563 root INFO timestep: 1781000, acc_reward: 482.64
+11:12:34,558 root INFO timestep: 1782000, acc_reward: 481.54
+11:12:36,531 root INFO timestep: 1783000, acc_reward: 468.17
+11:13:02,5 root INFO timestep: 1784000, acc_reward: 629.13
+11:13:04,236 root INFO timestep: 1785000, acc_reward: 619.65
+11:13:06,506 root INFO timestep: 1786000, acc_reward: 625.97
+11:13:08,758 root INFO timestep: 1787000, acc_reward: 617.49
+11:13:11,20 root INFO timestep: 1788000, acc_reward: 613.93
+11:13:13,298 root INFO timestep: 1789000, acc_reward: 616.88
+11:13:15,557 root INFO timestep: 1790000, acc_reward: 606.62
+11:13:17,834 root INFO timestep: 1791000, acc_reward: 622.92
+11:13:20,141 root INFO timestep: 1792000, acc_reward: 620.27
+11:13:22,428 root INFO timestep: 1793000, acc_reward: 620.45
+11:13:48,776 root INFO timestep: 1794000, acc_reward: 1022.68
+11:13:52,210 root INFO timestep: 1795000, acc_reward: 1014.12
+11:13:55,959 root INFO timestep: 1796000, acc_reward: 1156.01
+11:13:59,22 root INFO timestep: 1797000, acc_reward: 898.42
+11:14:02,226 root INFO timestep: 1798000, acc_reward: 932.62
+11:14:05,623 root INFO timestep: 1799000, acc_reward: 1008.85
+11:14:08,976 root INFO timestep: 1800000, acc_reward: 998.96
+11:14:12,44 root INFO timestep: 1801000, acc_reward: 878.09
+11:14:15,209 root INFO timestep: 1802000, acc_reward: 924.95
+11:14:18,564 root INFO timestep: 1803000, acc_reward: 992.14
+11:14:21,662 root INFO timestep: 1804000, acc_reward: 902.17
+11:14:25,402 root INFO timestep: 1805000, acc_reward: 1141.16
+11:14:28,615 root INFO timestep: 1806000, acc_reward: 925.30
+11:14:32,337 root INFO timestep: 1807000, acc_reward: 1137.32
+11:14:36,65 root INFO timestep: 1808000, acc_reward: 1144.38
+11:14:39,213 root INFO timestep: 1809000, acc_reward: 942.85
+11:14:42,681 root INFO timestep: 1810000, acc_reward: 1075.65
+11:14:46,240 root INFO timestep: 1811000, acc_reward: 1086.81
+11:15:11,336 root INFO timestep: 1812000, acc_reward: 583.98
+11:15:13,618 root INFO timestep: 1813000, acc_reward: 578.33
+11:15:15,875 root INFO timestep: 1814000, acc_reward: 568.35
+11:15:18,177 root INFO timestep: 1815000, acc_reward: 580.35
+11:15:20,462 root INFO timestep: 1816000, acc_reward: 577.12
+11:15:22,755 root INFO timestep: 1817000, acc_reward: 581.74
+11:15:25,50 root INFO timestep: 1818000, acc_reward: 580.53
+11:15:27,269 root INFO timestep: 1819000, acc_reward: 528.23
+11:15:29,518 root INFO timestep: 1820000, acc_reward: 557.58
+11:15:31,813 root INFO timestep: 1821000, acc_reward: 575.28
+11:15:59,814 root INFO timestep: 1822000, acc_reward: 1570.53
+11:15:59,822 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1570.529.pth.tar
+11:16:04,589 root INFO timestep: 1823000, acc_reward: 1461.20
+11:16:09,804 root INFO timestep: 1824000, acc_reward: 1606.60
+11:16:09,814 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1606.6.pth.tar
+11:16:14,892 root INFO timestep: 1825000, acc_reward: 1560.91
+11:16:20,227 root INFO timestep: 1826000, acc_reward: 1665.79
+11:16:20,234 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1665.789.pth.tar
+11:16:25,344 root INFO timestep: 1827000, acc_reward: 1566.65
+11:16:30,363 root INFO timestep: 1828000, acc_reward: 1522.51
+11:16:35,626 root INFO timestep: 1829000, acc_reward: 1636.66
+11:16:39,917 root INFO timestep: 1830000, acc_reward: 1270.82
+11:16:45,289 root INFO timestep: 1831000, acc_reward: 1650.63
+11:16:50,500 root INFO timestep: 1832000, acc_reward: 1621.59
+11:16:55,585 root INFO timestep: 1833000, acc_reward: 1538.37
+11:17:00,418 root INFO timestep: 1834000, acc_reward: 1498.42
+11:17:05,698 root INFO timestep: 1835000, acc_reward: 1623.28
+11:17:10,199 root INFO timestep: 1836000, acc_reward: 1353.35
+11:17:14,829 root INFO timestep: 1837000, acc_reward: 1386.43
+11:17:20,415 root INFO timestep: 1838000, acc_reward: 1742.97
+11:17:20,426 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1742.973.pth.tar
+11:17:26,16 root INFO timestep: 1839000, acc_reward: 1695.84
+11:17:32,172 root INFO timestep: 1840000, acc_reward: 1894.82
+11:17:32,179 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1894.815.pth.tar
+11:17:37,277 root INFO timestep: 1841000, acc_reward: 1565.59
+11:17:42,224 root INFO timestep: 1842000, acc_reward: 1500.14
+11:17:46,968 root INFO timestep: 1843000, acc_reward: 1439.96
+11:17:51,584 root INFO timestep: 1844000, acc_reward: 1413.80
+11:17:56,857 root INFO timestep: 1845000, acc_reward: 1591.84
+11:18:03,103 root INFO timestep: 1846000, acc_reward: 1964.68
+11:18:03,111 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_1964.678.pth.tar
+11:18:07,452 root INFO timestep: 1847000, acc_reward: 1292.81
+11:18:11,458 root INFO timestep: 1848000, acc_reward: 1187.13
+11:18:16,606 root INFO timestep: 1849000, acc_reward: 1589.45
+11:18:21,872 root INFO timestep: 1850000, acc_reward: 1611.64
+11:18:26,739 root INFO timestep: 1851000, acc_reward: 1472.59
+11:18:56,235 root INFO timestep: 1852000, acc_reward: 2177.95
+11:18:56,246 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_2177.948.pth.tar
+11:19:02,240 root INFO timestep: 1853000, acc_reward: 2094.22
+11:19:08,944 root INFO timestep: 1854000, acc_reward: 2331.35
+11:19:08,953 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_2331.355.pth.tar
+11:19:15,479 root INFO timestep: 1855000, acc_reward: 2278.66
+11:19:21,177 root INFO timestep: 1856000, acc_reward: 1961.57
+11:19:27,678 root INFO timestep: 1857000, acc_reward: 2258.58
+11:19:33,633 root INFO timestep: 1858000, acc_reward: 2048.14
+11:19:39,83 root INFO timestep: 1859000, acc_reward: 1916.86
+11:19:44,742 root INFO timestep: 1860000, acc_reward: 1971.41
+11:19:50,799 root INFO timestep: 1861000, acc_reward: 2109.71
+11:19:57,70 root INFO timestep: 1862000, acc_reward: 2192.26
+11:20:02,891 root INFO timestep: 1863000, acc_reward: 2006.93
+11:20:09,324 root INFO timestep: 1864000, acc_reward: 2212.57
+11:20:14,548 root INFO timestep: 1865000, acc_reward: 1784.56
+11:20:20,156 root INFO timestep: 1866000, acc_reward: 1892.53
+11:20:26,95 root INFO timestep: 1867000, acc_reward: 2047.17
+11:20:31,948 root INFO timestep: 1868000, acc_reward: 1993.58
+11:20:38,495 root INFO timestep: 1869000, acc_reward: 2270.85
+11:20:44,264 root INFO timestep: 1870000, acc_reward: 1971.52
+11:20:50,344 root INFO timestep: 1871000, acc_reward: 2108.56
+11:20:56,615 root INFO timestep: 1872000, acc_reward: 2182.25
+11:21:02,631 root INFO timestep: 1873000, acc_reward: 2087.25
+11:21:08,517 root INFO timestep: 1874000, acc_reward: 2046.95
+11:21:14,385 root INFO timestep: 1875000, acc_reward: 2019.34
+11:21:20,297 root INFO timestep: 1876000, acc_reward: 2039.36
+11:21:26,476 root INFO timestep: 1877000, acc_reward: 2154.86
+11:21:53,634 root INFO timestep: 1878000, acc_reward: 882.98
+11:21:56,631 root INFO timestep: 1879000, acc_reward: 865.67
+11:21:59,510 root INFO timestep: 1880000, acc_reward: 822.28
+11:22:02,388 root INFO timestep: 1881000, acc_reward: 816.68
+11:22:05,233 root INFO timestep: 1882000, acc_reward: 797.39
+11:22:08,50 root INFO timestep: 1883000, acc_reward: 784.43
+11:22:10,856 root INFO timestep: 1884000, acc_reward: 772.40
+11:22:13,491 root INFO timestep: 1885000, acc_reward: 709.08
+11:22:16,187 root INFO timestep: 1886000, acc_reward: 742.09
+11:22:18,684 root INFO timestep: 1887000, acc_reward: 668.57
+11:22:21,677 root INFO timestep: 1888000, acc_reward: 874.73
+11:22:24,418 root INFO timestep: 1889000, acc_reward: 767.99
+11:22:27,338 root INFO timestep: 1890000, acc_reward: 840.48
+11:22:30,395 root INFO timestep: 1891000, acc_reward: 892.72
+11:22:33,94 root INFO timestep: 1892000, acc_reward: 742.96
+11:22:36,226 root INFO timestep: 1893000, acc_reward: 905.49
+11:22:39,297 root INFO timestep: 1894000, acc_reward: 881.70
+11:22:42,365 root INFO timestep: 1895000, acc_reward: 878.71
+11:22:45,44 root INFO timestep: 1896000, acc_reward: 736.72
+11:22:47,766 root INFO timestep: 1897000, acc_reward: 759.94
+11:22:50,718 root INFO timestep: 1898000, acc_reward: 853.71
+11:22:53,726 root INFO timestep: 1899000, acc_reward: 883.56
+11:22:56,592 root INFO timestep: 1900000, acc_reward: 839.73
+11:22:59,497 root INFO timestep: 1901000, acc_reward: 837.76
+11:23:25,71 root INFO timestep: 1902000, acc_reward: 501.05
+11:23:27,436 root INFO timestep: 1903000, acc_reward: 594.96
+11:23:29,792 root INFO timestep: 1904000, acc_reward: 587.45
+11:23:32,139 root INFO timestep: 1905000, acc_reward: 572.74
+11:23:34,587 root INFO timestep: 1906000, acc_reward: 604.63
+11:23:36,909 root INFO timestep: 1907000, acc_reward: 566.07
+11:23:39,306 root INFO timestep: 1908000, acc_reward: 596.05
+11:23:41,741 root INFO timestep: 1909000, acc_reward: 587.66
+11:23:44,105 root INFO timestep: 1910000, acc_reward: 573.69
+11:23:46,448 root INFO timestep: 1911000, acc_reward: 565.35
+11:23:48,698 root INFO timestep: 1912000, acc_reward: 537.53
+11:23:51,85 root INFO timestep: 1913000, acc_reward: 590.82
+11:23:53,412 root INFO timestep: 1914000, acc_reward: 564.54
+11:23:55,716 root INFO timestep: 1915000, acc_reward: 560.56
+11:23:58,26 root INFO timestep: 1916000, acc_reward: 563.59
+11:24:23,451 root INFO timestep: 1917000, acc_reward: 388.23
+11:24:25,342 root INFO timestep: 1918000, acc_reward: 399.03
+11:24:27,286 root INFO timestep: 1919000, acc_reward: 415.86
+11:24:29,176 root INFO timestep: 1920000, acc_reward: 407.15
+11:24:31,142 root INFO timestep: 1921000, acc_reward: 417.17
+11:24:33,39 root INFO timestep: 1922000, acc_reward: 395.81
+11:24:34,993 root INFO timestep: 1923000, acc_reward: 416.86
+11:24:36,958 root INFO timestep: 1924000, acc_reward: 419.64
+11:25:03,449 root INFO timestep: 1925000, acc_reward: 672.37
+11:25:06,246 root INFO timestep: 1926000, acc_reward: 713.72
+11:25:08,811 root INFO timestep: 1927000, acc_reward: 640.85
+11:25:11,472 root INFO timestep: 1928000, acc_reward: 690.84
+11:25:14,103 root INFO timestep: 1929000, acc_reward: 682.26
+11:25:16,613 root INFO timestep: 1930000, acc_reward: 644.09
+11:25:19,479 root INFO timestep: 1931000, acc_reward: 771.35
+11:25:22,56 root INFO timestep: 1932000, acc_reward: 664.92
+11:25:24,822 root INFO timestep: 1933000, acc_reward: 733.82
+11:25:27,461 root INFO timestep: 1934000, acc_reward: 686.43
+11:25:30,118 root INFO timestep: 1935000, acc_reward: 692.57
+11:25:32,648 root INFO timestep: 1936000, acc_reward: 646.80
+11:25:35,515 root INFO timestep: 1937000, acc_reward: 749.23
+11:25:38,71 root INFO timestep: 1938000, acc_reward: 622.86
+11:25:40,833 root INFO timestep: 1939000, acc_reward: 705.73
+11:26:11,53 root INFO timestep: 1940000, acc_reward: 2185.47
+11:26:19,155 root INFO timestep: 1941000, acc_reward: 2476.25
+11:26:19,162 root INFO checkpoint saved: /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24/td3_ckpt_run_0_2476.25.pth.tar
+11:26:25,864 root INFO timestep: 1942000, acc_reward: 2028.99
+11:26:33,412 root INFO timestep: 1943000, acc_reward: 2291.66
+11:26:40,553 root INFO timestep: 1944000, acc_reward: 2191.81
+11:26:47,815 root INFO timestep: 1945000, acc_reward: 2185.54
+11:26:55,433 root INFO timestep: 1946000, acc_reward: 2277.99
+11:27:02,527 root INFO timestep: 1947000, acc_reward: 2111.63
+11:27:10,74 root INFO timestep: 1948000, acc_reward: 2307.38
+11:27:17,622 root INFO timestep: 1949000, acc_reward: 2325.47
+11:27:25,345 root INFO timestep: 1950000, acc_reward: 2326.15
+11:27:31,955 root INFO timestep: 1951000, acc_reward: 1960.01
+11:27:38,972 root INFO timestep: 1952000, acc_reward: 2140.26
+11:27:46,336 root INFO timestep: 1953000, acc_reward: 2231.60
+11:27:54,292 root INFO timestep: 1954000, acc_reward: 2445.33
+11:28:01,377 root INFO timestep: 1955000, acc_reward: 2134.70
+11:28:08,661 root INFO timestep: 1956000, acc_reward: 2248.84
+11:28:16,611 root INFO timestep: 1957000, acc_reward: 2415.11
+11:28:23,818 root INFO timestep: 1958000, acc_reward: 2147.91
+11:28:31,431 root INFO timestep: 1959000, acc_reward: 2341.19
+11:28:38,7 root INFO timestep: 1960000, acc_reward: 2030.87
+11:28:45,470 root INFO timestep: 1961000, acc_reward: 2250.60
+11:28:52,394 root INFO timestep: 1962000, acc_reward: 2112.20
+11:28:59,800 root INFO timestep: 1963000, acc_reward: 2268.40
+11:29:07,64 root INFO timestep: 1964000, acc_reward: 2227.67
+11:29:13,380 root INFO timestep: 1965000, acc_reward: 1889.58
+11:29:21,339 root INFO timestep: 1966000, acc_reward: 2393.78
+11:29:28,375 root INFO timestep: 1967000, acc_reward: 2119.86
+11:29:36,358 root INFO timestep: 1968000, acc_reward: 2437.67
+11:29:44,363 root INFO timestep: 1969000, acc_reward: 2410.92
+11:29:51,55 root INFO timestep: 1970000, acc_reward: 2041.59
+11:29:57,895 root INFO timestep: 1971000, acc_reward: 2043.89
+11:30:05,660 root INFO timestep: 1972000, acc_reward: 2378.56
+11:30:13,115 root INFO timestep: 1973000, acc_reward: 2276.89
+11:30:20,518 root INFO timestep: 1974000, acc_reward: 2250.73
+11:30:27,591 root INFO timestep: 1975000, acc_reward: 2160.28
+11:30:57,167 root INFO timestep: 1976000, acc_reward: 1394.48
+11:31:02,745 root INFO timestep: 1977000, acc_reward: 1616.28
+11:31:07,792 root INFO timestep: 1978000, acc_reward: 1482.63
+11:31:13,365 root INFO timestep: 1979000, acc_reward: 1619.20
+11:31:18,664 root INFO timestep: 1980000, acc_reward: 1515.59
+11:31:24,178 root INFO timestep: 1981000, acc_reward: 1557.34
+11:31:30,229 root INFO timestep: 1982000, acc_reward: 1781.74
+11:31:34,697 root INFO timestep: 1983000, acc_reward: 1216.65
+11:31:39,958 root INFO timestep: 1984000, acc_reward: 1500.85
+11:31:45,671 root INFO timestep: 1985000, acc_reward: 1653.26
+11:31:51,149 root INFO timestep: 1986000, acc_reward: 1572.83
+11:31:56,473 root INFO timestep: 1987000, acc_reward: 1533.44
+11:32:01,287 root INFO timestep: 1988000, acc_reward: 1344.00
+11:32:06,497 root INFO timestep: 1989000, acc_reward: 1511.00
+11:32:12,399 root INFO timestep: 1990000, acc_reward: 1729.09
+11:32:18,482 root INFO timestep: 1991000, acc_reward: 1818.16
+11:32:24,422 root INFO timestep: 1992000, acc_reward: 1745.82
+11:32:29,604 root INFO timestep: 1993000, acc_reward: 1490.85
+11:32:34,918 root INFO timestep: 1994000, acc_reward: 1542.51
+11:32:40,254 root INFO timestep: 1995000, acc_reward: 1577.78
+11:32:46,396 root INFO timestep: 1996000, acc_reward: 1813.27
+11:32:51,453 root INFO timestep: 1997000, acc_reward: 1446.05
+11:32:57,24 root INFO timestep: 1998000, acc_reward: 1613.11
+11:33:03,281 root INFO timestep: 1999000, acc_reward: 1829.14
+11:33:09,39 root INFO timestep: 2000000, acc_reward: 1724.45
+11:33:09,277 root INFO Training complete.
+11:33:09,281 root INFO 
+
+Final Mean Reward: 1724.45411
+11:33:09,281 root INFO 
+\Average Mean Reward: 506.53179
+11:33:09,282 root INFO 
+\Median Mean Reward: 368.44853
+11:33:09,282 root INFO Best Mean Reward: 2476.24973
+11:33:09,282 root INFO Final Cumulative Reward: 1013063.57788
+11:33:09,283 root INFO AUC for Mean Reward: 1012196.16797
+11:33:09,283 root INFO Time Elapsed During Training: 9093.790458202362
+
+11:33:09,298 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+11:33:09,299 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,299 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,300 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,300 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+11:33:09,300 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,301 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,301 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,302 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,302 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,303 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,303 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,303 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,304 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,304 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,304 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,305 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:33:09,305 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,306 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+11:33:09,306 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,306 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,307 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,307 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,307 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,308 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,308 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,308 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,309 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,309 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,309 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,310 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,310 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,311 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,311 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,311 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,312 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,312 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,313 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:33:09,313 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,313 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf', name='Liberation Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,314 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-BoldItalic.ttf', name='Liberation Sans Narrow', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
+11:33:09,314 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Italic.ttf', name='Liberation Sans Narrow', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
+11:33:09,314 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/noto/NotoMono-Regular.ttf', name='Noto Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,315 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf', name='Liberation Sans', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,315 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf', name='Liberation Mono', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,315 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:33:09,315 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:33:09,316 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf', name='Liberation Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,316 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf', name='Liberation Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,316 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,317 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,317 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf', name='Droid Sans Fallback', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,317 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf', name='Liberation Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,317 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Regular.ttf', name='Liberation Sans Narrow', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
+11:33:09,318 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf', name='Liberation Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,318 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf', name='Liberation Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,318 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Bold.ttf', name='Liberation Sans Narrow', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
+11:33:09,319 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-BoldItalic.ttf', name='Liberation Mono', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,319 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf', name='Liberation Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,319 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,319 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf', name='Liberation Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,320 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,320 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf', name='Liberation Sans', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,320 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+11:33:09,357 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0.
+11:33:09,358 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,359 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,359 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,359 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+11:33:09,360 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,360 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,360 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,361 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,361 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,361 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,362 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,362 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,362 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,363 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,363 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,364 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:33:09,364 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,364 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+11:33:09,365 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,365 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,365 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,366 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,366 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,367 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,367 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,367 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,368 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,368 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,368 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,369 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,369 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,369 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,370 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,370 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,370 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,371 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,371 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:33:09,371 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,372 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf', name='Liberation Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,372 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-BoldItalic.ttf', name='Liberation Sans Narrow', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
+11:33:09,372 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Italic.ttf', name='Liberation Sans Narrow', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
+11:33:09,373 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/noto/NotoMono-Regular.ttf', name='Noto Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,373 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf', name='Liberation Sans', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,373 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf', name='Liberation Mono', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,374 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:33:09,374 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:33:09,374 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf', name='Liberation Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,375 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf', name='Liberation Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,375 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,375 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,376 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf', name='Droid Sans Fallback', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,376 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf', name='Liberation Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,376 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Regular.ttf', name='Liberation Sans Narrow', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
+11:33:09,377 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf', name='Liberation Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,377 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf', name='Liberation Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,378 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Bold.ttf', name='Liberation Sans Narrow', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
+11:33:09,378 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-BoldItalic.ttf', name='Liberation Mono', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,378 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf', name='Liberation Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,379 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,379 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf', name='Liberation Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,379 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,379 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf', name='Liberation Sans', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,380 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+11:33:09,470 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+11:33:09,470 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,471 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,471 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,472 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+11:33:09,472 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,473 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,473 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,473 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,474 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,474 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,474 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,475 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,475 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,476 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,476 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,476 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:33:09,477 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,477 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+11:33:09,477 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,478 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,478 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,479 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,479 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,479 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,480 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,480 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,481 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,481 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,481 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,482 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,482 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,482 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,483 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,483 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,483 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,484 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,484 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:33:09,484 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,485 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf', name='Liberation Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,485 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-BoldItalic.ttf', name='Liberation Sans Narrow', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
+11:33:09,485 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Italic.ttf', name='Liberation Sans Narrow', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
+11:33:09,486 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/noto/NotoMono-Regular.ttf', name='Noto Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,486 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf', name='Liberation Sans', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,487 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf', name='Liberation Mono', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,487 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:33:09,487 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:33:09,488 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf', name='Liberation Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,488 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf', name='Liberation Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,488 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,489 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,489 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf', name='Droid Sans Fallback', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,489 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf', name='Liberation Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,490 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Regular.ttf', name='Liberation Sans Narrow', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
+11:33:09,490 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf', name='Liberation Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,490 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf', name='Liberation Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,491 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Bold.ttf', name='Liberation Sans Narrow', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
+11:33:09,491 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-BoldItalic.ttf', name='Liberation Mono', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:33:09,491 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf', name='Liberation Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,492 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:33:09,492 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf', name='Liberation Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,493 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:33:09,493 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf', name='Liberation Sans', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:33:09,493 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/mila/s/sabina.elkins/.conda/envs/c579/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+11:33:10,899 root INFO 
+Rewards graphed successfully. See /home/mila/s/sabina.elkins/GROUP_013/results/2022-04-22_09h01m24
