@@ -38,6 +38,13 @@ def log_training_experiment_to_json(
             json.dump(dict_to_write, f)
             f.write("\n")
 
+def write_json_lines(path_to_json: str, json_data: List[dict]):
+    """Write information to json file"""
+    with open(path_to_json, "w") as f:
+        for line in json_data:
+            json.dump(line, f)
+            f.write("\n")
+
 def get_json_data(path_to_json: str):
     """Load information from json file"""
     json_data = []

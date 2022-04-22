@@ -1,6 +1,7 @@
 import argparse
 from copy import deepcopy
 import importlib
+import os
 from os import listdir
 from os.path import isfile, join
 from time import time
@@ -10,6 +11,7 @@ import numpy as np
 from utils.logging_utils import start_logging
 from utils.environment import get_environment
 from utils.training import train_agent
+from utils.json_utils import write_json_lines
 
 
 if __name__ == "__main__":
@@ -47,8 +49,8 @@ if __name__ == "__main__":
         }
 
     # Leaderboard sample efficiency = average reward (we don't need to publish these results)
-    num_seeds = 5
-    total_timesteps = 100_000
+    num_seeds = 3  # Reduce time this takes
+    total_timesteps = 10_000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
 
@@ -70,6 +72,7 @@ if __name__ == "__main__":
             "You cannot game without gamed_hyperparameters.py in the group folder."
         )
 
+    learning_curves = []
     average_rewards = []
     for i, params in enumerate(grid):
         # Create the agent
@@ -79,6 +82,10 @@ if __name__ == "__main__":
         logger.log(f"{agent.__dict__}")
         start_time = time()
         cum_average_reward = 0
+
+        learning_curves_array = np.zeros(
+            (num_seeds, int(total_timesteps / evaluation_freq))
+        )
         for seed in range(num_seeds):
             logger.log(f"Training agent {i} with seed {seed}")
             # Prevent memory leak
@@ -98,12 +105,27 @@ if __name__ == "__main__":
                 f"Average reward for agent {i} with seed {seed} is {average_reward}"
             )
             cum_average_reward += average_reward
+            learning_curves_array[seed, :] = learning_curve
         average_reward = cum_average_reward / num_seeds
         logger.log(f"Average reward for agent {i} is {average_reward}")
         average_rewards.append(average_reward)
+        logger.log(f"Saving the mean learning curve for agent {i}")
+        learning_curves.append(learning_curves_array.mean(axis=0).tolist())
         logger.log("Training complete.")
 
+    # TODO: Add the average time it takes to train for 100K (to prevent running out of time)
     for i, (average_reward, params) in enumerate(zip(average_rewards, grid)):
         logger.log(
             f"Average reward for agent {i} with hyperparams {params} is {average_reward}"
         )
+        # Modify learning curves such that it's a dictionary
+        learning_curves[i] = {
+            "id": i,
+            "average_reward": average_reward,
+            "hyperparams": f"{params}",
+            "mean_learning_curve": learning_curves[i],
+        }
+
+    # Write the learning curves to a json file
+    write_json_lines(os.path.join(logger.location, "gamed_evaluation.json"), learning_curves)
+
