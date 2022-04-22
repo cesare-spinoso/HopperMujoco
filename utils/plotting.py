@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from torch import ge
-from json_utils import get_json_data
+from .json_utils import get_json_data
 
 def plot_rewards(rewards, location, names=None, time_step=None):
     """
@@ -246,6 +246,6 @@ if __name__ == '__main__':
     plot_rewards(reward_lists, save_location, names)
 
     json_list = ["ppo_agent/results/best_model/log_best_model.json", "vpg_agent/results/best_model/log_best_model.json",
-        "ddpg_agent/results/best_model/log_best_model.json"]
-    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg', 'ddpg'], time_step=1000) # i.e. eval freq
+        "ddpg_agent/results/best_model/log_best_model.json", "td3_agent/results/best_model/log_best_model.json"]
+    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg', 'ddpg', 'td3'], time_step=1000) # i.e. eval freq
     # if only one name, still input it in a list (eg. ['ppo'])
