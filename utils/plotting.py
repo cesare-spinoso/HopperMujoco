@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from torch import ge
-from .json_utils import get_json_data
+from json_utils import get_json_data
 
 def plot_rewards(rewards, location, names=None, time_step=None):
     """
@@ -234,14 +234,14 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
 
 
 if __name__ == '__main__':
-    loaded_json = get_json_data("ddpg_agent/results/log.json")
+    loaded_json = get_json_data("openai_sac_agent/results/log.json")
 
     reward_lists, names = [], []
     for m in loaded_json:
         names.append(m['model_name'])
         reward_lists.append(m['list_of_rewards'])
 
-    save_location = "ddpg_agent/results/"
+    save_location = "openai_sac_agent/results/"
 
     plot_rewards(reward_lists, save_location, names)
 
