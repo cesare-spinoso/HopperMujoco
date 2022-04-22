@@ -31,7 +31,7 @@ class Agent:
         policy_activation_function: F = nn.ReLU,
         buffer_size: int = 1_000_000,
         alpha: float = 0.2,
-        exploration_timesteps: int = 10_000,
+        exploration_timesteps: int = 1_000,
         update_frequency_in_episodes: int = 25,
         update_start_in_episodes: int = 100,
         number_of_batch_updates: int = 1_000,
