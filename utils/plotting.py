@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from torch import ge
-from .json_utils import get_json_data
+from json_utils import get_json_data
 
 def plot_rewards(rewards, location, names=None, time_step=None):
     """
@@ -120,6 +120,7 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
             for m in loaded_json:
                 names.append(m['model_name'])
                 rewards.append(m['list_of_rewards'])
+
             mean_rewards = np.mean(rewards, axis=0)
             std_rewards = np.std(rewards, axis=0)
 
@@ -127,12 +128,12 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
                 x = range(0, len(mean_rewards)*time_step, time_step)
                 plt.plot(x, mean_rewards, color=matplotlib_colors[i], label=model_names[i])
                 plt.fill_between(x=x, y1=mean_rewards-std_rewards, y2=mean_rewards+std_rewards, 
-                    alpha=0.3, color=matplotlib_colors[i])
+                    alpha=0.1, color=matplotlib_colors[i])
             else: 
                 x = range(len(mean_rewards))
                 plt.plot(x, mean_rewards, color=matplotlib_colors[i], label=model_names[i])
                 plt.fill_between(x=x, y1=mean_rewards-std_rewards, y2=mean_rewards+std_rewards, 
-                    alpha=0.3, color=matplotlib_colors[i])
+                    alpha=0.1, color=matplotlib_colors[i])
 
         plt.ylabel("Average Reward")
         plt.xlabel("Time Step")
@@ -161,12 +162,12 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
                 x = range(0, len(mean_cumulative_rewards)*time_step, time_step)
                 plt.plot(x, mean_cumulative_rewards, color=matplotlib_colors[j], label=model_names[j])
                 plt.fill_between(x=x, y1=mean_cumulative_rewards-std_cumulative_rewards, 
-                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.3, color=matplotlib_colors[j])
+                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.1, color=matplotlib_colors[j])
             else: 
                 x = range(len(mean_cumulative_rewards))
                 plt.plot(x, mean_cumulative_rewards, color=matplotlib_colors[j], label=model_names[j])
                 plt.fill_between(x=x, y1=mean_cumulative_rewards-std_cumulative_rewards, 
-                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.3, color=matplotlib_colors[j])
+                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.1, color=matplotlib_colors[j])
 
         plt.ylabel("Cumulative Reward")
         plt.xlabel("Time Step")
@@ -234,18 +235,24 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
 
 
 if __name__ == '__main__':
-    loaded_json = get_json_data("openai_sac_agent/results/log.json")
+    # loaded_json = get_json_data("openai_sac_agent/results/log.json")
 
-    reward_lists, names = [], []
-    for m in loaded_json:
-        names.append(m['model_name'])
-        reward_lists.append(m['list_of_rewards'])
+    # reward_lists, names = [], []
+    # for m in loaded_json:
+    #     names.append(m['model_name'])
+    #     reward_lists.append(m['list_of_rewards'])
 
-    save_location = "openai_sac_agent/results/"
+    # save_location = "openai_sac_agent/results/"
 
-    plot_rewards(reward_lists, save_location, names)
+    # plot_rewards(reward_lists, save_location, names)
 
+    # json_list = ["ppo_agent/results/best_model/log_best_model.json", "vpg_agent/results/best_model/log_best_model.json",
+    #     "ddpg_agent/results/best_model/log_best_model.json", "td3_agent/results/best_model/log_best_model.json"]
+    # plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg', 'ddpg', 'td3'], 
+    #     time_step=1000) # i.e. eval freq
     json_list = ["ppo_agent/results/best_model/log_best_model.json", "vpg_agent/results/best_model/log_best_model.json",
-        "ddpg_agent/results/best_model/log_best_model.json", "td3_agent/results/best_model/log_best_model.json"]
-    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg', 'ddpg', 'td3'], time_step=1000) # i.e. eval freq
+        "ddpg_agent/results/best_model/log_best_model.json", "td3_agent/results/best_model/log_best_model.json",
+        "openai_sac_agent/results/best_model/log_best_model.json"]
+    plot_best_model_rewards(json_list, save_location=".", model_names=['PPO', 'VPG', 'DDPG', 'TD3', 'SAC'], 
+        time_step=1000) # i.e. eval freq
     # if only one name, still input it in a list (eg. ['ppo'])

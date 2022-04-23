@@ -11,12 +11,8 @@ import torch
 import numpy as np
 from sklearn.metrics import auc
 
-
-from utils.json_utils import log_training_experiment_to_json
-from utils.plotting import plot_rewards
 from utils.logging_utils import start_logging
 from utils.environment import get_environment
-from utils.training import train_agent
 
 
 def record_trained_agent(
@@ -49,8 +45,6 @@ def record_trained_agent(
             agent.update(curr_obs, action, reward, next_obs, done, timestep)
             curr_obs = next_obs
             timestep += 1
-
-
 
 if __name__ == "__main__":
     # Parse command line arguments
@@ -101,11 +95,12 @@ if __name__ == "__main__":
     logger = start_logging()
     # Load the agent and try to load hyperparameters
     agent_module = importlib.import_module(args.group + ".agent")
-    agent = agent_module.Agent(env_specs)
+    hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")
+    params = hyperparameter_module.params
+    agent_pretrained = agent_module.Agent(env_specs, **params)
 
     # if model provided, we're recording the trained model
     if args.load != "None":
-        agent_pretrained = deepcopy(agent)
         agent_pretrained.load_weights(os.getcwd(), args.load)
         
         record_trained_agent(
@@ -114,6 +109,6 @@ if __name__ == "__main__":
             env_eval,
             total_timesteps
         )
-        
+
     else:
         print("PROVIDE --load ARGUMENT")
