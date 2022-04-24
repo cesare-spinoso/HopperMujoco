@@ -124,25 +124,25 @@ if __name__ == "__main__":
     elif agents_pretrained is None:
         logger.log("Evaluation starting ... ")
         # Calculate the sample efficiency
-        # logger.log(f"Retraining model for {num_seeds} seeds ...")
-        # sample_efficiency, time_to_train = calc_sample_efficiency(
-        #     agent_untrained,
-        #     env,
-        #     env_eval,
-        #     total_timesteps,
-        #     evaluation_freq,
-        #     n_episodes_to_evaluate_sample_efficiency,
-        #     num_seeds,
-        #     logger
-        # )
+        logger.log(f"Retraining model for {num_seeds} seeds ...")
+        sample_efficiency, time_to_train = calc_sample_efficiency(
+            agent_untrained,
+            env,
+            env_eval,
+            total_timesteps,
+            evaluation_freq,
+            n_episodes_to_evaluate_sample_efficiency,
+            num_seeds,
+            logger
+        )
         # Calculate the average (out-of-sample) reward
         logger.log("Evaluating the average return of the pretrained model ... ")
         average_reward_per_episode = evaluate_agent(
             agent_pretrained, env_eval, num_seeds, n_episodes_to_evaluate_average_reward
         )
         logger.log(f"Average reward per episode: {average_reward_per_episode}")
-        # logger.log(f"Sample efficiency: {sample_efficiency}")
-        # logger.log(f"Time to train: {time_to_train}")
+        logger.log(f"Sample efficiency: {sample_efficiency}")
+        logger.log(f"Time to train: {time_to_train}")
     else:
         logger.log("Evaluating the sample efficiency of the untrained agents ... ")
         sample_efficiencies = []
