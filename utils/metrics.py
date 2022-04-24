@@ -35,10 +35,10 @@ def calc_sample_efficiency(
             seed=i,
             save_checkpoint=save_checkpoint
         )
-        auc_performances.append(auc(range(len(seed_performance)), seed_performance))
+        auc_performances.append(auc(range(0, total_timesteps, evaluation_freq), seed_performance))
     end_time = time.time()
 
-    mean_sample_efficiency = np.mean(np.array(auc_performances))
+    mean_sample_efficiency = np.mean(np.array(auc_performances))/total_timesteps
     mean_time_to_train = (end_time - start_time) / num_seeds
 
     return mean_sample_efficiency, mean_time_to_train
