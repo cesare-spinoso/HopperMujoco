@@ -8,6 +8,8 @@ import numpy as np
 from typing import Tuple
 from copy import deepcopy
 
+import logging
+logging.basicConfig(filename="training.log", level=logging.INFO)
 
 class Agent:
     """The agent class that is to be filled.
@@ -219,8 +221,11 @@ class Agent:
             self.current_episode += 1
         if self.is_ready_to_train():
             self.train()
-            print(self.current_episode)
-            print(f"Alpha: {self.alpha}")
+            # Log training info
+            logging.info("="*60)
+            logging.info(f"Timestep: {timestep}")
+            logging.info(f"Current episode: {self.current_episode}")
+            logging.info(f"Learning rate: {self.alpha}")
             self.episode_of_last_update = self.current_episode
 
     def is_ready_to_train(self):
