@@ -1,6 +1,6 @@
 Agent: SAC Agent
 
-Model: m_0 (3520 checkpoint which isn't the highest we have)
+Model: m_0 (3693 checkpoint which actually gives about 3598 as reward)
 
 Hyperparameters: {
     'actor_architecture': (64, 64), 
