@@ -49,7 +49,7 @@ if __name__ == "__main__":
         }
 
     # Leaderboard sample efficiency = average reward (we don't need to publish these results)
-    num_seeds = 5  # Reduce time this takes
+    num_seeds = 2  # Reduce time this takes
     total_timesteps = 100_000
     evaluation_freq = 5_000
     n_episodes_to_evaluate = 10
@@ -81,7 +81,9 @@ if __name__ == "__main__":
         logger.log(f"{agent.__dict__}")
 
         mean_sample_efficiency, mean_time_to_train = calc_sample_efficiency(
-            agent,
+            agent_module,
+            env_specs,
+            params,
             env,
             env_eval,
             total_timesteps,

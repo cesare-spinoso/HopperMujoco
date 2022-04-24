@@ -7,7 +7,9 @@ from copy import deepcopy
 from .training import train_agent
 
 def calc_sample_efficiency(
-    agent_untrained,
+    agent_module,
+    env_specs,
+    params,
     env,
     env_eval,
     total_timesteps,
@@ -23,7 +25,8 @@ def calc_sample_efficiency(
         print(f"starting training on {i+1} of {num_seeds}...")
 
         # train for 100K steps, evaluating every 1000
-        agent_to_train = deepcopy(agent_untrained)
+        # agent_to_train = deepcopy(agent_untrained)
+        agent_to_train = agent_module.Agent(env_specs, **params)
         seed_performance, _ = train_agent(
             agent_to_train,
             env,
