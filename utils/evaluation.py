@@ -8,13 +8,10 @@ def evaluate_agent(agent, env, n_episodes_to_evaluate):
         acc_reward = 0
         done = False
         curr_obs = env.reset()
-        jj = 0
         while not done:
             action = agent.act(curr_obs, mode="eval")
             next_obs, reward, done, _ = env.step(action)
             acc_reward += reward
             curr_obs = next_obs
-            jj += 1
-        print(jj)
         array_of_acc_rewards.append(acc_reward)
     return np.mean(np.array(array_of_acc_rewards))
