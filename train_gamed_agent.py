@@ -49,7 +49,7 @@ if __name__ == "__main__":
         }
 
     # Leaderboard sample efficiency = average reward (we don't need to publish these results)
-    num_seeds = 2  # Reduce time this takes
+    num_seeds = 1  # Reduce time this takes
     total_timesteps = 100_000
     evaluation_freq = 5_000
     n_episodes_to_evaluate = 10
