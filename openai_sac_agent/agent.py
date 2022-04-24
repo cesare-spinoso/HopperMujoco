@@ -28,7 +28,7 @@ class Agent:
         policy_lr: float = 1e-3,
         policy_architecture: tuple = (64, 64),
         policy_activation_function: F = nn.Tanh,
-        buffer_size: int = 1_000_000,
+        buffer_size: int = 2_000_000,
         alpha: float = 0.2,
         update_alpha: bool = False,
         exploration_timesteps: int = 10_000,
