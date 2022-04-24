@@ -4,9 +4,9 @@ import torch
 import sklearn.model_selection
 
 grid = {
-    "architecture": [(128, 32), (128, 64),],
+    "architecture": [(128, 64)],
     "activation": [torch.nn.ReLU],
-    "alpha": [0.4, 1.6, 0.2, 0.1]
+    "alpha": [0.2]
 }
 
 grid = sklearn.model_selection.ParameterGrid(grid)

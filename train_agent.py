@@ -82,6 +82,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
     parser.add_argument(
+        "--gravity",
+        type=float,
+        default=1.0,
+        help="gravity multiplier, only works with env type mujoco"
+    )
+    parser.add_argument(
         "--load",
         type=str,
         default="None",
@@ -112,13 +118,19 @@ if __name__ == "__main__":
             "action_space": env.action_space,
         }
     if "mujoco" in env_type:
+        env.model.opt.gravity[-1] = env.model.opt.gravity[-1] * args.gravity
+        env_specs = {
+            "observation_space": env.observation_space,
+            "action_space": env.action_space,
+        }
+    if "ant" in env_type:
         env_specs = {
             "observation_space": env.observation_space,
             "action_space": env.action_space,
         }
 
     # Training and evaluation variables
-    total_timesteps = 3_000_000
+    total_timesteps = 50_000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
 
