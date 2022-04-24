@@ -6,7 +6,8 @@ def evaluate_agent(agent, env, num_seeds, n_episodes_to_evaluate):
     rewards_per_seed = []
     for seed in range(num_seeds):
         array_of_acc_rewards = []
-        env.seed(seed)
+        if num_seeds > 1:
+            env.seed(seed)
         for _ in range(n_episodes_to_evaluate):
             acc_reward = 0
             done = False

@@ -138,6 +138,7 @@ if __name__ == "__main__":
         else:
             hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")
             grid = [hyperparameter_module.params]
+            assert hyperparameter_module.params["update_start_in_timesteps"] is not None
             logger.log("Loaded the best hyperparameters")
     except:
         # Use the default hyperparameters
@@ -167,6 +168,7 @@ if __name__ == "__main__":
             logger,
             name=f"m_{i}",
             visualize=False,
+            save_checkpoint_start_timestep=0 if args.load == "None" else (agent.update_start_in_timesteps + 1)
         )
         logger.log("Training complete.")
 

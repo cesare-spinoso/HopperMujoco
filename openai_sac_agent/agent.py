@@ -9,7 +9,9 @@ from typing import Tuple
 from copy import deepcopy
 
 import logging
+
 logging.basicConfig(filename="training.log", level=logging.INFO)
+
 
 class Agent:
     """The agent class that is to be filled.
@@ -37,6 +39,7 @@ class Agent:
         exploration_timesteps: int = 10_000,
         update_frequency_in_episodes: int = 50,
         update_start_in_episodes: int = 1_000,
+        update_start_in_timesteps: int = None,
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
     ):
@@ -72,6 +75,7 @@ class Agent:
         # Frequency, start and size of updates
         self.update_frequency_in_episodes = update_frequency_in_episodes
         self.update_start_in_episodes = update_start_in_episodes
+        self.update_start_in_timesteps = update_start_in_timesteps
         self.number_of_batch_updates = number_of_batch_updates
         self.batch_size = batch_size
         ### Q-NETWORKS (Q1 and Q1) ###
@@ -209,7 +213,7 @@ class Agent:
                 action = action.data.cpu().numpy()
             return action
 
-    def update(self, curr_obs, action, reward, next_obs, done, timestep):
+    def update(self, curr_obs, action, reward, next_obs, done, timestep, logger=None):
         # Store experience in buffer
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
@@ -219,18 +223,21 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
+            print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
-            # Log training info
-            logging.info("="*60)
-            logging.info(f"Timestep: {timestep}")
-            logging.info(f"Current episode: {self.current_episode}")
-            logging.info(f"Learning rate: {self.alpha}")
+            if logger:
+                logger.log(f"Timestep: {timestep}")
+                logger.log(f"Current episode: {self.current_episode}")
+                logger.log(f"Alpha: {self.alpha}")
             self.episode_of_last_update = self.current_episode
 
     def is_ready_to_train(self):
         if self.episode_of_last_update is None:
-            return self.current_episode > self.update_start_in_episodes
+            return self.current_episode > self.update_start_in_episodes or (
+                self.update_start_in_timesteps is not None
+                and self.current_timestep > self.update_start_in_timesteps
+            )
         else:
             return (
                 self.current_episode > self.episode_of_last_update
@@ -313,7 +320,7 @@ class Agent:
         self._unfreeze_network(self.q1_network)
         self._unfreeze_network(self.q2_network)
         self._unfreeze_alpha()
-    
+
     def train_alpha(self, obs_data):
         if self.update_alpha:
             # # Zero grad
@@ -356,7 +363,7 @@ class Agent:
             # Use OpenAI's in-place trick
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
-    
+
     def _freeze_alpha(self):
         if self.update_alpha:
             self.log_alpha.requires_grad = False

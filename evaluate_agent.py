@@ -167,7 +167,7 @@ if __name__ == "__main__":
         for agent, json in zip(agents_pretrained, json_data):
             logger.log(f"Average reward evaluation starting for ... {json['model_name']}") 
             average_reward_per_episode = evaluate_agent(
-                agent, env_eval, n_episodes_to_evaluate_average_reward
+                agent, env_eval, num_seeds, n_episodes_to_evaluate_average_reward
             )
             average_rewards_per_episode.append(average_reward_per_episode)
         logger.log("Evaluation finished! Results ...")
