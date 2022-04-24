@@ -32,8 +32,8 @@ class Agent:
         alpha: float = 0.2,
         update_alpha: bool = False,
         exploration_timesteps: int = 10_000,
-        update_frequency_in_episodes: int = 10,
-        update_start_in_episodes: int = 200,
+        update_frequency_in_episodes: int = 50,
+        update_start_in_episodes: int = 1_000,
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
     ):
