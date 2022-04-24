@@ -24,13 +24,14 @@ class Agent:
         polyak: float = 0.995,
         q_lr: float = 1e-3,
         q_architecture: tuple = (64, 64),
-        q_activation_function: F = nn.Tanh,
+        q_activation_function: F = nn.ReLU,
         policy_lr: float = 1e-3,
         policy_architecture: tuple = (64, 64),
-        policy_activation_function: F = nn.Tanh,
+        policy_activation_function: F = nn.ReLU,
         buffer_size: int = 2_000_000,
         alpha: float = 0.2,
         update_alpha: bool = False,
+        alpha_lr: float = 3e-4,
         exploration_timesteps: int = 10_000,
         update_frequency_in_episodes: int = 50,
         update_start_in_episodes: int = 1_000,
@@ -112,7 +113,7 @@ class Agent:
             self.log_alpha = torch.tensor(0.0, requires_grad=True)
             self.alpha = torch.exp(self.log_alpha)
             # Optimizer
-            self.alpha_lr = 3e-4
+            self.alpha_lr = alpha_lr
             self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=self.alpha_lr)
         ### BUFFER ###
         self.buffer = SACBuffer(
@@ -218,6 +219,7 @@ class Agent:
             self.current_episode += 1
         if self.is_ready_to_train():
             self.train()
+            print(self.current_episode)
             print(f"Alpha: {self.alpha}")
             self.episode_of_last_update = self.current_episode
 
