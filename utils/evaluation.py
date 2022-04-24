@@ -19,5 +19,5 @@ def evaluate_agent(agent, env, n_episodes_to_evaluate):
         array_of_acc_rewards.append(acc_reward)
         episode_len.append(ep_len)
     print("average episode length during evaluation:")
-    print(np.mean(np.array(episode_len))
+    print(np.mean(np.array(episode_len)))
     return np.mean(np.array(array_of_acc_rewards))
