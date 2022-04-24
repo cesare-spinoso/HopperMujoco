@@ -4,6 +4,11 @@ import numpy as np
 from torch import ge
 from json_utils import get_json_data
 
+font = {'family' : 'monospace',
+        'size'   : 18}
+
+matplotlib.rc('font', **font)
+
 def plot_rewards(rewards, location, names=None, time_step=None):
     """
     Graphs the average and cumulative reward plots.
@@ -135,7 +140,7 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
                 plt.fill_between(x=x, y1=mean_rewards-std_rewards, y2=mean_rewards+std_rewards, 
                     alpha=0.1, color=matplotlib_colors[i])
 
-        plt.ylabel("Average Reward")
+        plt.ylabel("Reward")
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
@@ -250,9 +255,9 @@ if __name__ == '__main__':
     #     "ddpg_agent/results/best_model/log_best_model.json", "td3_agent/results/best_model/log_best_model.json"]
     # plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'vpg', 'ddpg', 'td3'], 
     #     time_step=1000) # i.e. eval freq
-    json_list = ["ppo_agent/results/best_model/log_best_model.json", "vpg_agent/results/best_model/log_best_model.json",
+    json_list = ["vpg_agent/results/best_model/log_best_model.json", "ppo_agent/results/best_model/log_best_model.json",
         "ddpg_agent/results/best_model/log_best_model.json", "td3_agent/results/best_model/log_best_model.json",
         "openai_sac_agent/results/best_model/log_best_model.json"]
-    plot_best_model_rewards(json_list, save_location=".", model_names=['PPO', 'VPG', 'DDPG', 'TD3', 'SAC'], 
+    plot_best_model_rewards(json_list, save_location=".", model_names=['VPG', 'PPO', 'DDPG', 'TD3', 'SAC'], 
         time_step=1000) # i.e. eval freq
     # if only one name, still input it in a list (eg. ['ppo'])
