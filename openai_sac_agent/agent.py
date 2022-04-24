@@ -216,6 +216,7 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
+            print('done')
         if self.is_ready_to_train():
             self.train()
             print(f"Alpha: {self.alpha}")
