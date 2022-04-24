@@ -36,5 +36,8 @@ grid = [
     },
 ]
 
-hyperparameter_grid = sklearn.model_selection.ParameterGrid(grid)
-hyperparameter_grid = 
+hyperparameter_grid = []
+for i, params in enumerate(sklearn.model_selection.ParameterGrid(grid)):
+    if i == 0:
+        continue
+    hyperparameter_grid.append(params)
