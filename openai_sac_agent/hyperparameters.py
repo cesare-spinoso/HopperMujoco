@@ -4,7 +4,7 @@ import torch
 import sklearn.model_selection
 
 grid = {
-    "architecture": [(128, 64)],
+    "architecture": [(64, 64)],
     "activation": [torch.nn.ReLU],
     "alpha": [0.2]
 }
