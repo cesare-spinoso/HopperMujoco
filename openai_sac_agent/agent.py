@@ -219,6 +219,7 @@ class Agent:
             )
 
     def train(self):
+        print('vs code')
         for j in range(self.number_of_batch_updates):
             # Get training batch
             (
@@ -430,8 +431,9 @@ class SACBuffer:
         self,
         number_obs: int,
         number_actions: int,
-        size: int = 1_000_000,
+        size: int = 3_000_000,
         batch_size: int = 100,
+        gamma: float = 0.99,
     ) -> None:
         """Buffer responsible for storing the experience and the Q target.
         Unlike the VPG and PPO buffer, this buffer is static because random sampling
@@ -446,13 +448,26 @@ class SACBuffer:
         self.obs_buffer = torch.zeros((self.size, self.number_obs))
         self.next_obs_buffer = torch.zeros((self.size, self.number_obs))
         self.reward_buffer = torch.zeros(self.size)
+        self.priority_buffer = torch.zeros(self.size)           # for PER
         self.done_buffer = torch.zeros(self.size)
         self.experience_pointer = 0
         self.effective_size = 0
+        self.current_episode_reward = 0
+
+        # PER Cache
+        self.action_cache = torch.zeros((self.size, self.number_actions))
+        self.obs_cache = torch.zeros((self.size, self.number_obs))
+        self.next_obs_cache = torch.zeros((self.size, self.number_obs))
+        self.reward_cache = torch.zeros(self.size)
+        self.priority_cache = torch.zeros(self.size)           # for PER
+        self.done_cache = torch.zeros(self.size)
+        self.effective_cache_size = 0
+
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # Hyperparameters
         self.batch_size = batch_size
+        self.gamma = gamma
 
     def store_experience(
         self,
@@ -462,24 +477,59 @@ class SACBuffer:
         next_obs: torch.Tensor,
         done: bool,
     ) -> None:
-        """Store the experience and increment pointer. Once the pointer reaches the
-        end of the buffer reset it to 0. In this way the buffer acts as a queue."""
-        self.action_buffer[self.experience_pointer, :] = action
-        self.obs_buffer[self.experience_pointer, :] = obs
-        self.next_obs_buffer[self.experience_pointer, :] = next_obs
-        self.reward_buffer[self.experience_pointer] = reward
-        self.done_buffer[self.experience_pointer] = int(done)
-        self.experience_pointer = (self.experience_pointer + 1) % self.size
-        self.effective_size = min(self.effective_size + 1, self.size)
+        """
+        During episode: store experience in the cache
+        At the end of episode: calculate return, put cache in buffer, empty cache
+        """
+
+        # Store experience in cache
+        self.action_cache[self.experience_pointer, :] = action
+        self.obs_cache[self.experience_pointer, :] = obs
+        self.next_obs_cache[self.experience_pointer, :] = next_obs
+        self.reward_cache[self.experience_pointer] = reward
+        self.done_cache[self.experience_pointer] = int(done)
+
+        # Update total reward
+        self.current_episode_reward += np.power(self.gamma, self.effective_cache_size) * reward
+        self.effective_cache_size += 1
+
+        # self.experience_pointer = (self.experience_pointer + 1) % self.size
+        # self.effective_size = min(self.effective_size + 1, self.size)
+
+        if done:
+          # Copy cache into buffer
+          self.action_buffer[self.experience_pointer: self.experience_pointer + self.effective_cache_size, :] = \
+              self.action_cache[0:self.effective_cache_size, :]
+          self.obs_buffer[self.experience_pointer: self.experience_pointer + self.effective_cache_size, :] = \
+               self.obs_cache[0:self.effective_cache_size, :]
+          self.next_obs_buffer[self.experience_pointer: self.experience_pointer + self.effective_cache_size, :] = \
+               self.next_obs_cache[0: self.effective_cache_size, :]
+          self.reward_buffer[self.experience_pointer: self.experience_pointer + self.effective_cache_size] = \
+               self.reward_cache[0: self.effective_cache_size]
+          self.done_buffer[self.experience_pointer: self.experience_pointer + self.effective_cache_size] = \
+               self.done_cache[0: self.effective_cache_size]
+
+          self.priority_buffer[self.experience_pointer: self.experience_pointer + self.effective_cache_size] = self.current_episode_reward
+
+          self.effective_size += self.effective_cache_size
+          self.experience_pointer += self.effective_cache_size
+          self.effective_cache_size = 0
+
 
     def get_training_batch(
         self,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """Sample (batch_size) number of data points from (0, self.experience_pointer - 1)
         and returns tensors for s, a, s', r, and done."""
-        sample_index = np.random.choice(
-            np.arange(self.effective_size), self.batch_size, replace=False
-        )
+
+        # sample_index = np.random.choice(np.arange(self.effective_size), self.batch_size)
+        sample_index1 = np.random.choice(np.arange(self.effective_size), self.batch_size)
+        sample_index2 = np.random.choice(np.arange(self.effective_size), self.batch_size)
+
+        sample_index = np.concatenate((sample_index1, sample_index2))
+        sample_index = np.argsort(self.priority_buffer[sample_index])
+        sample_index = sample_index[-self.batch_size:]
+
         return (
             self.obs_buffer[sample_index, :].to(self.device),
             self.action_buffer[sample_index, :].to(self.device),
