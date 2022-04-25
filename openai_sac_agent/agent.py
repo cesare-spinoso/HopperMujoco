@@ -88,8 +88,8 @@ class Agent:
             activation_function=q_activation_function,
         )
         self.q1_optimizer = torch.optim.Adam(self.q1_network.parameters(), lr=q_lr)
-        self.q1_scheduler = torch.optim.lr_scheduler.ExponentialLR(
-            self.q1_optimizer, gamma=0.999
+        self.q1_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            self.q1_optimizer, T0=self.learning_rate_scheduler_frequency
         )
 
         self.q2_network = QNetwork(
@@ -99,8 +99,8 @@ class Agent:
             activation_function=q_activation_function,
         )
         self.q2_optimizer = torch.optim.Adam(self.q2_network.parameters(), lr=q_lr)
-        self.q2_scheduler = torch.optim.lr_scheduler.ExponentialLR(
-            self.q2_optimizer, gamma=0.999
+        self.q2_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            self.q2_optimizer, T0=self.learning_rate_scheduler_frequency
         )
         # Create q target networks (for both 1 and 2) and freeze gradients
         self.q1_network_target = deepcopy(self.q1_network)
@@ -118,8 +118,8 @@ class Agent:
         self.policy_optimizer = torch.optim.Adam(
             self.policy_network.parameters(), lr=policy_lr
         )
-        self.policy_scheduler = torch.optim.lr_scheduler.ExponentialLR(
-            self.policy_optimizer, gamma=0.999
+        self.policy_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            self.policy_optimizer, T0=self.learning_rate_scheduler_frequency
         )
         ### ADPTABLE ALPHA ###
         self.alpha = alpha  # entropy parameter
@@ -353,13 +353,12 @@ class Agent:
 
     def update_learning_rate(self):
         self.update_counter += 1
-        if self.update_counter % self.learning_rate_scheduler_frequency == 0:
-            self.q1_scheduler.step()
-            self.q2_scheduler.step()
-            self.policy_scheduler.step()
-            print(f"Q1 network learning rate: {self.q1_scheduler.get_last_lr()[0]}")
-            print(f"Q2 network learning rate: {self.q2_scheduler.get_last_lr()[0]}")
-            print(f"Policy network learning rate: {self.policy_scheduler.get_last_lr()[0]}")
+        self.q1_scheduler.step()
+        self.q2_scheduler.step()
+        self.policy_scheduler.step()
+        print(f"Q1 network learning rate: {self.q1_scheduler.get_last_lr()[0]}")
+        print(f"Q2 network learning rate: {self.q2_scheduler.get_last_lr()[0]}")
+        print(f"Policy network learning rate: {self.policy_scheduler.get_last_lr()[0]}")
 
     def _freeze_network(self, network):
         """Freeze the gradients of the network so that loss cannot backprop
