@@ -18,5 +18,5 @@ def evaluate_agent(agent, env, n_episodes_to_evaluate):
             ep_len += 1
         ep_lens.append(ep_len)
         array_of_acc_rewards.append(acc_reward)
-    print(f"mean episode len during eval: {np.mean(np.array(ep_lens))}"
+    print(f"mean episode len during eval: {np.mean(np.array(ep_lens))}")
     return np.mean(np.array(array_of_acc_rewards))
