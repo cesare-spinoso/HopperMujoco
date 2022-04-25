@@ -30,7 +30,7 @@ class Agent:
         policy_architecture: tuple = (64, 64),
         policy_activation_function: F = nn.ReLU,
         buffer_size: int = 1_000_000,
-        alpha: float = 0.2,
+        alpha: float = 0.8,
         exploration_timesteps: int = 100,
         update_frequency_in_episodes: int = 1,
         update_start_in_episodes: int = 100,
