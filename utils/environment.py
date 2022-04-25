@@ -11,6 +11,8 @@ def get_environment(env_type):
         env = MujocoEnv(gym.make("Hopper-v2"))
     elif "ant" in env_type:
         env = MujocoEnv(gym.make("Ant-v2"))
+    elif "walker" in env_type:
+        env = MujocoEnv(gym.make("Walker2d-v2"))
     else:
         raise Exception(
             "ERROR: Please define your env_type to be either 'jellybean' or 'mujoco'!"
