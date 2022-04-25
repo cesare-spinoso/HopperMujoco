@@ -237,7 +237,7 @@ if __name__ == "__main__":
                 agent,
                 env,
                 env_eval,
-                total_timesteps,
+                sample_efficiency_total_timesteps,
                 evaluation_freq,
                 n_episodes_to_evaluate,
                 logger,
