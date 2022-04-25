@@ -136,8 +136,8 @@ if __name__ == "__main__":
 
     # Training and evaluation variables
     total_timesteps = 2_000_000
-    evaluation_freq = 10000
-    n_episodes_to_evaluate = 10
+    evaluation_freq = 1000
+    n_episodes_to_evaluate = 20
 
     ########################################## training a single/multiple agent(s) ##########################################
     # starting a logger - results stored in folder labeled w/ date+time
