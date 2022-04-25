@@ -65,6 +65,7 @@ class Agent:
         self.current_timestep = 0
         self.current_episode = 0
         self.episode_of_last_update = None
+        self.update_counter = 0
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         ### HYPERPARAMETERS ###
@@ -79,6 +80,7 @@ class Agent:
         self.number_of_batch_updates = number_of_batch_updates
         self.batch_size = batch_size
         ### Q-NETWORKS (Q1 and Q1) ###
+        self.learning_rate_scheduler_frequency = 100
         self.q1_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -86,6 +88,10 @@ class Agent:
             activation_function=q_activation_function,
         )
         self.q1_optimizer = torch.optim.Adam(self.q1_network.parameters(), lr=q_lr)
+        self.q1_scheduler = torch.optim.lr_scheduler.ExponentialLR(
+            self.q1_optimizer, gamma=0.999
+        )
+
         self.q2_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -93,6 +99,9 @@ class Agent:
             activation_function=q_activation_function,
         )
         self.q2_optimizer = torch.optim.Adam(self.q2_network.parameters(), lr=q_lr)
+        self.q2_scheduler = torch.optim.lr_scheduler.ExponentialLR(
+            self.q2_optimizer, gamma=0.999
+        )
         # Create q target networks (for both 1 and 2) and freeze gradients
         self.q1_network_target = deepcopy(self.q1_network)
         self._freeze_network(self.q1_network_target)
@@ -108,6 +117,9 @@ class Agent:
         )
         self.policy_optimizer = torch.optim.Adam(
             self.policy_network.parameters(), lr=policy_lr
+        )
+        self.policy_scheduler = torch.optim.lr_scheduler.ExponentialLR(
+            self.policy_optimizer, gamma=0.999
         )
         ### ADPTABLE ALPHA ###
         self.alpha = alpha  # entropy parameter
@@ -223,7 +235,7 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
-            print(f"Current episode: {self.current_episode}")
+            # print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
             if logger:
@@ -264,6 +276,8 @@ class Agent:
             self.train_alpha(obs_data)
             # Update the target networks (Line 15 of the OpenAI pseudocode)
             self.update_target_networks()
+        # Learning rate scheduling
+        self.update_learning_rate()
 
     def compute_targets(
         self,
@@ -336,6 +350,16 @@ class Agent:
             self.alpha_optimizer.step()
             # Update the alpha, is this line necessary?
             self.alpha = torch.exp(self.log_alpha)
+
+    def update_learning_rate(self):
+        self.update_counter += 1
+        if self.update_counter % self.learning_rate_scheduler_frequency == 0:
+            self.q1_scheduler.step()
+            self.q2_scheduler.step()
+            self.policy_scheduler.step()
+            print(f"Q1 network learning rate: {self.q1_scheduler.get_last_lr()[0]}")
+            print(f"Q2 network learning rate: {self.q2_scheduler.get_last_lr()[0]}")
+            print(f"Policy network learning rate: {self.policy_scheduler.get_last_lr()[0]}")
 
     def _freeze_network(self, network):
         """Freeze the gradients of the network so that loss cannot backprop
