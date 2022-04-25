@@ -80,7 +80,7 @@ class Agent:
         self.number_of_batch_updates = number_of_batch_updates
         self.batch_size = batch_size
         ### Q-NETWORKS (Q1 and Q1) ###
-        self.learning_rate_scheduler_frequency = 100
+        self.learning_rate_scheduler_frequency_timesteps = 100_000
         self.q1_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -89,9 +89,8 @@ class Agent:
         )
         self.q1_optimizer = torch.optim.Adam(self.q1_network.parameters(), lr=q_lr)
         self.q1_scheduler = torch.optim.lr_scheduler.ExponentialLR(
-            self.q1_optimizer, gamma=0.999
+            self.q1_optimizer, gamma=0.9
         )
-
         self.q2_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -100,7 +99,7 @@ class Agent:
         )
         self.q2_optimizer = torch.optim.Adam(self.q2_network.parameters(), lr=q_lr)
         self.q2_scheduler = torch.optim.lr_scheduler.ExponentialLR(
-            self.q2_optimizer, gamma=0.999
+            self.q2_optimizer, gamma=0.9
         )
         # Create q target networks (for both 1 and 2) and freeze gradients
         self.q1_network_target = deepcopy(self.q1_network)
@@ -119,7 +118,7 @@ class Agent:
             self.policy_network.parameters(), lr=policy_lr
         )
         self.policy_scheduler = torch.optim.lr_scheduler.ExponentialLR(
-            self.policy_optimizer, gamma=0.999
+            self.policy_optimizer, gamma=0.9
         )
         ### ADPTABLE ALPHA ###
         self.alpha = alpha  # entropy parameter
@@ -352,8 +351,8 @@ class Agent:
             self.alpha = torch.exp(self.log_alpha)
 
     def update_learning_rate(self):
-        self.update_counter += 1
-        if self.update_counter % self.learning_rate_scheduler_frequency == 0:
+        if (self.current_timestep - self.update_counter) / self.learning_rate_scheduler_frequency_timesteps > 1:
+            self.update_counter = self.current_timestep
             self.q1_scheduler.step()
             self.q2_scheduler.step()
             self.policy_scheduler.step()
