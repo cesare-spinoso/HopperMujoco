@@ -266,7 +266,7 @@ if __name__ == "__main__":
             # Log to json
             log_training_experiment_to_json(
                 path_to_json=os.path.join(logger.location, "log.json"),
-                model_name=f"m_{str(i) + _ + str(j)}",
+                model_name=f"m_{str(i) + "_" + str(j)}",
                 hyperparameters=f"{params}",
                 final_mean_reward=final_mean_reward,
                 average_mean_reward=average_mean_reward,
