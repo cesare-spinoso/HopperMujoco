@@ -1,6 +1,6 @@
 Agent: SAC Agent
 
-Model: m_0 (3693 checkpoint which actually gives about 3598 as reward)
+Model: m_0 (3698 checkpoint which actually gives about 3695 from the cosine retraining)
 
 Hyperparameters: {
     'actor_architecture': (64, 64), 
@@ -22,7 +22,7 @@ policy_activation_function: F = nn.ReLU,
 buffer_size: int = 1_000_000,
 alpha: float = 0.2,
 exploration_timesteps: int = 1_000, # Less exploration => Maybe they take an average earlier than 100K?
-update_frequency_in_episodes: int = 25,
+update_frequency_in_episodes: int = 1,
 update_start_in_episodes: int = 100,
 number_of_batch_updates: int = 1_000,
 batch_size: int = 100,

@@ -21,7 +21,8 @@ def evaluate_agent(agent, env, num_seeds, n_episodes_to_evaluate):
     rewards_per_seed = []
     for seed in range(num_seeds):
         array_of_acc_rewards = []
-        env.seed(seed)
+        if num_seeds > 1:
+            env.seed(seed)
         for _ in range(n_episodes_to_evaluate):
             acc_reward = 0
             done = False
@@ -85,8 +86,8 @@ if __name__ == "__main__":
     agent.load_weights(args.root_path)
 
     # Note these can be environment specific and you are free to experiment with what works best for you
-    n_episodes_to_evaluate = 50
-    num_seeds = 5
+    n_episodes_to_evaluate = 100
+    num_seeds = 1
 
     mean_reward = evaluate_agent(agent, env_eval, num_seeds, n_episodes_to_evaluate)
     print(mean_reward)
