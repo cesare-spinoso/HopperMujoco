@@ -88,7 +88,6 @@ class Agent:
             activation_function=q_activation_function,
         )
         self.q1_optimizer = torch.optim.Adam(self.q1_network.parameters(), lr=q_lr)
-
         self.q2_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
