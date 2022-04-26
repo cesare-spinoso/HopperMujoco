@@ -74,7 +74,7 @@ if __name__ == "__main__":
     hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")
     params = hyperparameter_module.params
 
-    for i in range(2):
+    for i in range(5):
         # Create the agent
         agent = agent_module.Agent(env_specs, **params)
 

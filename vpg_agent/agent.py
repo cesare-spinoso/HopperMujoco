@@ -8,9 +8,8 @@ import numpy as np
 
 
 class Agent:
-    """The agent class that is to be filled.
-    You are allowed to add any method you
-    want to this class.
+    """
+    VANILLA POLICY GRADIENT AGENT
     """
 
     TOTAL_TIMESTEPS = 2100000
@@ -86,7 +85,8 @@ class Agent:
         )
 
     def load_weights(self, root_path: str, pretrained_model_name: str = None) -> None:
-        """Load the weights of the actor and the critic into the agent. If pretrained_model_name is None,
+        """
+        Load the weights of the actor and the critic into the agent. If pretrained_model_name is None,
         then use default name of "model" which is assumed to be in the same directory as load_weights.
 
         Args:
@@ -114,10 +114,9 @@ class Agent:
 
         print("Loaded {} OK".format(pretrained_model_name))
 
-    def save_checkpoint(
-        self, score_avg: float, ckpt_path: str, name: str = None
-    ) -> str:
-        """Save the weights of the critic and the actor as well as its score. If name is None,
+    def save_checkpoint(self, score_avg: float, ckpt_path: str, name: str = None) -> str:
+        """
+        Save the weights of the critic and the actor as well as its score. If name is None,
         then use its score as the name.
         """
         # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
@@ -130,7 +129,8 @@ class Agent:
                 ckpt_path,
                 "vpg_ckpt_" + name + ".pth.tar",
             )
-
+        
+        # actually saving
         torch.save(
             {
                 "actor": self.actor_model.state_dict(),
@@ -143,8 +143,10 @@ class Agent:
         return ckpt_path
 
     def act(self, curr_obs: np.array, mode: str = "eval") -> np.array:
-        """Return the action for the current observation. Returns a sample if training
-        and the mean if evaluating."""
+        """
+        Return the action for the current observation. Returns a sample if training
+        and the mean if evaluating.
+        """
         sample_action_as_array = torch.zeros(self.num_actions)
         with torch.no_grad():
             # We can use no grad for both train and eval because we're not
@@ -153,10 +155,10 @@ class Agent:
             self.actor_model.to(self.device)
             curr_obs = torch.from_numpy(curr_obs).float().to(self.device)
             action_distribution = self.actor_model(curr_obs)
-            if mode == "train":
+            if mode == "train": # return sample from distribution
                 sample_action = action_distribution.sample()
                 sample_action_as_array = sample_action.data.cpu().numpy()
-            else:
+            else: # return mean of distribution
                 sample_action = action_distribution.mean
                 sample_action_as_array = sample_action.data.cpu().numpy()
 
@@ -230,7 +232,9 @@ class Agent:
         self.time_since_last_update += 1
 
     def is_ready_to_train(self) -> bool:
-        """Return if the agent is ready to train <=> If the last update was more than batch time steps away."""
+        """
+        Return if the agent is ready to train <=> If the last update was more than batch time steps away.
+        """
         return (
             int(self.time_since_last_update / self.buffer.batch_size_in_time_steps) >= 1
         )
@@ -456,9 +460,6 @@ class Buffer:
         """Compute the TD error based R_t + gamma * V(S_t+1) - V(S_t) where V is returned by the critic."""
         with torch.no_grad():
             # Compute the TD error
-            # FIXME: OpenAI's implementation suggests that the value of the final state
-            # should be 0 (line 298 of vpg.py)
-            # print(reward_data)
             rewards = torch.cat((reward_data, torch.tensor([0.0])))
             estimated_values = torch.cat(
                 (critic(obs_data).squeeze(-1), torch.tensor([0.0]))
@@ -472,7 +473,6 @@ class Buffer:
         self, critic: nn.Module, obs_data: torch.Tensor, reward_data: torch.Tensor
     ) -> torch.Tensor:
         """Compute lambda-error which is a weighted cumulative sum of returns."""
-        # TODO: OpenAI's implementation of the advantage uses something like a lambda-return
         td_error = self._compute_td_error_advantage(critic, obs_data, reward_data)
         generalized_advantage = torch.zeros_like(td_error)
         running_advantage = 0
@@ -501,7 +501,6 @@ class Buffer:
         self, start: int, end: int
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Get data to train the actor which includes states, actions and advantages."""
-        # FIXME: OpenAI standardizes the advantage
         if self.buffer_type == "static":
             action_buffer, obs_buffer, advantage_buffer = (
                 self.action_buffer[start:end, :],
