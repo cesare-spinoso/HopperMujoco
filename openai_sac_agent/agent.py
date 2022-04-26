@@ -8,6 +8,10 @@ import numpy as np
 from typing import Tuple
 from copy import deepcopy
 
+import logging
+
+logging.basicConfig(filename="training.log", level=logging.INFO)
+
 
 class Agent:
     """The agent class that is to be filled.
@@ -24,16 +28,18 @@ class Agent:
         polyak: float = 0.995,
         q_lr: float = 1e-3,
         q_architecture: tuple = (64, 64),
-        q_activation_function: F = nn.Tanh,
+        q_activation_function: F = nn.ReLU,
         policy_lr: float = 1e-3,
         policy_architecture: tuple = (64, 64),
-        policy_activation_function: F = nn.Tanh,
-        buffer_size: int = 1_000_000,
+        policy_activation_function: F = nn.ReLU,
+        buffer_size: int = 2_000_000,
         alpha: float = 0.2,
         update_alpha: bool = False,
+        alpha_lr: float = 3e-4,
         exploration_timesteps: int = 10_000,
         update_frequency_in_episodes: int = 50,
         update_start_in_episodes: int = 1_000,
+        update_start_in_timesteps: int = None,
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
     ):
@@ -69,6 +75,7 @@ class Agent:
         # Frequency, start and size of updates
         self.update_frequency_in_episodes = update_frequency_in_episodes
         self.update_start_in_episodes = update_start_in_episodes
+        self.update_start_in_timesteps = update_start_in_timesteps
         self.number_of_batch_updates = number_of_batch_updates
         self.batch_size = batch_size
         ### Q-NETWORKS (Q1 and Q1) ###
@@ -112,7 +119,7 @@ class Agent:
             self.log_alpha = torch.tensor(0.0, requires_grad=True)
             self.alpha = torch.exp(self.log_alpha)
             # Optimizer
-            self.alpha_lr = 3e-4
+            self.alpha_lr = alpha_lr
             self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=self.alpha_lr)
         ### BUFFER ###
         self.buffer = SACBuffer(
@@ -206,7 +213,7 @@ class Agent:
                 action = action.data.cpu().numpy()
             return action
 
-    def update(self, curr_obs, action, reward, next_obs, done, timestep):
+    def update(self, curr_obs, action, reward, next_obs, done, timestep, logger=None):
         # Store experience in buffer
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
@@ -216,14 +223,21 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
+            print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
-            print(f"Alpha: {self.alpha}")
+            if logger:
+                logger.log(f"Timestep: {timestep}")
+                logger.log(f"Current episode: {self.current_episode}")
+                logger.log(f"Alpha: {self.alpha}")
             self.episode_of_last_update = self.current_episode
 
     def is_ready_to_train(self):
         if self.episode_of_last_update is None:
-            return self.current_episode > self.update_start_in_episodes
+            return self.current_episode > self.update_start_in_episodes or (
+                self.update_start_in_timesteps is not None
+                and self.current_timestep > self.update_start_in_timesteps
+            )
         else:
             return (
                 self.current_episode > self.episode_of_last_update
@@ -306,7 +320,7 @@ class Agent:
         self._unfreeze_network(self.q1_network)
         self._unfreeze_network(self.q2_network)
         self._unfreeze_alpha()
-    
+
     def train_alpha(self, obs_data):
         if self.update_alpha:
             # # Zero grad
@@ -349,7 +363,7 @@ class Agent:
             # Use OpenAI's in-place trick
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
-    
+
     def _freeze_alpha(self):
         if self.update_alpha:
             self.log_alpha.requires_grad = False

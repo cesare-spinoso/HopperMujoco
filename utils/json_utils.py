@@ -1,7 +1,8 @@
 import os
 import json
 from typing import List
-
+import numpy as np
+from sklearn.metrics import auc
 
 def log_training_experiment_to_json(
     path_to_json: str,
@@ -45,3 +46,34 @@ def get_json_data(path_to_json: str):
         for line in f:
             json_data.append(json.loads(line))
     return json_data
+
+def clip_to_n_train_iterations_json(path_to_json_old: str, path_to_json_new: str, n: int):
+    """
+    Load information from json file, keep only n training steps, and save to a new file.
+    """
+    json_data = []
+    with open(path_to_json_old, "r") as f:
+        for line in f:
+            json_data.append(json.loads(line))
+
+    for run in json_data:
+        print("old list length:", len(run['list_of_rewards']))
+        new_rewards_list = run['list_of_rewards'][0:n]
+
+        final_mean_reward = new_rewards_list[-1]
+        average_mean_reward = np.mean(new_rewards_list)
+        median_mean_reward = np.median(new_rewards_list)
+        best_mean_reward = np.max(new_rewards_list)
+        cumulative_reward = np.sum(new_rewards_list)
+        auc_mean_reward = auc(range(len(new_rewards_list)), new_rewards_list)
+
+        log_training_experiment_to_json(path_to_json_new, run['model_name'], run['hyperparameters'],
+            final_mean_reward, average_mean_reward, median_mean_reward, best_mean_reward, cumulative_reward,
+            auc_mean_reward, "", new_rewards_list)
+
+if __name__ == '__main__':
+    sac_json_old = "results/sac_variants/bottleneck_varying_alpha_sac.json"
+    sac_json_new = "results/sac_variants/bottleneck_varying_alpha_sac_clipped.json"
+    n_iterations = int(2_000_000/1000)
+
+    clip_to_n_train_iterations_json(sac_json_old, sac_json_new, n_iterations)
