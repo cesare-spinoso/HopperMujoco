@@ -1,0 +1,3 @@
+These variants use a bottleneck + use a DIFFERENT ALPHA (NOTE THIS IS NOT THE SAME THING
+AS USING VARYING ALPHA, HERE THE ALPHA STAYS FIXED but it's different that the openai default of 0.2
+we can talk about how it seems to learn much quicker in some of these)
