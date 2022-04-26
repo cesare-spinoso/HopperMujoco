@@ -62,14 +62,14 @@ if __name__ == "__main__":
     agent_module = importlib.import_module(args.group + ".agent")
     try:
         hyperparameter_module = importlib.import_module(
-            args.group + ".gamed_hyperparameters"
+            args.group + ".sample_efficient_hyperparameters"
         )
         grid = hyperparameter_module.hyperparameter_grid
         logger.log("Loaded the hyperparameter grid")
     except:
         # Use the default hyperparameters
         raise ValueError(
-            "You cannot game without gamed_hyperparameters.py in the group folder."
+            "You cannot run this script without sample_efficient_hyperparameters.py in the group folder."
         )
 
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         # Create the agent
         agent = agent_module.Agent(env_specs, **params)
 
-        logger.log(f"(Gamed) training start for the following model {i} ... ")
+        logger.log(f"(Sample efficient) training start for the following model {i} ... ")
         logger.log(f"{agent.__dict__}")
 
         mean_sample_efficiency, mean_time_to_train = calc_sample_efficiency(
@@ -103,43 +103,6 @@ if __name__ == "__main__":
             "mean_time_to_train": mean_time_to_train,
             "hyperparams": f"{params}",
         }
-        with open(os.path.join(logger.location, "gamed_evaluation.json"), "a") as f:
+        with open(os.path.join(logger.location, "sample_efficient.json"), "a") as f:
             json.dump(dict_to_write, f)
             f.write("\n")
-
-
-# start_time = time()
-# cum_average_reward = 0
-
-# learning_curves_array = np.zeros(
-#     (num_seeds, int(total_timesteps / evaluation_freq))
-# )
-# for seed in range(num_seeds):
-#     logger.log(f"Training agent {i} with seed {seed}")
-#     # Prevent memory leak
-#     agent_copy = deepcopy(agent)
-#     learning_curve, path_to_best_model = train_agent(
-#         agent_copy,
-#         env,
-#         env_eval,
-#         total_timesteps,
-#         evaluation_freq,
-#         n_episodes_to_evaluate,
-#         logger,
-#         save_checkpoint=False,
-#     )
-#     average_reward = np.array(learning_curve).mean()
-#     logger.log(
-#         f"Average reward for agent {i} with seed {seed} is {average_reward}"
-#     )
-#     cum_average_reward += average_reward
-#     learning_curves_array[seed, :] = learning_curve
-# average_reward = cum_average_reward / num_seeds
-# logger.log(f"Average reward for agent {i} is {average_reward}")
-# average_rewards.append(average_reward)
-# logger.log(f"Saving the mean learning curve for agent {i}")
-# learning_curves.append(learning_curves_array.mean(axis=0).tolist())
-# logger.log("Training complete.")
-
-# learning_curves = []
-# average_rewards = []
