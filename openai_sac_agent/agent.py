@@ -1,5 +1,4 @@
 import os
-from turtle import update
 import torch
 from torch import nn
 from torch.functional import F
@@ -8,10 +7,6 @@ import numpy as np
 
 from typing import Tuple
 from copy import deepcopy
-
-import logging
-
-logging.basicConfig(filename="training.log", level=logging.INFO)
 
 
 class Agent:
@@ -135,7 +130,7 @@ class Agent:
                     )
                 )
             else:
-                self.learning_rate_scheduler_frequency_timesteps = 5_000
+                self.learning_rate_scheduler_frequency_timesteps = 100_000
                 self.decay_rate = 0.9
                 self.q1_scheduler = torch.optim.lr_scheduler.ExponentialLR(
                     self.q1_optimizer, gamma=self.decay_rate
@@ -161,7 +156,7 @@ class Agent:
                 self.alpha_lr = alpha_lr
                 self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=self.alpha_lr)
             else:
-                self.alpha_decaying_frequency = 5_000
+                self.alpha_decaying_frequency = 100_000
                 self.alpha_decay_rate = 0.9
                 self.alpha_update_counter = 0
         ### BUFFER ###
