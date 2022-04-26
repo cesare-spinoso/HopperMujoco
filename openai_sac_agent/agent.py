@@ -269,6 +269,8 @@ class Agent:
             # print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
+            print(self.current_episode)
+            print(f"Alpha: {self.alpha}")
             self.episode_of_last_update = self.current_episode
             if logger:
                 logger.log(f"Timestep: {timestep}")
@@ -429,6 +431,14 @@ class Agent:
             # Use OpenAI's in-place trick
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
+    
+    def _freeze_alpha(self):
+        if self.update_alpha:
+            self.log_alpha.requires_grad = False
+
+    def _unfreeze_alpha(self):
+        if self.update_alpha:
+            self.log_alpha.requires_grad = True
 
     def _freeze_alpha(self):
         if self.update_alpha == "learned":
