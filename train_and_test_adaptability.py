@@ -126,12 +126,12 @@ if __name__ == "__main__":
         }
 
     # Training and evaluation variables
-    total_timesteps = 1_500_000
+    total_timesteps = 20_000
     evaluation_freq = 10000
     n_episodes_to_evaluate = 20
     sample_efficiency_num_seeds = 5
     sample_efficiency_total_timesteps = 100_000
-    sample_efficiency_evaluation_freq = 1000
+    sample_efficiency_evaluation_freq = 5000
 
     ########################################## training a single/multiple agent(s) ##########################################
     # starting a logger - results stored in folder labeled w/ date+time
