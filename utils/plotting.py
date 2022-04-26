@@ -254,11 +254,10 @@ if __name__ == '__main__':
     # if only one name, still input it in a list (eg. ['ppo'])
 
     # AVGERAGE AND CUMUMLATIVE REWARD GRAPHS FOR SAC VARIANTS
-    json_list = ["results/sac_variants/vanilla_sac.json", "results/sac_variants/bottleneck_sac_clipped.json",
-        "results/sac_variants/bottleneck_dif_alpha_sac_clipped.json", 
-        "results/sac_variants/bottleneck_varying_alpha_sac_clipped.json",
-        "results/sac_variants/decaying_lr_sac.json"]
-    model_names = ["Vanilla SAC", "Bottleneck SAC, $\\alpha$=0.1",  "Bottleneck SAC, $\\alpha$=0.2",  
-        "Bottleneck SAC, varying $\\alpha$",  "SAC w/ Decaying Learning Rate"]
+    json_list = ["results/sac_variants/vanilla_sac.json", "results/sac_variants/bottleneck_sac.json",
+        "results/sac_variants/varying_alpha_sac.json",
+        "results/sac_variants/decaying_lr_sac.json", "results/sac_variants/replay_buffer_sac.json"]
+    model_names = ["Vanilla SAC", "Bottleneck SAC", "SAC w/ varying $\\alpha$",  
+        "SAC w/ Decaying Learning Rate", "SAC w/ Prioritized Replay Buffer"]
     plot_json_rewards(json_list, save_location="results/sac_variants", model_names=model_names, 
         time_step=1000)

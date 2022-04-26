@@ -72,8 +72,8 @@ def clip_to_n_train_iterations_json(path_to_json_old: str, path_to_json_new: str
             auc_mean_reward, "", new_rewards_list)
 
 if __name__ == '__main__':
-    sac_json_old = "results/sac_variants/bottleneck_varying_alpha_sac.json"
-    sac_json_new = "results/sac_variants/bottleneck_varying_alpha_sac_clipped.json"
+    sac_json_old = "results/2022-04-26_00h51m53/log.json"
+    sac_json_new = "results/sac_variants/replay_buffer_sac.json"
     n_iterations = int(2_000_000/1000)
 
     clip_to_n_train_iterations_json(sac_json_old, sac_json_new, n_iterations)
