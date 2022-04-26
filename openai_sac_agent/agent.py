@@ -223,7 +223,7 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
-            print(f"Current episode: {self.current_episode}")
+            #print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
             if logger:
