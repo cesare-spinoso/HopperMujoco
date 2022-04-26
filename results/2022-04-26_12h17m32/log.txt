@@ -1,0 +1,229 @@
+12:17:32,746 root INFO Loaded the best hyperparameters
+12:17:32,937 root INFO Pretrained model loaded: results/2022-04-25_10h16m22/sac_ckpt_m_0_3165.16
+12:17:32,938 root INFO Training start for the following model 0 ... 
+12:17:32,942 root INFO {'env_specs': {'observation_space': Box(-inf, inf, (11,), float64), 'action_space': Box(-1.0, 1.0, (3,), float32)}, 'num_obs': 11, 'num_actions': 3, 'action_limit': 1.0, 'current_timestep': 0, 'current_episode': 0, 'episode_of_last_update': None, 'device': device(type='cpu'), 'gamma': 0.99, 'polyak': 0.995, 'exploration_timesteps': 0, 'update_frequency_in_episodes': 5, 'update_start_in_episodes': 50, 'number_of_batch_updates': 1000, 'batch_size': 100, 'q1_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q1_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q2_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q2_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q1_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q2_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'policy_network': PolicyNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=11, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+  )
+  (mu_layer): Linear(in_features=64, out_features=3, bias=True)
+  (log_std_layer): Linear(in_features=64, out_features=3, bias=True)
+), 'policy_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'alpha': tensor(1., grad_fn=<ExpBackward0>), 'update_alpha': True, 'entropy_target': -3, 'log_alpha': tensor(0., requires_grad=True), 'alpha_lr': 0.0003, 'alpha_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.0003
+    maximize: False
+    weight_decay: 0
+), 'buffer': <openai_sac_agent.agent.SACBuffer object at 0x7f38faa3a490>}
+12:18:56,446 root INFO timestep: 10000, acc_reward: 303.41
+12:18:56,458 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_303.411.pth.tar
+12:22:15,232 root INFO timestep: 20000, acc_reward: 558.75
+12:22:15,242 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_558.753.pth.tar
+12:23:04,447 root INFO timestep: 30000, acc_reward: 1031.80
+12:23:04,454 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_1031.796.pth.tar
+12:25:23,845 root INFO timestep: 40000, acc_reward: 577.90
+12:28:13,53 root INFO timestep: 50000, acc_reward: 942.68
+12:30:53,630 root INFO timestep: 60000, acc_reward: 631.87
+12:33:00,25 root INFO timestep: 70000, acc_reward: 786.64
+12:34:34,848 root INFO timestep: 80000, acc_reward: 3108.99
+12:34:34,855 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3108.995.pth.tar
+12:36:26,529 root INFO timestep: 90000, acc_reward: 3000.59
+12:37:47,695 root INFO timestep: 100000, acc_reward: 1362.68
+12:38:45,866 root INFO timestep: 110000, acc_reward: 2936.68
+12:39:45,399 root INFO timestep: 120000, acc_reward: 3101.63
+12:41:01,710 root INFO timestep: 130000, acc_reward: 2952.46
+12:42:50,961 root INFO timestep: 140000, acc_reward: 3089.93
+12:43:37,924 root INFO timestep: 150000, acc_reward: 3167.56
+12:43:37,933 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3167.561.pth.tar
+12:44:43,20 root INFO timestep: 160000, acc_reward: 3343.88
+12:44:43,28 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3343.877.pth.tar
+12:45:31,499 root INFO timestep: 170000, acc_reward: 3350.23
+12:45:31,506 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3350.23.pth.tar
+12:46:52,630 root INFO timestep: 180000, acc_reward: 1817.66
+12:48:30,109 root INFO timestep: 190000, acc_reward: 410.21
+12:50:12,988 root INFO timestep: 200000, acc_reward: 1768.82
+12:51:42,925 root INFO timestep: 210000, acc_reward: 3422.30
+12:51:42,935 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3422.301.pth.tar
+12:52:35,781 root INFO timestep: 220000, acc_reward: 3342.72
+12:53:29,186 root INFO timestep: 230000, acc_reward: 3322.64
+12:54:22,920 root INFO timestep: 240000, acc_reward: 3228.66
+12:55:38,807 root INFO timestep: 250000, acc_reward: 3477.78
+12:55:38,817 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3477.785.pth.tar
+12:56:34,502 root INFO timestep: 260000, acc_reward: 3235.44
+12:57:31,116 root INFO timestep: 270000, acc_reward: 3111.36
+12:58:28,569 root INFO timestep: 280000, acc_reward: 3230.85
+12:59:27,832 root INFO timestep: 290000, acc_reward: 3314.24
+13:01:15,153 root INFO timestep: 300000, acc_reward: 3282.35
+13:02:16,264 root INFO timestep: 310000, acc_reward: 3270.79
+13:04:07,540 root INFO timestep: 320000, acc_reward: 3202.64
+13:05:11,585 root INFO timestep: 330000, acc_reward: 3387.95
+13:07:07,61 root INFO timestep: 340000, acc_reward: 3411.15
+13:09:03,918 root INFO timestep: 350000, acc_reward: 2868.05
+13:11:23,991 root INFO timestep: 360000, acc_reward: 759.75
+13:12:59,463 root INFO timestep: 370000, acc_reward: 3291.70
+13:14:36,62 root INFO timestep: 380000, acc_reward: 3337.95
+13:15:46,235 root INFO timestep: 390000, acc_reward: 3249.72
+13:17:25,910 root INFO timestep: 400000, acc_reward: 3196.46
+13:18:38,758 root INFO timestep: 410000, acc_reward: 3220.88
+13:20:22,49 root INFO timestep: 420000, acc_reward: 3274.78
+13:22:39,392 root INFO timestep: 430000, acc_reward: 3251.58
+13:23:55,561 root INFO timestep: 440000, acc_reward: 3008.60
+13:25:43,833 root INFO timestep: 450000, acc_reward: 3252.63
+13:28:02,758 root INFO timestep: 460000, acc_reward: 1875.61
+13:29:48,866 root INFO timestep: 470000, acc_reward: 855.36
+13:32:16,480 root INFO timestep: 480000, acc_reward: 3102.67
+13:33:38,342 root INFO timestep: 490000, acc_reward: 3131.90
+13:35:35,256 root INFO timestep: 500000, acc_reward: 3308.84
+13:37:35,198 root INFO timestep: 510000, acc_reward: 3307.73
+13:39:36,620 root INFO timestep: 520000, acc_reward: 3018.32
+13:41:01,561 root INFO timestep: 530000, acc_reward: 3135.17
+13:43:02,697 root INFO timestep: 540000, acc_reward: 3246.19
+13:44:29,390 root INFO timestep: 550000, acc_reward: 3355.10
+13:45:57,188 root INFO timestep: 560000, acc_reward: 3372.56
+13:49:16,499 root INFO timestep: 570000, acc_reward: 944.79
+13:51:27,555 root INFO timestep: 580000, acc_reward: 3286.44
+13:53:42,775 root INFO timestep: 590000, acc_reward: 3363.11
+13:55:59,881 root INFO timestep: 600000, acc_reward: 3296.68
+13:57:32,638 root INFO timestep: 610000, acc_reward: 1346.21
+13:59:51,963 root INFO timestep: 620000, acc_reward: 2588.15
+14:02:54,947 root INFO timestep: 630000, acc_reward: 999.59
+14:05:21,817 root INFO timestep: 640000, acc_reward: 3368.67
+14:09:22,303 root INFO timestep: 650000, acc_reward: 3321.84
+14:11:09,56 root INFO timestep: 660000, acc_reward: 3277.37
+14:14:31,286 root INFO timestep: 670000, acc_reward: 3238.02
+14:16:21,585 root INFO timestep: 680000, acc_reward: 3320.16
+14:19:00,704 root INFO timestep: 690000, acc_reward: 3284.24
+14:20:53,279 root INFO timestep: 700000, acc_reward: 3233.99
+14:22:48,347 root INFO timestep: 710000, acc_reward: 3414.30
+14:25:35,730 root INFO timestep: 720000, acc_reward: 3336.88
+14:27:32,190 root INFO timestep: 730000, acc_reward: 3431.09
+14:29:31,109 root INFO timestep: 740000, acc_reward: 3317.75
+14:31:32,26 root INFO timestep: 750000, acc_reward: 3330.07
+14:33:33,880 root INFO timestep: 760000, acc_reward: 3253.64
+14:35:37,821 root INFO timestep: 770000, acc_reward: 3319.56
+14:37:37,203 root INFO timestep: 780000, acc_reward: 1213.09
+14:40:41,492 root INFO timestep: 790000, acc_reward: 3451.37
+14:42:50,595 root INFO timestep: 800000, acc_reward: 3326.43
+14:44:57,373 root INFO timestep: 810000, acc_reward: 1569.75
+14:47:07,785 root INFO timestep: 820000, acc_reward: 3252.42
+14:49:20,925 root INFO timestep: 830000, acc_reward: 3283.31
+14:52:36,922 root INFO timestep: 840000, acc_reward: 3290.06
+14:54:55,292 root INFO timestep: 850000, acc_reward: 3472.11
+14:57:15,106 root INFO timestep: 860000, acc_reward: 3430.62
+14:59:36,796 root INFO timestep: 870000, acc_reward: 3445.85
+15:01:58,986 root INFO timestep: 880000, acc_reward: 3202.64
+15:04:21,508 root INFO timestep: 890000, acc_reward: 3482.07
+15:04:21,524 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3482.073.pth.tar
+15:06:44,731 root INFO timestep: 900000, acc_reward: 3390.54
+15:09:11,677 root INFO timestep: 910000, acc_reward: 3317.60
+15:12:46,676 root INFO timestep: 920000, acc_reward: 3443.07
+15:15:11,105 root INFO timestep: 930000, acc_reward: 1286.00
+15:17:43,2 root INFO timestep: 940000, acc_reward: 3255.36
+15:20:16,172 root INFO timestep: 950000, acc_reward: 3410.09
+15:24:00,118 root INFO timestep: 960000, acc_reward: 3146.55
+15:27:47,507 root INFO timestep: 970000, acc_reward: 3177.13
+15:30:24,338 root INFO timestep: 980000, acc_reward: 3124.32
+15:33:04,194 root INFO timestep: 990000, acc_reward: 3330.60
+15:35:46,362 root INFO timestep: 1000000, acc_reward: 3316.39
+15:39:40,299 root INFO timestep: 1010000, acc_reward: 3242.54
+15:42:22,594 root INFO timestep: 1020000, acc_reward: 3498.48
+15:42:22,606 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3498.483.pth.tar
+15:46:11,401 root INFO timestep: 1030000, acc_reward: 53.20
+15:50:07,463 root INFO timestep: 1040000, acc_reward: 3459.60
+15:52:50,670 root INFO timestep: 1050000, acc_reward: 3523.28
+15:52:50,682 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-26_12h17m32/sac_ckpt_m_0_3523.282.pth.tar
+15:55:34,547 root INFO timestep: 1060000, acc_reward: 3418.61
+15:58:17,515 root INFO timestep: 1070000, acc_reward: 3492.96
+16:02:13,692 root INFO timestep: 1080000, acc_reward: 3462.96
+16:04:55,588 root INFO timestep: 1090000, acc_reward: 3491.77
+16:07:36,561 root INFO timestep: 1100000, acc_reward: 3423.46
+16:10:18,671 root INFO timestep: 1110000, acc_reward: 3459.22
+16:13:01,56 root INFO timestep: 1120000, acc_reward: 3086.02
+16:15:44,834 root INFO timestep: 1130000, acc_reward: 3500.77
+16:19:42,421 root INFO timestep: 1140000, acc_reward: 3452.73
+16:22:24,639 root INFO timestep: 1150000, acc_reward: 3321.87
+16:26:21,936 root INFO timestep: 1160000, acc_reward: 3421.54
+16:29:05,692 root INFO timestep: 1170000, acc_reward: 3499.72
+16:33:03,629 root INFO timestep: 1180000, acc_reward: 3519.02
+16:35:47,36 root INFO timestep: 1190000, acc_reward: 3419.85
+16:38:30,44 root INFO timestep: 1200000, acc_reward: 3383.93
+16:42:27,657 root INFO timestep: 1210000, acc_reward: 3208.14
+16:45:10,467 root INFO timestep: 1220000, acc_reward: 3303.63
+16:47:52,976 root INFO timestep: 1230000, acc_reward: 3482.96
+16:51:52,528 root INFO timestep: 1240000, acc_reward: 3431.60
+16:54:35,189 root INFO timestep: 1250000, acc_reward: 3385.23
+16:57:18,762 root INFO timestep: 1260000, acc_reward: 3352.32
+17:00:02,740 root INFO timestep: 1270000, acc_reward: 3365.20
+17:02:46,316 root INFO timestep: 1280000, acc_reward: 3325.14
+17:05:30,89 root INFO timestep: 1290000, acc_reward: 3383.62
+17:09:27,401 root INFO timestep: 1300000, acc_reward: 3375.69
+17:12:10,70 root INFO timestep: 1310000, acc_reward: 3412.68
+17:14:06,942 root INFO timestep: 1320000, acc_reward: 3250.98
+17:16:06,266 root INFO timestep: 1330000, acc_reward: 3124.19
+17:19:43,35 root INFO timestep: 1340000, acc_reward: 3304.29
+17:21:48,50 root INFO timestep: 1350000, acc_reward: 3510.30
+17:24:46,839 root INFO timestep: 1360000, acc_reward: 3487.24
+17:26:55,413 root INFO timestep: 1370000, acc_reward: 3349.07
+17:29:01,454 root INFO timestep: 1380000, acc_reward: 3037.72
+17:32:49,841 root INFO timestep: 1390000, acc_reward: 3503.84
+17:34:51,628 root INFO timestep: 1400000, acc_reward: 3156.95
