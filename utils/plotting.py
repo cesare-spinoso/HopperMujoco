@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from torch import ge
-from .json_utils import get_json_data
+from json_utils import get_json_data
 
 font = {'family' : 'sans serif', 'size' : 18}
 matplotlib.rc('font', **font)
@@ -259,6 +259,6 @@ if __name__ == '__main__':
         "results/sac_variants/bottleneck_varying_alpha_sac_clipped.json",
         "results/sac_variants/decaying_lr_sac.json"]
     model_names = ["Vanilla SAC", "Bottleneck SAC, $\\alpha$=0.1",  "Bottleneck SAC, $\\alpha$=0.2",  
-        "Bottleneck SAC, varying $\\alpha$",  "SAC w/ Decaying $\\alpha$"]
+        "Bottleneck SAC, varying $\\alpha$",  "SAC w/ Decaying Learning Rate"]
     plot_json_rewards(json_list, save_location="results/sac_variants", model_names=model_names, 
         time_step=1000)
