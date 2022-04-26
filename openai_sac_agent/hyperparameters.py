@@ -8,7 +8,7 @@ grid = {
     "activation": [torch.nn.ReLU, torch.nn.Tanh],
 }
 
-# Extra hyperparamaters that didn't lead anywhere
+# Extra hyperparamaters that were tried
 grid = {
     "architecture": [(128, 32), (128, 64),],
     "activation": [torch.nn.ReLU],
