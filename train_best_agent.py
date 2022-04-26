@@ -61,7 +61,7 @@ if __name__ == "__main__":
         }
 
     # Training and evaluation variables
-    total_timesteps = 3_000_000 #2_000_000
+    total_timesteps = 2_000_000
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
 
@@ -130,5 +130,5 @@ if __name__ == "__main__":
         )
 
     # Plot learning curves - average reward and cumulative reward averages with standard deviation
-    plot_best_model_rewards(os.path.join(save_path, "log_best_model.json"), save_path, time_step=evaluation_freq)
+    plot_best_model_rewards(os.path.join(save_path, "log_best_model.json"), save_path, model_names=['m'], time_step=evaluation_freq)
     logger.log("\nRewards graphed successfully. See {}".format(save_path))

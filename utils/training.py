@@ -17,6 +17,7 @@ def train_agent(
     name=None,
     visualize=False,
     save_checkpoint=True,
+    save_checkpoint_start_timestep=0,
 ):
     """Train the agent and return the average rewards and the path to the best model."""
     random.seed(seed)
@@ -45,12 +46,12 @@ def train_agent(
 
             action = agent.act(curr_obs, mode="train")
             next_obs, reward, done, _ = env.step(action)
-            agent.update(curr_obs, action, reward, next_obs, done, timestep)
+            agent.update(curr_obs, action, reward, next_obs, done, timestep, logger)
             curr_obs = next_obs
             timestep += 1
             if timestep % evaluation_freq == 0:
                 mean_acc_rewards = evaluate_agent(
-                    agent, env_eval, n_episodes_to_evaluate
+                    agent, env_eval, n_episodes_to_evaluate, 1
                 )
                 logger.log(
                     "timestep: {ts}, acc_reward: {acr:.2f}".format(
@@ -58,7 +59,7 @@ def train_agent(
                     )
                 )
                 array_of_mean_acc_rewards.append(mean_acc_rewards)
-                if save_checkpoint:
+                if save_checkpoint and timestep >= save_checkpoint_start_timestep:
                     # if we are saving checkpoints and have improvement, save the model
                     if mean_acc_rewards > current_mean_acc_rewards:
                         if name != None:

@@ -1,0 +1,63 @@
+sac_ckpt_m_0_3672.348.pth.tar
+sac_ckpt_m_0_3672.348
+/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/gym/logger.py:30: UserWarning: WARN: Box bound precision lowered by casting to float32
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Loaded /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3672.348 OK
+Pretrained model loaded: /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3672.348
+Evaluation starting ... 
+Evaluating the average return of the pretrained model ... 
+Average reward per episode: 3671.727129992749
+sac_ckpt_m_0_3644.447.pth.tar
+sac_ckpt_m_0_3644.447
+/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/gym/logger.py:30: UserWarning: WARN: Box bound precision lowered by casting to float32
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Loaded /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3644.447 OK
+Pretrained model loaded: /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3644.447
+Evaluation starting ... 
+Evaluating the average return of the pretrained model ... 
+Average reward per episode: 3583.2912638398348
+sac_ckpt_m_0_3617.386.pth.tar
+sac_ckpt_m_0_3617.386
+/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/gym/logger.py:30: UserWarning: WARN: Box bound precision lowered by casting to float32
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Loaded /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3617.386 OK
+Pretrained model loaded: /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3617.386
+Evaluation starting ... 
+Evaluating the average return of the pretrained model ... 
+Average reward per episode: 3616.9747940754305
+sac_ckpt_m_0_3620.258.pth.tar
+sac_ckpt_m_0_3620.258
+/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/gym/logger.py:30: UserWarning: WARN: Box bound precision lowered by casting to float32
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Loaded /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3620.258 OK
+Pretrained model loaded: /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3620.258
+Evaluation starting ... 
+Evaluating the average return of the pretrained model ... 
+Average reward per episode: 3588.0849116721647
+sac_ckpt_m_0_3698.841.pth.tar
+sac_ckpt_m_0_3698.841
+/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/gym/logger.py:30: UserWarning: WARN: Box bound precision lowered by casting to float32
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Loaded /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3698.841 OK
+Pretrained model loaded: /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3698.841
+Evaluation starting ... 
+Evaluating the average return of the pretrained model ... 
+Average reward per episode: 3695.8127666901346
+sac_ckpt_m_0_3635.815.pth.tar
+sac_ckpt_m_0_3635.815
+/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/gym/logger.py:30: UserWarning: WARN: Box bound precision lowered by casting to float32
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Loaded /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3635.815 OK
+Pretrained model loaded: /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3635.815
+Evaluation starting ... 
+Evaluating the average return of the pretrained model ... 
+Average reward per episode: 3635.7781602825307
+sac_ckpt_m_0_3636.026.pth.tar
+sac_ckpt_m_0_3636.026
+/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/gym/logger.py:30: UserWarning: WARN: Box bound precision lowered by casting to float32
+  warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Loaded /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3636.026 OK
+Pretrained model loaded: /home/c_spino/comp_597/GROUP_013/openai_sac_agent/results/extras/from_using_cosing_lr/sac_ckpt_m_0_3636.026
+Evaluation starting ... 
+Evaluating the average return of the pretrained model ... 
+Average reward per episode: 3633.688124616087
