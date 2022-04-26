@@ -29,7 +29,7 @@ class Agent:
         policy_lr: float = 1e-3,
         policy_architecture: tuple = (64, 64),
         policy_activation_function: F = nn.ReLU,
-        buffer_size: int = 1_000_000,
+        buffer_size: int = 3_000_000,
         alpha: float = 0.2,
         exploration_timesteps: int = 10_000,
         update_frequency_in_episodes: int = 50,
