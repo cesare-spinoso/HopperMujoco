@@ -29,9 +29,10 @@ class Agent:
       :value:          Parameterized state-value function which accounts for entropy
       :target_value:   Parameterized state-value function which does not account for entropy (ie. 'true' value function)
   """
-  def __init__(self, env_specs: dict, id: str = 'udemy_sac', actor_lr: float = 3e-4, critic_lr: float = 3e-4,
+  def __init__(self, env_specs: dict, id: str = 'udemy_sac', actor_lr: float = 1e-3, critic_lr: float = 1e-3,
                tau: float = 5e-3, gamma: float = 0.99, max_buffer_size: int = 10_000_000, layer1_size: int = 256,
-               layer2_size: int = 256, batch_size: int = 100, reward_scale: int = 2):
+               layer2_size: int = 256, batch_size: int = 128, reward_scale: int = 2, update_start_in_episodes: int = 1_000,
+               update_frequency_in_episodes: int = 50):
 
     # General params
     self.id = id
@@ -43,6 +44,17 @@ class Agent:
     input_dims = env_specs['observation_space'].shape
     n_actions = env_specs['action_space'].shape[0]
     self.memory = ReplayBuffer(max_buffer_size, input_dims, n_actions)
+
+    # Tracking variable attributes
+    self.current_episode = 0
+    self.current_timestep = 0
+    # Time to fill the buffer
+    self.update_start_in_episodes = update_start_in_episodes
+    # Episode update frequency
+    self.episode_of_last_update = -1
+    self.update_frequency_in_episodes = update_frequency_in_episodes
+    # Number of batch updates
+    self.number_batch_updates = 1000
 
     # Define actor, critic, and value networks
     self.actor = Actor(input_dims, layer1_size, layer2_size, n_actions, actor_lr,
@@ -69,6 +81,8 @@ class Agent:
              done: bool, timestep: int):
     """Stores experience in memory and updates the network parameters"""
     self.memory.store_transition(current_state, action, reward, next_state, done)
+    if done:
+      self.current_episode += 1
     self.train()
 
   def update_target_network_parameters(self, tau: float = None):
@@ -95,67 +109,73 @@ class Agent:
   def train(self):
     """Trains actor, critic, and value networks using the equations from (Haarnoja, 2018).
     NOTE THAT the equation and section numbers refer to equations and sections from this paper."""
-    if self.memory.mem_counter < self.batch_size:
+    if (
+      self.memory.mem_counter < self.batch_size or \
+        self.current_episode < self.update_start_in_episodes or \
+        self.current_episode % self.update_frequency_in_episodes != 0 or \
+        self.current_episode == self.episode_of_last_update):
       return
+    self.episode_of_last_update = self.current_episode
+    print(f"Training at episode {self.current_episode}")
+    for _ in range(self.number_batch_updates):
+      # Sample experience and convert it to torch tensors
+      state, action, reward, new_state, done = self.memory.sample_buffer(self.batch_size)
 
-    # Sample experience and convert it to torch tensors
-    state, action, reward, new_state, done = self.memory.sample_buffer(self.batch_size)
+      reward = torch.tensor(reward, dtype=torch.float).to(self.critic_1.device)
+      done = torch.tensor(done).to(self.critic_1.device)
+      next_state = torch.tensor(new_state, dtype=torch.float).to(self.critic_1.device)
+      state = torch.tensor(state, dtype=torch.float).to(self.critic_1.device)
+      action = torch.tensor(action, dtype=torch.float).to(self.critic_1.device)
 
-    reward = torch.tensor(reward, dtype=torch.float).to(self.critic_1.device)
-    done = torch.tensor(done).to(self.critic_1.device)
-    next_state = torch.tensor(new_state, dtype=torch.float).to(self.critic_1.device)
-    state = torch.tensor(state, dtype=torch.float).to(self.critic_1.device)
-    action = torch.tensor(action, dtype=torch.float).to(self.critic_1.device)
+      value = self.value(state).view(-1)
+      next_value = self.target_value(next_state).view(-1)
+      next_value[done] = 0.0
 
-    value = self.value(state).view(-1)
-    next_value = self.target_value(next_state).view(-1)
-    next_value[done] = 0.0
+      # Take the min. of both critics to reduce positivity bias in the policy improvement step
+      # see last paragraph in section 4.2
+      actions, log_probs = self.actor.sample_normal(state, reparameterize=False)
+      log_probs = log_probs.view(-1)
+      q1_new_policy = self.critic_1.forward(state, actions)
+      q2_new_policy = self.critic_2.forward(state, actions)
+      critic_value = torch.min(q1_new_policy, q2_new_policy)
+      critic_value = critic_value.view(-1)
 
-    # Take the min. of both critics to reduce positivity bias in the policy improvement step
-    # see last paragraph in section 4.2
-    actions, log_probs = self.actor.sample_normal(state, reparameterize=False)
-    log_probs = log_probs.view(-1)
-    q1_new_policy = self.critic_1.forward(state, actions)
-    q2_new_policy = self.critic_2.forward(state, actions)
-    critic_value = torch.min(q1_new_policy, q2_new_policy)
-    critic_value = critic_value.view(-1)
+      # Update value network following Equation 6
+      self.value.optimizer.zero_grad()
+      value_target = critic_value - log_probs
+      value_loss = 0.5 * F.mse_loss(value, value_target)
+      value_loss.backward(retain_graph=True)
+      self.value.optimizer.step()
 
-    # Update value network following Equation 6
-    self.value.optimizer.zero_grad()
-    value_target = critic_value - log_probs
-    value_loss = 0.5 * F.mse_loss(value, value_target)
-    value_loss.backward(retain_graph=True)
-    self.value.optimizer.step()
+      # Update actor following Equation 13
+      actions, log_probs = self.actor.sample_normal(state, reparameterize=True)
+      log_probs = log_probs.view(-1)
+      q1_new_policy = self.critic_1.forward(state, actions)
+      q2_new_policy = self.critic_2.forward(state, actions)
+      critic_value = torch.min(q1_new_policy, q2_new_policy)
+      critic_value = critic_value.view(-1)
+      actor_loss = log_probs - critic_value
+      actor_loss = torch.mean(actor_loss)
+      self.actor.optimizer.zero_grad()
+      actor_loss.backward(retain_graph=True)
+      self.actor.optimizer.step()
 
-    # Update actor following Equation 13
-    actions, log_probs = self.actor.sample_normal(state, reparameterize=True)
-    log_probs = log_probs.view(-1)
-    q1_new_policy = self.critic_1.forward(state, actions)
-    q2_new_policy = self.critic_2.forward(state, actions)
-    critic_value = torch.min(q1_new_policy, q2_new_policy)
-    critic_value = critic_value.view(-1)
-    actor_loss = log_probs - critic_value
-    actor_loss = torch.mean(actor_loss)
-    self.actor.optimizer.zero_grad()
-    actor_loss.backward(retain_graph=True)
-    self.actor.optimizer.step()
+      # Update critics following Equation 9
+      q_hat = self.scale * reward + self.gamma*next_value
+      q1_old_policy = self.critic_1.forward(state, action).view(-1)
+      q2_old_policy = self.critic_2.forward(state, action).view(-1)
+      critic_1_loss = 0.5 * F.mse_loss(q1_old_policy, q_hat)
+      critic_2_loss = 0.5 * F.mse_loss(q2_old_policy, q_hat)
 
-    # Update critics following Equation 9
-    q_hat = self.scale * reward + self.gamma*next_value
-    q1_old_policy = self.critic_1.forward(state, action).view(-1)
-    q2_old_policy = self.critic_2.forward(state, action).view(-1)
-    critic_1_loss = 0.5 * F.mse_loss(q1_old_policy, q_hat)
-    critic_2_loss = 0.5 * F.mse_loss(q2_old_policy, q_hat)
+      self.critic_1.optimizer.zero_grad()
+      self.critic_2.optimizer.zero_grad()
+      critic_loss = critic_1_loss + critic_2_loss
+      critic_loss.backward()
+      self.critic_1.optimizer.step()
+      self.critic_2.optimizer.step()
 
-    self.critic_1.optimizer.zero_grad()
-    self.critic_2.optimizer.zero_grad()
-    critic_loss = critic_1_loss + critic_2_loss
-    critic_loss.backward()
-    self.critic_1.optimizer.step()
-    self.critic_2.optimizer.step()
-
-    # Update target value network
-    self.update_target_network_parameters()
+      # Update target value network
+      self.update_target_network_parameters()
 
   def save_checkpoint(self, score_avg: float, ckpt_path: str, name: str = None) -> str:
     """Save the weights of each network as well as its score. If name is None,

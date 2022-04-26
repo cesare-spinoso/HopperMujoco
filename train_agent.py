@@ -72,9 +72,17 @@ if __name__ == "__main__":
     # Load the agent and try to load hyperparameters
     agent_module = importlib.import_module(args.group + ".agent")
     try:
-        hyperparameter_module = importlib.import_module(args.group + ".hyperparameters")
-        grid = hyperparameter_module.hyperparameter_grid
-        logger.log("Loaded the hyperparameter grid")
+        # If no .pth file is provided try to do grid search otherwise run default
+        if args.load == "None":
+            hyperparameter_module = importlib.import_module(args.group + ".hyperparameters")
+            grid = hyperparameter_module.hyperparameter_grid
+            logger.log("Loaded the hyperparameter grid")
+        # If a path is provided, the assumption is that the hyperparameters of the agent are in best_hyperparameters.py
+        else:
+            hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")
+            grid = [hyperparameter_module.params]
+            assert hyperparameter_module.params["update_start_in_timesteps"] is not None
+            logger.log("Loaded the best hyperparameters")
     except:
         # Use the default hyperparameters
         logger.log("Could not find the hyperparameters.py module, using default agent.")
@@ -103,6 +111,7 @@ if __name__ == "__main__":
             logger,
             name=f"m_{i}",
             visualize=False,
+            save_checkpoint_start_timestep=0 if args.load == "None" else (agent.update_start_in_timesteps + 1)
         )
         logger.log("Training complete.")
 

@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from torch import ge
-from json_utils import get_json_data
+from .json_utils import get_json_data
 
 font = {'family' : 'sans serif', 'size' : 18}
 matplotlib.rc('font', **font)

@@ -37,6 +37,7 @@ if __name__ == "__main__":
         exit()
 
     if args.save_path: save_path = args.save_path
+    os.makedirs(save_path)
 
     # Get environment
     with open(path + "env_info.txt") as f:
@@ -92,7 +93,8 @@ if __name__ == "__main__":
             logger,
             name=f"run_{i}",
             visualize=False,
-            save_checkpoint=True
+            save_checkpoint=True,
+            seed=i
         )
         logger.log("Training complete.")
 
