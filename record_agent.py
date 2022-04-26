@@ -11,9 +11,7 @@ import torch
 import numpy as np
 from sklearn.metrics import auc
 
-from utils.logging_utils import start_logging
 from utils.environment import get_environment
-
 
 def record_trained_agent(
     agent,
@@ -21,6 +19,7 @@ def record_trained_agent(
     env_eval,
     total_timesteps
 ):
+    """Runs n timesteps of the provided agent and renders them, in order for screen recording."""
     random.seed(0)
     np.random.seed(0)
     torch.manual_seed(0)
@@ -91,8 +90,6 @@ if __name__ == "__main__":
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
 
-    # starting a logger - results stored in folder labeled w/ date+time
-    logger = start_logging()
     # Load the agent and try to load hyperparameters
     agent_module = importlib.import_module(args.group + ".agent")
     hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")

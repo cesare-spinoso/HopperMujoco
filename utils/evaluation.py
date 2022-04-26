@@ -35,7 +35,7 @@ def find_mean_metrics(json_list, model_names):
         print("final_mean_reward:", np.mean(final_mean_reward))
         print("average_mean_reward:", np.mean(average_mean_reward))
         print("median_mean_reward:", np.mean(median_mean_reward))
-        print("best_mean_reward:", np.mean(best_mean_reward))
+        print("best_mean_reward:", max(best_mean_reward)) #!!!!!!!!!!!!
         print("cumulative_reward:", np.mean(cumulative_reward))
         print("auc_mean_reward:", np.mean(auc_mean_reward))
         print("-"*50)

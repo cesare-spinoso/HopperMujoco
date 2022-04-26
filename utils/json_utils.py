@@ -4,7 +4,6 @@ from typing import List
 import numpy as np
 from sklearn.metrics import auc
 
-
 def log_training_experiment_to_json(
     path_to_json: str,
     model_name: str,
@@ -50,7 +49,7 @@ def get_json_data(path_to_json: str):
 
 def clip_to_n_train_iterations_json(path_to_json_old: str, path_to_json_new: str, n: int):
     """
-    Load information from json file, and keep only n training steps.
+    Load information from json file, keep only n training steps, and save to a new file.
     """
     json_data = []
     with open(path_to_json_old, "r") as f:
@@ -58,6 +57,7 @@ def clip_to_n_train_iterations_json(path_to_json_old: str, path_to_json_new: str
             json_data.append(json.loads(line))
 
     for run in json_data:
+        print("old list length:", len(run['list_of_rewards']))
         new_rewards_list = run['list_of_rewards'][0:n]
 
         final_mean_reward = new_rewards_list[-1]
@@ -72,8 +72,8 @@ def clip_to_n_train_iterations_json(path_to_json_old: str, path_to_json_new: str
             auc_mean_reward, "", new_rewards_list)
 
 if __name__ == '__main__':
-    sac_json_old = "openai_sac_agent/results/log_extra_runs.json"
-    sac_json_new = "openai_sac_agent/results/log_extra_runs_clipped.json"
+    sac_json_old = "results/sac_variants/bottleneck_varying_alpha_sac.json"
+    sac_json_new = "results/sac_variants/bottleneck_varying_alpha_sac_clipped.json"
     n_iterations = int(2_000_000/1000)
 
     clip_to_n_train_iterations_json(sac_json_old, sac_json_new, n_iterations)

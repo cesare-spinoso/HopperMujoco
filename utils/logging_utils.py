@@ -2,8 +2,6 @@ import logging
 import os
 from datetime import datetime
 
-
-
 class Logger:
     def __init__(self, path, logger_name="log"):
         logging.basicConfig(
