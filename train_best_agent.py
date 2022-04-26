@@ -130,5 +130,5 @@ if __name__ == "__main__":
         )
 
     # Plot learning curves - average reward and cumulative reward averages with standard deviation
-    plot_best_model_rewards(os.path.join(save_path, "log_best_model.json"), save_path, time_step=evaluation_freq)
+    plot_best_model_rewards(os.path.join(save_path, "log_best_model.json"), save_path, model_names=['m'], time_step=evaluation_freq)
     logger.log("\nRewards graphed successfully. See {}".format(save_path))

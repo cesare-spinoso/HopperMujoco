@@ -2,8 +2,6 @@ import logging
 import os
 from datetime import datetime
 
-
-
 class Logger:
     def __init__(self, path, logger_name="log"):
         logging.basicConfig(
@@ -38,6 +36,8 @@ def start_logging(logger_name="log", location=None):
             os.mkdir(results_path)
     else:
         results_path = location
+        if not os.path.isdir(results_path):
+            os.mkdir(results_path)
 
     # start an instance of the Logger class :)
     logger = Logger(results_path, logger_name)
