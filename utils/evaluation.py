@@ -1,7 +1,7 @@
 import numpy as np
 from utils.json_utils import get_json_data
 
-def evaluate_agent(agent, env, num_seeds, n_episodes_to_evaluate):
+def evaluate_agent(agent, env, n_episodes_to_evaluate, num_seeds=1):
     """Evaluates the agent for a provided number of episodes."""
     rewards_per_seed = []
     for seed in range(num_seeds):
