@@ -1,3 +1,7 @@
+"""
+A script to train a single agent OR perform hyperparameter tuning.
+"""
+
 import argparse
 import importlib
 import os
@@ -7,7 +11,6 @@ from time import time
 
 import numpy as np
 from sklearn.metrics import auc
-
 
 from utils.json_utils import log_training_experiment_to_json
 from utils.plotting import plot_rewards
@@ -62,7 +65,7 @@ if __name__ == "__main__":
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
 
-    ########################################## training a single/multiple agent(s) ##########################################
+    ########################################## hyperparameter tuning ##########################################
     # starting a logger - results stored in folder labeled w/ date+time
     logger = start_logging()
 

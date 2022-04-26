@@ -2,7 +2,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from torch import ge
-from .json_utils import get_json_data
+from json_utils import get_json_data
+
+font = {'family' : 'sans serif', 'size' : 18}
+matplotlib.rc('font', **font)
 
 def plot_rewards(rewards, location, names=None, time_step=None):
     """
@@ -103,16 +106,20 @@ def plot_rewards(rewards, location, names=None, time_step=None):
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
-# TODO: add implementation for this method to take multiple json files so all models can be graphed together
-def plot_best_model_rewards(json_location, save_location, model_names, time_step=None):
+def plot_json_rewards(json_location, save_location, model_names, time_step=None):
     """
-    Graphs the average and cumulative reward plots for 5 runs of the best model.
+    Graphs the average and cumulative training reward plots for runs saved in a json file.
+    :param json_location: a string (or list of strings) which is the path to the json file
+    :param save_location: a string which is the path to the save location
+    :param model_names: a list of strings used for the graph's legend
+    :param time_step: an int representing the number of episodes between reward measurements (for axis scaling)
     """
-    matplotlib_colors = ['b','r','green','purple','orange','black','pink','yellow']
-    # collect rewards from json file
+    matplotlib_colors = ['r','b','green','purple','orange','black','pink','yellow']
+
+    # for the case in which we get a list of json files
     if type(json_location) == list:
         # average reward plot
-        _ = plt.figure(figsize=(20, 10))
+        _ = plt.figure(figsize=(20, 5))
 
         for i in range(len(json_location)): 
             loaded_json = get_json_data(json_location[i])
@@ -121,30 +128,33 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
             for m in loaded_json:
                 names.append(m['model_name'])
                 rewards.append(m['list_of_rewards'])
+
             mean_rewards = np.mean(rewards, axis=0)
             std_rewards = np.std(rewards, axis=0)
 
             if time_step: # range(start, stop, step)
                 x = range(0, len(mean_rewards)*time_step, time_step)
-                plt.plot(x, mean_rewards, color=matplotlib_colors[i], label=model_names[i])
+                plt.plot(x, mean_rewards, color=matplotlib_colors[i], label=model_names[i],
+                    linewidth=2.0)
                 plt.fill_between(x=x, y1=mean_rewards-std_rewards, y2=mean_rewards+std_rewards, 
-                    alpha=0.3, color=matplotlib_colors[i])
+                    alpha=0.1, color=matplotlib_colors[i])
             else: 
                 x = range(len(mean_rewards))
-                plt.plot(x, mean_rewards, color=matplotlib_colors[i], label=model_names[i])
+                plt.plot(x, mean_rewards, color=matplotlib_colors[i], label=model_names[i],
+                    linewidth=2.0)
                 plt.fill_between(x=x, y1=mean_rewards-std_rewards, y2=mean_rewards+std_rewards, 
-                    alpha=0.3, color=matplotlib_colors[i])
+                    alpha=0.1, color=matplotlib_colors[i])
 
-        plt.ylabel("Average Reward")
+        plt.ylabel("Reward")
         plt.xlabel("Time Step")
         plt.title("Average Reward Over Time")
-        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=5) #, bbox_to_anchor=(1, 0.5))
         filename = save_location + "/avg_rewards_best_model.png"
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
         # cumulative reward plot
-        _ = plt.figure(figsize=(20, 10))
+        _ = plt.figure(figsize=(12.5, 10))
         for j in range(len(json_location)): 
             loaded_json = get_json_data(json_location[j])
 
@@ -160,14 +170,16 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
 
             if time_step: # range(start, stop, step)
                 x = range(0, len(mean_cumulative_rewards)*time_step, time_step)
-                plt.plot(x, mean_cumulative_rewards, color=matplotlib_colors[j], label=model_names[j])
+                plt.plot(x, mean_cumulative_rewards, color=matplotlib_colors[j], label=model_names[j],
+                    linewidth=2.0)
                 plt.fill_between(x=x, y1=mean_cumulative_rewards-std_cumulative_rewards, 
-                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.3, color=matplotlib_colors[j])
+                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.1, color=matplotlib_colors[j])
             else: 
                 x = range(len(mean_cumulative_rewards))
-                plt.plot(x, mean_cumulative_rewards, color=matplotlib_colors[j], label=model_names[j])
+                plt.plot(x, mean_cumulative_rewards, color=matplotlib_colors[j], label=model_names[j],
+                    linewidth=2.0)
                 plt.fill_between(x=x, y1=mean_cumulative_rewards-std_cumulative_rewards, 
-                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.3, color=matplotlib_colors[j])
+                    y2=mean_cumulative_rewards+std_cumulative_rewards, alpha=0.1, color=matplotlib_colors[j])
 
         plt.ylabel("Cumulative Reward")
         plt.xlabel("Time Step")
@@ -177,7 +189,7 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
-    else: 
+    else: # for the case in which we get a single json file
         loaded_json = get_json_data(json_location)
 
         rewards, names = [], []
@@ -232,20 +244,20 @@ def plot_best_model_rewards(json_location, save_location, model_names, time_step
         plt.savefig(filename, bbox_inches="tight")
         plt.close()
 
-
-
 if __name__ == '__main__':
-    loaded_json = get_json_data("vpg_agent/results/log.json")
-
-    reward_lists, names = [], []
-    for m in loaded_json:
-        names.append(m['model_name'])
-        reward_lists.append(m['list_of_rewards'])
-
-    save_location = "vpg_agent/results/"
-
-    plot_rewards(reward_lists, save_location, names)
-
-    json_list = ["ppo_agent/results/log.json", "ddpg_agent/results/log.json"]
-    plot_best_model_rewards(json_list, save_location=".", model_names=['ppo', 'ddpg'], time_step=1000) # i.e. eval freq
+    # AVGERAGE AND CUMUMLATIVE REWARD GRAPHS FOR ALL ALGORITHMS
+    json_list = ["vpg_agent/results/best_model/log_best_model.json", "ppo_agent/results/best_model/log_best_model.json",
+        "ddpg_agent/results/best_model/log_best_model.json", "td3_agent/results/best_model/log_best_model.json",
+        "openai_sac_agent/results/best_model/log_best_model.json"]
+    plot_json_rewards(json_list, save_location=".", model_names=['VPG', 'PPO', 'DDPG', 'TD3', 'SAC'], 
+        time_step=1000) # i.e. eval freq
     # if only one name, still input it in a list (eg. ['ppo'])
+
+    # AVGERAGE AND CUMUMLATIVE REWARD GRAPHS FOR SAC VARIANTS
+    json_list = ["results/sac_variants/vanilla_sac.json", "results/sac_variants/bottleneck_sac.json",
+        "results/sac_variants/varying_alpha_sac.json",
+        "results/sac_variants/decaying_lr_sac.json", "results/sac_variants/replay_buffer_sac.json"]
+    model_names = ["Vanilla SAC", "Bottleneck SAC", "SAC w/ varying $\\alpha$",  
+        "SAC w/ Decaying Learning Rate", "SAC w/ Prioritized Replay Buffer"]
+    plot_json_rewards(json_list, save_location="results/sac_variants", model_names=model_names, 
+        time_step=1000)
