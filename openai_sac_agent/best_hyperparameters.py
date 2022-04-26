@@ -25,5 +25,5 @@ params = {
     "update_alpha": True,  # Automatic exploration
     "exploration_timesteps": 0,  # Don't get data that cause you to forget
     #"update_start_in_timesteps": 5000,
-    "update_frequency_in_episodes": 50,  # Increase update frequency
+    "update_frequency_in_episodes": 5,  # Increase update frequency
 }
