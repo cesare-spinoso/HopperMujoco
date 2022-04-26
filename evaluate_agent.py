@@ -1,3 +1,7 @@
+"""
+A script to evaluate agents.
+"""
+
 import argparse
 import importlib
 
@@ -6,7 +10,9 @@ from os import listdir
 from os.path import isfile, join
 from pathlib import Path
 from copy import deepcopy
-
+import random
+import torch
+import numpy as np
 
 from utils.logging_utils import start_logging
 from utils.json_utils import get_json_data
@@ -16,25 +22,27 @@ from utils.evaluation import evaluate_agent
 from utils.metrics import calc_sample_efficiency
 
 
-if __name__ == "__main__":
+def final_performance(agent, env):
+    performances = []
 
-    parser = argparse.ArgumentParser(description="")
-    parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
-    parser.add_argument(
-        "--model_path",
-        type=str,
-        default="None",
-        help="Relative path to model (without .pth.tar) with respect GROUP_13 directory",
-    )
-    parser.add_argument(
-        "--json_path",
-        type=str,
-        default="None",
-        help="Path to json file containing the paths of the models",
-    )
+    for seed in range(5):
+        print("testing seed", seed, "...")
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        env.seed(seed)
 
-    args = parser.parse_args()
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
+        performances.append(evaluate_agent(agent, env, 50))
+        print("...done")
+
+    return np.mean(performances)
+
+def eval_single_model(args):
+
+    # get agent/env arguments ready
     path = "./" + args.group + "/"
     files = [f for f in listdir(path) if isfile(join(path, f))]
     if ("agent.py" not in files) or ("env_info.txt" not in files):
@@ -47,18 +55,10 @@ if __name__ == "__main__":
 
     env = get_environment(env_type)
     env_eval = get_environment(env_type)
-    if "jellybean" in env_type:
-        env_specs = {
-            "scent_space": env.scent_space,
-            "vision_space": env.vision_space,
-            "feature_space": env.feature_space,
-            "action_space": env.action_space,
-        }
-    if "mujoco" in env_type:
-        env_specs = {
-            "observation_space": env.observation_space,
-            "action_space": env.action_space,
-        }
+    env_specs = {
+        "observation_space": env.observation_space,
+        "action_space": env.action_space,
+    }
 
     # starting a logger - results stored in folder labeled w/ date+time
     logger = start_logging(logger_name="evaluation")
@@ -66,6 +66,7 @@ if __name__ == "__main__":
     # load in the pretrained model if one is provided
     agent_pretrained = None
     agents_pretrained = None
+    
     if args.model_path == "None" and args.json_path == "None":
         # Load untrained instance of the agent, will only evaluate sample efficiency
         agent_module = importlib.import_module(args.group + ".agent")
@@ -103,8 +104,6 @@ if __name__ == "__main__":
     evaluation_freq = 1000
     n_episodes_to_evaluate_sample_efficiency = 20
 
-
-    ########################################## evaluate a single/multiple model(s) ##########################################
     if agent_pretrained is None and agents_pretrained is None:
         logger.log("Evaluation starting ... ")
         # Calculate the sample efficiency
@@ -176,3 +175,54 @@ if __name__ == "__main__":
             logger.log(f"Sample efficiency: {sample_efficiency}")
             logger.log(f"Average time to train {total_timesteps} timesteps: {time_to_train}")
             logger.log(f"Average reward per episode: {average_reward_per_episode}")
+
+if __name__ == '__main__':
+
+    # input arguments
+    parser = argparse.ArgumentParser(description="")
+    parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        default="None",
+        help="Relative path to model (without .pth.tar) with respect GROUP_13 directory",
+    )
+    parser.add_argument(
+        "--json_path",
+        type=str,
+        default="None",
+        help="Path to json file containing the paths of the models",
+    )
+    args = parser.parse_args()
+
+    ########################################### final performance ##########################################
+    # We evaluate it on the same task/environment on a set of 5 seeds for 50 episodes and the final performance is the mean over this
+
+    # Get environment for training and evaluation
+    env = get_environment('mujoco')
+    env_specs = {
+        "observation_space": env.observation_space,
+        "action_space": env.action_space,
+    }
+
+    best_agents = {'vpg_agent':'vpg_agent/results/best_model/vpg_ckpt_run_0',
+        'ppo_agent': 'ppo_agent/results/best_model/ppo_ckpt_run_0',
+        'ddpg_agent': 'ddpg_agent/results/ddpg_ckpt_m_1_2781.64',
+        'td3_agent': 'td3_agent/results/td3_ckpt_m_1_3322.355',
+        'openai_sac_agent':'openai_sac_agent/results/sac_ckpt_m_0_3523.685'}
+
+    for name, location in best_agents.items():
+        print("\n\nSTARTING EVAL FOR", name, "...")
+        agent_module = importlib.import_module(name + ".agent")
+        hyperparameter_module = importlib.import_module(name + ".best_hyperparameters")
+        params = hyperparameter_module.params
+        agent = agent_module.Agent(env_specs, **params)
+        agent.load_weights(os.getcwd(), location)
+
+        mean_reward = final_performance(agent, env)
+
+        print(name, "final performance", mean_reward, "\n\n")
+
+    ########################################### evaluate a single/multiple model(s) ##########################################
+    # eval_single_model(args)
+    
