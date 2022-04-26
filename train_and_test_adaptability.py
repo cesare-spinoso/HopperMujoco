@@ -119,6 +119,7 @@ if __name__ == "__main__":
         }
     if "mujoco" in env_type:
         env.model.opt.gravity[-1] = env.model.opt.gravity[-1] * args.gravity
+        env_eval.model.opt.gravity[-1] = env_eval.model.opt.gravity[-1] * args.gravity
         env_specs = {
             "observation_space": env.observation_space,
             "action_space": env.action_space,
