@@ -1,4 +1,6 @@
-"""Hyperparameters for VPG found from this paper: https://arxiv.org/pdf/1709.06560.pdf
+"""
+Hyperparameters for tuning VPG found from this paper: https://arxiv.org/pdf/1709.06560.pdf
+The train_agent file will pull hyperparameter_grid from here.
 """
 import torch
 import sklearn.model_selection
@@ -13,7 +15,7 @@ grid = {
 }
 grid = sklearn.model_selection.ParameterGrid(grid)
 
-# Provide activations and architectures to both actor and critic
+# Provide activations and architectures to both actor *and* critic
 hyperparameter_grid = []
 
 for i, params in enumerate(grid):
