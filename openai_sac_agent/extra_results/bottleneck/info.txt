@@ -1,0 +1,3 @@
+Evertyhing is the same except there's a more intense bottleneck 128 -> 64
+
+You can maybe comment on how the learning is faster
