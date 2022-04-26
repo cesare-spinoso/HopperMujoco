@@ -124,19 +124,9 @@ if __name__ == "__main__":
             "observation_space": env.observation_space,
             "action_space": env.action_space,
         }
-    if "ant" in env_type:
-        env_specs = {
-            "observation_space": env.observation_space,
-            "action_space": env.action_space,
-        }
-    if "walker" in env_type:
-        env_specs = {
-            "observation_space": env.observation_space,
-            "action_space": env.action_space,
-        }
 
     # Training and evaluation variables
-    total_timesteps = 2_000_000
+    total_timesteps = 20_000
     evaluation_freq = 10000
     n_episodes_to_evaluate = 20
     sample_efficiency_num_seeds = 5
