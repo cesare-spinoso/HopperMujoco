@@ -82,12 +82,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--group", type=str, default="GROUP1", help="group directory")
     parser.add_argument(
-        "--gravity",
-        type=float,
-        default=1.0,
-        help="gravity multiplier, only works with env type mujoco"
-    )
-    parser.add_argument(
         "--load",
         type=str,
         default="None",
@@ -118,17 +112,6 @@ if __name__ == "__main__":
             "action_space": env.action_space,
         }
     if "mujoco" in env_type:
-        env.model.opt.gravity[-1] = env.model.opt.gravity[-1] * args.gravity
-        env_specs = {
-            "observation_space": env.observation_space,
-            "action_space": env.action_space,
-        }
-    if "ant" in env_type:
-        env_specs = {
-            "observation_space": env.observation_space,
-            "action_space": env.action_space,
-        }
-    if "walker" in env_type:
         env_specs = {
             "observation_space": env.observation_space,
             "action_space": env.action_space,
@@ -155,6 +138,7 @@ if __name__ == "__main__":
         else:
             hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")
             grid = [hyperparameter_module.params]
+            assert hyperparameter_module.params["update_start_in_timesteps"] is not None
             logger.log("Loaded the best hyperparameters")
     except:
         # Use the default hyperparameters
@@ -184,6 +168,7 @@ if __name__ == "__main__":
             logger,
             name=f"m_{i}",
             visualize=False,
+            save_checkpoint_start_timestep=0 if args.load == "None" else (agent.update_start_in_timesteps + 1)
         )
         logger.log("Training complete.")
 
