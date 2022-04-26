@@ -25,10 +25,10 @@ class Agent:
         polyak: float = 0.995,
         q_lr: float = 1e-3,
         q_architecture: tuple = (64, 64),
-        q_activation_function: F = nn.Tanh,
+        q_activation_function: F = nn.ReLU,
         policy_lr: float = 1e-3,
         policy_architecture: tuple = (64, 64),
-        policy_activation_function: F = nn.Tanh,
+        policy_activation_function: F = nn.ReLU,
         buffer_size: int = 1_000_000,
         alpha: float = 0.2,
         exploration_timesteps: int = 10_000,
@@ -219,7 +219,6 @@ class Agent:
             )
 
     def train(self):
-        print("vs code")
         for j in range(self.number_of_batch_updates):
             # Get training batch
             (

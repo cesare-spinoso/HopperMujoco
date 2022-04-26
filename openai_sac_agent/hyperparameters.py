@@ -7,6 +7,11 @@ grid = {
     "architecture": [(64, 64), (100, 50, 25), (400, 300)],
     "activation": [torch.nn.ReLU, torch.nn.Tanh],
 }
+
+grid = {
+    "architecture": [(64, 64)],
+    "activation": [torch.nn.ReLU],
+}
 grid = sklearn.model_selection.ParameterGrid(grid)
 
 # Provide activations and architectures to both actor and critic
