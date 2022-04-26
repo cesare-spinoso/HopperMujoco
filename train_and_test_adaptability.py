@@ -126,7 +126,7 @@ if __name__ == "__main__":
         }
 
     # Training and evaluation variables
-    total_timesteps = 20_000
+    total_timesteps = 1_500_000
     evaluation_freq = 10000
     n_episodes_to_evaluate = 20
     sample_efficiency_num_seeds = 5
