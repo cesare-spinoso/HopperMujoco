@@ -8,10 +8,6 @@ import numpy as np
 from typing import Tuple
 from copy import deepcopy
 
-import logging
-
-logging.basicConfig(filename="training.log", level=logging.INFO)
-
 
 class Agent:
     """The agent class that is to be filled.
@@ -34,11 +30,12 @@ class Agent:
         policy_activation_function: F = nn.ReLU,
         buffer_size: int = 2_000_000,
         alpha: float = 0.2,
-        update_alpha: bool = False,
+        update_alpha: str = None,
         alpha_lr: float = 3e-4,
+        learning_rate_scheduler: str = None,
         exploration_timesteps: int = 10_000,
         update_frequency_in_episodes: int = 50,
-        update_start_in_episodes: int = 1_000,
+        update_start_in_episodes: int = 100,
         update_start_in_timesteps: int = None,
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
@@ -109,18 +106,59 @@ class Agent:
         self.policy_optimizer = torch.optim.Adam(
             self.policy_network.parameters(), lr=policy_lr
         )
+        ### LEARNING RATE SCHEDULER ###
+        self.learning_rate_scheduler = learning_rate_scheduler
+        if self.learning_rate_scheduler is not None:
+            assert self.learning_rate_scheduler in {"exponential_decay", "cosine_annealing"}
+            self.update_counter = 0
+            if self.learning_rate_scheduler == "cosine_annealing":
+                self.learning_rate_scheduler_frequency = 100
+                self.q1_scheduler = (
+                    torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+                        self.q1_optimizer, T_0=self.learning_rate_scheduler_frequency
+                    )
+                )
+                self.q2_scheduler = (
+                    torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+                        self.q2_optimizer, T_0=self.learning_rate_scheduler_frequency
+                    )
+                )
+                self.policy_scheduler = (
+                    torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+                        self.policy_optimizer,
+                        T_0=self.learning_rate_scheduler_frequency,
+                    )
+                )
+            else:
+                self.learning_rate_scheduler_frequency_timesteps = 100_000
+                self.decay_rate = 0.9
+                self.q1_scheduler = torch.optim.lr_scheduler.ExponentialLR(
+                    self.q1_optimizer, gamma=self.decay_rate
+                )
+                self.q2_scheduler = torch.optim.lr_scheduler.ExponentialLR(
+                    self.q2_optimizer, gamma=self.decay_rate
+                )
+                self.policy_scheduler = torch.optim.lr_scheduler.ExponentialLR(
+                    self.policy_optimizer, gamma=self.decay_rate
+                )
         ### ADPTABLE ALPHA ###
         self.alpha = alpha  # entropy parameter
         self.update_alpha = update_alpha
-        if self.update_alpha:
-            # Use a heuristic for the entropy target
-            self.entropy_target = -np.prod(self.env_specs["action_space"].shape)
-            # Set the initial alpha to 1
-            self.log_alpha = torch.tensor(0.0, requires_grad=True)
-            self.alpha = torch.exp(self.log_alpha)
-            # Optimizer
-            self.alpha_lr = alpha_lr
-            self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=self.alpha_lr)
+        if self.update_alpha is not None:
+            assert self.update_alpha in {"learned", "exponential_decay"}
+            if self.update_alpha == "learned":
+                # Use a heuristic for the entropy target (ADD SOURCE)
+                self.entropy_target = -np.prod(self.env_specs["action_space"].shape)
+                # Set the initial alpha to 1
+                self.log_alpha = torch.tensor(0.0, requires_grad=True)
+                self.alpha = torch.exp(self.log_alpha)
+                # Optimizer
+                self.alpha_lr = alpha_lr
+                self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=self.alpha_lr)
+            else:
+                self.alpha_decaying_frequency = 100_000
+                self.alpha_decay_rate = 0.9
+                self.alpha_update_counter = 0
         ### BUFFER ###
         self.buffer = SACBuffer(
             number_obs=self.num_obs,
@@ -223,14 +261,18 @@ class Agent:
         self.current_timestep = timestep
         if done:
             self.current_episode += 1
-            print(f"Current episode: {self.current_episode}")
+            # print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
+            print(self.current_episode)
+            print(f"Alpha: {self.alpha}")
+            self.episode_of_last_update = self.current_episode
             if logger:
                 logger.log(f"Timestep: {timestep}")
                 logger.log(f"Current episode: {self.current_episode}")
                 logger.log(f"Alpha: {self.alpha}")
-            self.episode_of_last_update = self.current_episode
+                if self.learning_rate_scheduler is not None:
+                    logger.log(f"LR: {self.q1_scheduler.get_last_lr()[0]}")
 
     def is_ready_to_train(self):
         if self.episode_of_last_update is None:
@@ -264,6 +306,8 @@ class Agent:
             self.train_alpha(obs_data)
             # Update the target networks (Line 15 of the OpenAI pseudocode)
             self.update_target_networks()
+        # Learning rate scheduling
+        self.update_learning_rate()
 
     def compute_targets(
         self,
@@ -322,20 +366,39 @@ class Agent:
         self._unfreeze_alpha()
 
     def train_alpha(self, obs_data):
-        if self.update_alpha:
-            # # Zero grad
-            self.alpha_optimizer.zero_grad()
-            # Get the alpha targets
-            with torch.no_grad():
-                _, log_proba = self.policy_network(obs_data)
-            targets = -torch.exp(self.log_alpha) * (log_proba + self.entropy_target)
-            alpha_loss = targets.mean()
-            # Backpropagate
-            alpha_loss.backward()
-            # Take a step
-            self.alpha_optimizer.step()
-            # Update the alpha, is this line necessary?
-            self.alpha = torch.exp(self.log_alpha)
+        if self.update_alpha is not None:
+            if self.update_alpha == "learned":
+                # Zero grad
+                self.alpha_optimizer.zero_grad()
+                # Get the alpha targets
+                with torch.no_grad():
+                    _, log_proba = self.policy_network(obs_data)
+                targets = -torch.exp(self.log_alpha) * (log_proba + self.entropy_target)
+                alpha_loss = targets.mean()
+                # Backpropagate
+                alpha_loss.backward()
+                # Take a step
+                self.alpha_optimizer.step()
+                # Update the alpha, is this line necessary?
+                self.alpha = torch.exp(self.log_alpha)
+            else:
+                if (self.current_timestep - self.alpha_update_counter) / self.alpha_decaying_frequency > 1:
+                    self.alpha_update_counter = self.current_timestep
+                    self.alpha *= self.alpha_decay_rate
+
+    def update_learning_rate(self):
+        if self.learning_rate_scheduler is not None:
+            if self.learning_rate_scheduler == "cosine_annealing":
+                self.q1_scheduler.step()
+                self.q2_scheduler.step()
+                self.policy_scheduler.step()
+            else:
+                if (self.current_timestep - self.update_counter) / self.learning_rate_scheduler_frequency_timesteps > 1:
+                    self.update_counter = self.current_timestep
+                    self.q1_scheduler.step()
+                    self.q2_scheduler.step()
+                    self.policy_scheduler.step()
+
 
     def _freeze_network(self, network):
         """Freeze the gradients of the network so that loss cannot backprop
@@ -363,13 +426,21 @@ class Agent:
             # Use OpenAI's in-place trick
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
-
+    
     def _freeze_alpha(self):
         if self.update_alpha:
             self.log_alpha.requires_grad = False
 
     def _unfreeze_alpha(self):
         if self.update_alpha:
+            self.log_alpha.requires_grad = True
+
+    def _freeze_alpha(self):
+        if self.update_alpha == "learned":
+            self.log_alpha.requires_grad = False
+
+    def _unfreeze_alpha(self):
+        if self.update_alpha == "learned":
             self.log_alpha.requires_grad = True
 
 

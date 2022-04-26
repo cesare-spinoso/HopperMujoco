@@ -51,7 +51,7 @@ def train_agent(
             timestep += 1
             if timestep % evaluation_freq == 0:
                 mean_acc_rewards = evaluate_agent(
-                    agent, env_eval, n_episodes_to_evaluate, 1
+                    agent, env_eval, n_episodes_to_evaluate
                 )
                 logger.log(
                     "timestep: {ts}, acc_reward: {acr:.2f}".format(

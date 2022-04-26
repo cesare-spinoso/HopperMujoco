@@ -1,0 +1,2643 @@
+22:51:57,261 root INFO Loaded the hyperparameter grid
+22:51:57,292 root INFO Training start for the following model 0 ... 
+22:51:57,292 root INFO {'env_specs': {'observation_space': Box(11,), 'action_space': Box(3,)}, 'num_obs': 11, 'num_actions': 3, 'action_limit': 1.0, 'current_timestep': 0, 'current_episode': 0, 'episode_of_last_update': None, 'update_counter': 0, 'device': device(type='cpu'), 'gamma': 0.99, 'polyak': 0.995, 'exploration_timesteps': 10000, 'update_frequency_in_episodes': 50, 'update_start_in_episodes': 1000, 'update_start_in_timesteps': None, 'number_of_batch_updates': 1000, 'batch_size': 100, 'learning_rate_scheduler_frequency_timesteps': 100000, 'q1_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q1_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q1_scheduler': <torch.optim.lr_scheduler.ExponentialLR object at 0x7f446397ba10>, 'q2_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q2_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q2_scheduler': <torch.optim.lr_scheduler.ExponentialLR object at 0x7f446397bdd0>, 'q1_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q2_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'policy_network': PolicyNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=11, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+  )
+  (mu_layer): Linear(in_features=64, out_features=3, bias=True)
+  (log_std_layer): Linear(in_features=64, out_features=3, bias=True)
+), 'policy_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'policy_scheduler': <torch.optim.lr_scheduler.ExponentialLR object at 0x7f4463a262d0>, 'alpha': 0.2, 'update_alpha': False, 'buffer': <openai_sac_agent.agent.SACBuffer object at 0x7f4463a26410>}
+22:51:57,740 root INFO timestep: 1000, acc_reward: 20.47
+22:51:57,743 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_20.475.pth.tar
+22:51:58,202 root INFO timestep: 2000, acc_reward: 20.57
+22:51:58,205 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_20.575.pth.tar
+22:51:58,612 root INFO timestep: 3000, acc_reward: 20.54
+22:51:59,52 root INFO timestep: 4000, acc_reward: 20.50
+22:51:59,420 root INFO timestep: 5000, acc_reward: 20.43
+22:51:59,762 root INFO timestep: 6000, acc_reward: 20.57
+22:52:00,109 root INFO timestep: 7000, acc_reward: 20.65
+22:52:00,112 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_20.65.pth.tar
+22:52:00,462 root INFO timestep: 8000, acc_reward: 20.56
+22:52:00,831 root INFO timestep: 9000, acc_reward: 20.51
+22:52:01,167 root INFO timestep: 10000, acc_reward: 20.56
+22:52:01,607 root INFO timestep: 11000, acc_reward: 20.51
+22:52:02,42 root INFO timestep: 12000, acc_reward: 20.56
+22:52:02,468 root INFO timestep: 13000, acc_reward: 20.51
+22:52:02,947 root INFO timestep: 14000, acc_reward: 20.46
+22:52:03,394 root INFO timestep: 15000, acc_reward: 20.60
+22:52:03,852 root INFO timestep: 16000, acc_reward: 20.61
+22:52:04,319 root INFO timestep: 17000, acc_reward: 20.63
+22:52:04,783 root INFO timestep: 18000, acc_reward: 20.57
+22:52:05,238 root INFO timestep: 19000, acc_reward: 20.49
+22:52:05,713 root INFO timestep: 20000, acc_reward: 20.60
+22:52:06,172 root INFO timestep: 21000, acc_reward: 20.72
+22:52:06,175 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_20.716.pth.tar
+22:52:06,667 root INFO timestep: 22000, acc_reward: 20.65
+22:52:10,735 root INFO Timestep: 22293
+22:52:10,735 root INFO Current episode: 1001
+22:52:10,735 root INFO Alpha: 0.2
+22:52:11,137 root INFO timestep: 23000, acc_reward: 46.50
+22:52:11,143 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_46.5.pth.tar
+22:52:15,638 root INFO Timestep: 23806
+22:52:15,639 root INFO Current episode: 1050
+22:52:15,639 root INFO Alpha: 0.2
+22:52:15,973 root INFO timestep: 24000, acc_reward: 103.43
+22:52:15,975 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_103.434.pth.tar
+22:52:16,596 root INFO timestep: 25000, acc_reward: 103.49
+22:52:16,600 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_103.488.pth.tar
+22:52:17,225 root INFO timestep: 26000, acc_reward: 103.30
+22:52:21,492 root INFO Timestep: 26745
+22:52:21,492 root INFO Current episode: 1100
+22:52:21,492 root INFO Alpha: 0.2
+22:52:22,37 root INFO timestep: 27000, acc_reward: 180.12
+22:52:22,40 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_180.121.pth.tar
+22:52:22,806 root INFO timestep: 28000, acc_reward: 180.65
+22:52:22,812 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_180.651.pth.tar
+22:52:23,682 root INFO timestep: 29000, acc_reward: 180.26
+22:52:24,425 root INFO timestep: 30000, acc_reward: 180.89
+22:52:24,430 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_180.89.pth.tar
+22:52:25,168 root INFO timestep: 31000, acc_reward: 180.85
+22:52:29,206 root INFO Timestep: 31085
+22:52:29,206 root INFO Current episode: 1150
+22:52:29,206 root INFO Alpha: 0.2
+22:52:29,950 root INFO timestep: 32000, acc_reward: 227.59
+22:52:29,954 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_227.592.pth.tar
+22:52:30,739 root INFO timestep: 33000, acc_reward: 227.49
+22:52:31,532 root INFO timestep: 34000, acc_reward: 229.43
+22:52:31,535 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_229.428.pth.tar
+22:52:32,336 root INFO timestep: 35000, acc_reward: 227.84
+22:52:33,135 root INFO timestep: 36000, acc_reward: 229.03
+22:52:37,183 root INFO Timestep: 36224
+22:52:37,184 root INFO Current episode: 1200
+22:52:37,184 root INFO Alpha: 0.2
+22:52:37,841 root INFO timestep: 37000, acc_reward: 202.10
+22:52:38,547 root INFO timestep: 38000, acc_reward: 202.23
+22:52:39,241 root INFO timestep: 39000, acc_reward: 202.37
+22:52:39,961 root INFO timestep: 40000, acc_reward: 202.28
+22:52:44,154 root INFO Timestep: 40775
+22:52:44,154 root INFO Current episode: 1250
+22:52:44,156 root INFO Alpha: 0.2
+22:52:44,941 root INFO timestep: 41000, acc_reward: 297.06
+22:52:44,946 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_297.06.pth.tar
+22:52:45,948 root INFO timestep: 42000, acc_reward: 297.16
+22:52:45,953 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_297.156.pth.tar
+22:52:47,8 root INFO timestep: 43000, acc_reward: 296.84
+22:52:48,39 root INFO timestep: 44000, acc_reward: 297.41
+22:52:48,43 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_297.406.pth.tar
+22:52:49,48 root INFO timestep: 45000, acc_reward: 297.58
+22:52:49,53 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_297.58.pth.tar
+22:52:50,68 root INFO timestep: 46000, acc_reward: 296.69
+22:52:51,87 root INFO timestep: 47000, acc_reward: 297.60
+22:52:51,90 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_297.604.pth.tar
+22:52:52,105 root INFO timestep: 48000, acc_reward: 297.10
+22:52:56,308 root INFO Timestep: 48041
+22:52:56,308 root INFO Current episode: 1300
+22:52:56,308 root INFO Alpha: 0.2
+22:52:57,249 root INFO timestep: 49000, acc_reward: 312.30
+22:52:57,255 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_312.3.pth.tar
+22:52:58,176 root INFO timestep: 50000, acc_reward: 311.00
+22:52:59,122 root INFO timestep: 51000, acc_reward: 311.42
+22:53:00,70 root INFO timestep: 52000, acc_reward: 311.41
+22:53:01,9 root INFO timestep: 53000, acc_reward: 311.57
+22:53:01,946 root INFO timestep: 54000, acc_reward: 311.46
+22:53:06,372 root INFO Timestep: 54695
+22:53:06,372 root INFO Current episode: 1350
+22:53:06,372 root INFO Alpha: 0.2
+22:53:07,381 root INFO timestep: 55000, acc_reward: 432.58
+22:53:07,386 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_432.582.pth.tar
+22:53:08,571 root INFO timestep: 56000, acc_reward: 432.47
+22:53:09,756 root INFO timestep: 57000, acc_reward: 431.85
+22:53:10,975 root INFO timestep: 58000, acc_reward: 433.21
+22:53:10,978 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_433.207.pth.tar
+22:53:12,131 root INFO timestep: 59000, acc_reward: 432.40
+22:53:13,306 root INFO timestep: 60000, acc_reward: 432.70
+22:53:14,457 root INFO timestep: 61000, acc_reward: 432.82
+22:53:15,664 root INFO timestep: 62000, acc_reward: 432.81
+22:53:16,878 root INFO timestep: 63000, acc_reward: 432.44
+22:53:21,278 root INFO Timestep: 63246
+22:53:21,278 root INFO Current episode: 1400
+22:53:21,278 root INFO Alpha: 0.2
+22:53:22,34 root INFO timestep: 64000, acc_reward: 280.63
+22:53:22,862 root INFO timestep: 65000, acc_reward: 282.20
+22:53:23,674 root INFO timestep: 66000, acc_reward: 281.36
+22:53:24,498 root INFO timestep: 67000, acc_reward: 281.35
+22:53:25,325 root INFO timestep: 68000, acc_reward: 281.62
+22:53:30,540 root INFO Timestep: 68844
+22:53:30,540 root INFO Current episode: 1450
+22:53:30,540 root INFO Alpha: 0.2
+22:53:31,158 root INFO timestep: 69000, acc_reward: 279.55
+22:53:32,10 root INFO timestep: 70000, acc_reward: 280.43
+22:53:32,840 root INFO timestep: 71000, acc_reward: 279.52
+22:53:33,638 root INFO timestep: 72000, acc_reward: 280.05
+22:53:34,475 root INFO timestep: 73000, acc_reward: 281.60
+22:53:35,278 root INFO timestep: 74000, acc_reward: 280.91
+22:53:39,871 root INFO Timestep: 74312
+22:53:39,871 root INFO Current episode: 1500
+22:53:39,871 root INFO Alpha: 0.2
+22:53:40,606 root INFO timestep: 75000, acc_reward: 277.64
+22:53:41,442 root INFO timestep: 76000, acc_reward: 277.50
+22:53:42,249 root INFO timestep: 77000, acc_reward: 277.64
+22:53:43,71 root INFO timestep: 78000, acc_reward: 277.40
+22:53:43,887 root INFO timestep: 79000, acc_reward: 278.25
+22:53:44,700 root INFO timestep: 80000, acc_reward: 277.37
+22:53:49,276 root INFO Timestep: 80011
+22:53:49,276 root INFO Current episode: 1550
+22:53:49,277 root INFO Alpha: 0.2
+22:53:50,77 root INFO timestep: 81000, acc_reward: 294.42
+22:53:50,898 root INFO timestep: 82000, acc_reward: 294.24
+22:53:51,685 root INFO timestep: 83000, acc_reward: 295.12
+22:53:52,512 root INFO timestep: 84000, acc_reward: 294.68
+22:53:53,313 root INFO timestep: 85000, acc_reward: 294.76
+22:53:58,229 root INFO Timestep: 85750
+22:53:58,229 root INFO Current episode: 1600
+22:53:58,229 root INFO Alpha: 0.2
+22:53:58,896 root INFO timestep: 86000, acc_reward: 288.18
+22:53:59,755 root INFO timestep: 87000, acc_reward: 287.72
+22:54:00,639 root INFO timestep: 88000, acc_reward: 287.93
+22:54:01,500 root INFO timestep: 89000, acc_reward: 287.66
+22:54:02,341 root INFO timestep: 90000, acc_reward: 287.67
+22:54:03,198 root INFO timestep: 91000, acc_reward: 287.70
+22:54:08,213 root INFO Timestep: 91699
+22:54:08,213 root INFO Current episode: 1650
+22:54:08,213 root INFO Alpha: 0.2
+22:54:08,909 root INFO timestep: 92000, acc_reward: 288.19
+22:54:09,739 root INFO timestep: 93000, acc_reward: 288.06
+22:54:10,585 root INFO timestep: 94000, acc_reward: 287.91
+22:54:11,427 root INFO timestep: 95000, acc_reward: 288.31
+22:54:12,277 root INFO timestep: 96000, acc_reward: 288.30
+22:54:13,137 root INFO timestep: 97000, acc_reward: 288.61
+22:54:18,222 root INFO Timestep: 97720
+22:54:18,222 root INFO Current episode: 1700
+22:54:18,222 root INFO Alpha: 0.2
+22:54:18,846 root INFO timestep: 98000, acc_reward: 289.91
+22:54:19,660 root INFO timestep: 99000, acc_reward: 290.16
+22:54:20,493 root INFO timestep: 100000, acc_reward: 290.51
+22:54:21,291 root INFO timestep: 101000, acc_reward: 290.04
+22:54:22,79 root INFO timestep: 102000, acc_reward: 289.81
+22:54:22,909 root INFO timestep: 103000, acc_reward: 290.37
+22:54:28,12 root INFO Timestep: 103380
+22:54:28,12 root INFO Current episode: 1750
+22:54:28,12 root INFO Alpha: 0.2
+22:54:28,685 root INFO timestep: 104000, acc_reward: 225.13
+22:54:29,464 root INFO timestep: 105000, acc_reward: 225.53
+22:54:30,202 root INFO timestep: 106000, acc_reward: 225.17
+22:54:31,36 root INFO timestep: 107000, acc_reward: 224.42
+22:54:31,961 root INFO timestep: 108000, acc_reward: 224.46
+22:54:37,77 root INFO Timestep: 108441
+22:54:37,77 root INFO Current episode: 1800
+22:54:37,77 root INFO Alpha: 0.2
+22:54:37,823 root INFO timestep: 109000, acc_reward: 320.02
+22:54:38,675 root INFO timestep: 110000, acc_reward: 320.12
+22:54:39,520 root INFO timestep: 111000, acc_reward: 320.15
+22:54:40,352 root INFO timestep: 112000, acc_reward: 320.29
+22:54:41,201 root INFO timestep: 113000, acc_reward: 320.05
+22:54:42,41 root INFO timestep: 114000, acc_reward: 319.49
+22:54:47,321 root INFO Timestep: 114097
+22:54:47,321 root INFO Current episode: 1850
+22:54:47,321 root INFO Alpha: 0.2
+22:54:48,18 root INFO timestep: 115000, acc_reward: 204.28
+22:54:48,722 root INFO timestep: 116000, acc_reward: 203.45
+22:54:49,449 root INFO timestep: 117000, acc_reward: 204.19
+22:54:50,150 root INFO timestep: 118000, acc_reward: 204.00
+22:54:55,540 root INFO Timestep: 118679
+22:54:55,540 root INFO Current episode: 1900
+22:54:55,540 root INFO Alpha: 0.2
+22:54:56,231 root INFO timestep: 119000, acc_reward: 319.51
+22:54:57,154 root INFO timestep: 120000, acc_reward: 320.36
+22:54:58,7 root INFO timestep: 121000, acc_reward: 318.89
+22:54:58,876 root INFO timestep: 122000, acc_reward: 319.48
+22:54:59,754 root INFO timestep: 123000, acc_reward: 318.80
+22:55:00,625 root INFO timestep: 124000, acc_reward: 320.43
+22:55:05,813 root INFO Timestep: 124148
+22:55:05,814 root INFO Current episode: 1950
+22:55:05,814 root INFO Alpha: 0.2
+22:55:06,742 root INFO timestep: 125000, acc_reward: 348.95
+22:55:07,700 root INFO timestep: 126000, acc_reward: 349.62
+22:55:08,657 root INFO timestep: 127000, acc_reward: 349.60
+22:55:09,895 root INFO timestep: 128000, acc_reward: 349.35
+22:55:10,888 root INFO timestep: 129000, acc_reward: 350.17
+22:55:11,827 root INFO timestep: 130000, acc_reward: 349.36
+22:55:17,942 root INFO Timestep: 130171
+22:55:17,943 root INFO Current episode: 2000
+22:55:17,943 root INFO Alpha: 0.2
+22:55:18,848 root INFO timestep: 131000, acc_reward: 290.35
+22:55:20,20 root INFO timestep: 132000, acc_reward: 291.58
+22:55:20,984 root INFO timestep: 133000, acc_reward: 290.87
+22:55:21,871 root INFO timestep: 134000, acc_reward: 294.35
+22:55:22,784 root INFO timestep: 135000, acc_reward: 290.38
+22:55:28,604 root INFO Timestep: 135794
+22:55:28,604 root INFO Current episode: 2050
+22:55:28,604 root INFO Alpha: 0.2
+22:55:29,323 root INFO timestep: 136000, acc_reward: 332.90
+22:55:30,234 root INFO timestep: 137000, acc_reward: 335.19
+22:55:31,202 root INFO timestep: 138000, acc_reward: 331.44
+22:55:32,118 root INFO timestep: 139000, acc_reward: 332.91
+22:55:33,95 root INFO timestep: 140000, acc_reward: 333.60
+22:55:34,15 root INFO timestep: 141000, acc_reward: 333.04
+22:55:39,830 root INFO Timestep: 141853
+22:55:39,830 root INFO Current episode: 2100
+22:55:39,830 root INFO Alpha: 0.2
+22:55:40,463 root INFO timestep: 142000, acc_reward: 282.68
+22:55:41,308 root INFO timestep: 143000, acc_reward: 282.66
+22:55:42,167 root INFO timestep: 144000, acc_reward: 282.28
+22:55:43,123 root INFO timestep: 145000, acc_reward: 282.68
+22:55:43,992 root INFO timestep: 146000, acc_reward: 283.24
+22:55:44,895 root INFO timestep: 147000, acc_reward: 284.29
+22:55:50,988 root INFO Timestep: 147481
+22:55:50,988 root INFO Current episode: 2150
+22:55:50,988 root INFO Alpha: 0.2
+22:55:51,848 root INFO timestep: 148000, acc_reward: 250.88
+22:55:53,55 root INFO timestep: 149000, acc_reward: 249.96
+22:55:53,971 root INFO timestep: 150000, acc_reward: 250.30
+22:55:54,864 root INFO timestep: 151000, acc_reward: 250.39
+22:55:55,782 root INFO timestep: 152000, acc_reward: 250.46
+22:55:56,803 root INFO timestep: 153000, acc_reward: 249.93
+22:56:03,305 root INFO Timestep: 153134
+22:56:03,305 root INFO Current episode: 2200
+22:56:03,305 root INFO Alpha: 0.2
+22:56:04,47 root INFO timestep: 154000, acc_reward: 185.51
+22:56:04,877 root INFO timestep: 155000, acc_reward: 185.60
+22:56:05,623 root INFO timestep: 156000, acc_reward: 185.96
+22:56:06,429 root INFO timestep: 157000, acc_reward: 185.87
+22:56:07,232 root INFO timestep: 158000, acc_reward: 187.32
+22:56:08,47 root INFO timestep: 159000, acc_reward: 185.65
+22:56:14,18 root INFO Timestep: 159209
+22:56:14,18 root INFO Current episode: 2250
+22:56:14,18 root INFO Alpha: 0.2
+22:56:15,37 root INFO timestep: 160000, acc_reward: 458.46
+22:56:15,41 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_458.461.pth.tar
+22:56:16,414 root INFO timestep: 161000, acc_reward: 458.97
+22:56:16,419 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_458.971.pth.tar
+22:56:17,546 root INFO timestep: 162000, acc_reward: 456.61
+22:56:18,670 root INFO timestep: 163000, acc_reward: 460.07
+22:56:18,674 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_460.072.pth.tar
+22:56:19,725 root INFO timestep: 164000, acc_reward: 457.26
+22:56:20,804 root INFO timestep: 165000, acc_reward: 458.38
+22:56:21,848 root INFO timestep: 166000, acc_reward: 459.99
+22:56:42,190 root INFO Timestep: 166609
+22:56:42,190 root INFO Current episode: 2300
+22:56:42,190 root INFO Alpha: 0.2
+22:56:44,19 root INFO timestep: 167000, acc_reward: 464.51
+22:56:44,25 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_464.513.pth.tar
+22:56:45,390 root INFO timestep: 168000, acc_reward: 462.42
+22:56:46,682 root INFO timestep: 169000, acc_reward: 462.38
+22:56:47,973 root INFO timestep: 170000, acc_reward: 461.34
+22:56:49,496 root INFO timestep: 171000, acc_reward: 461.74
+22:56:50,788 root INFO timestep: 172000, acc_reward: 460.33
+22:56:52,274 root INFO timestep: 173000, acc_reward: 461.95
+22:56:59,611 root INFO Timestep: 173436
+22:56:59,611 root INFO Current episode: 2350
+22:56:59,611 root INFO Alpha: 0.2
+22:57:00,619 root INFO timestep: 174000, acc_reward: 379.17
+22:57:01,627 root INFO timestep: 175000, acc_reward: 379.01
+22:57:02,708 root INFO timestep: 176000, acc_reward: 378.01
+22:57:03,639 root INFO timestep: 177000, acc_reward: 378.84
+22:57:04,626 root INFO timestep: 178000, acc_reward: 378.28
+22:57:05,634 root INFO timestep: 179000, acc_reward: 379.64
+22:57:06,630 root INFO timestep: 180000, acc_reward: 378.20
+22:57:14,563 root INFO Timestep: 180363
+22:57:14,563 root INFO Current episode: 2400
+22:57:14,563 root INFO Alpha: 0.2
+22:57:15,554 root INFO timestep: 181000, acc_reward: 357.66
+22:57:16,618 root INFO timestep: 182000, acc_reward: 356.86
+22:57:17,615 root INFO timestep: 183000, acc_reward: 356.57
+22:57:18,659 root INFO timestep: 184000, acc_reward: 355.62
+22:57:19,677 root INFO timestep: 185000, acc_reward: 356.76
+22:57:20,860 root INFO timestep: 186000, acc_reward: 356.33
+22:57:28,503 root INFO Timestep: 186963
+22:57:28,503 root INFO Current episode: 2450
+22:57:28,503 root INFO Alpha: 0.2
+22:57:29,185 root INFO timestep: 187000, acc_reward: 331.23
+22:57:30,97 root INFO timestep: 188000, acc_reward: 331.17
+22:57:31,75 root INFO timestep: 189000, acc_reward: 331.60
+22:57:32,248 root INFO timestep: 190000, acc_reward: 330.81
+22:57:33,276 root INFO timestep: 191000, acc_reward: 330.59
+22:57:34,183 root INFO timestep: 192000, acc_reward: 331.00
+22:57:35,99 root INFO timestep: 193000, acc_reward: 330.73
+22:57:42,139 root INFO Timestep: 193159
+22:57:42,139 root INFO Current episode: 2500
+22:57:42,139 root INFO Alpha: 0.2
+22:57:43,194 root INFO timestep: 194000, acc_reward: 345.81
+22:57:44,692 root INFO timestep: 195000, acc_reward: 345.04
+22:57:45,789 root INFO timestep: 196000, acc_reward: 345.33
+22:57:46,713 root INFO timestep: 197000, acc_reward: 345.64
+22:57:47,636 root INFO timestep: 198000, acc_reward: 345.69
+22:57:48,601 root INFO timestep: 199000, acc_reward: 346.35
+22:57:56,556 root INFO Timestep: 199533
+22:57:56,556 root INFO Current episode: 2550
+22:57:56,556 root INFO Alpha: 0.2
+22:57:57,432 root INFO timestep: 200000, acc_reward: 394.22
+22:57:58,428 root INFO timestep: 201000, acc_reward: 395.10
+22:57:59,595 root INFO timestep: 202000, acc_reward: 394.83
+22:58:00,684 root INFO timestep: 203000, acc_reward: 395.08
+22:58:01,702 root INFO timestep: 204000, acc_reward: 394.84
+22:58:02,714 root INFO timestep: 205000, acc_reward: 394.83
+22:58:03,744 root INFO timestep: 206000, acc_reward: 395.41
+22:58:10,761 root INFO Timestep: 206511
+22:58:10,761 root INFO Current episode: 2600
+22:58:10,761 root INFO Alpha: 0.2
+22:58:11,590 root INFO timestep: 207000, acc_reward: 382.35
+22:58:12,539 root INFO timestep: 208000, acc_reward: 382.60
+22:58:13,470 root INFO timestep: 209000, acc_reward: 382.83
+22:58:14,412 root INFO timestep: 210000, acc_reward: 382.62
+22:58:15,357 root INFO timestep: 211000, acc_reward: 381.67
+22:58:16,280 root INFO timestep: 212000, acc_reward: 383.12
+22:58:17,239 root INFO timestep: 213000, acc_reward: 383.66
+22:58:24,379 root INFO Timestep: 213365
+22:58:24,379 root INFO Current episode: 2650
+22:58:24,379 root INFO Alpha: 0.2
+22:58:25,265 root INFO timestep: 214000, acc_reward: 390.33
+22:58:26,212 root INFO timestep: 215000, acc_reward: 389.57
+22:58:27,222 root INFO timestep: 216000, acc_reward: 389.81
+22:58:28,174 root INFO timestep: 217000, acc_reward: 389.69
+22:58:29,175 root INFO timestep: 218000, acc_reward: 390.40
+22:58:30,158 root INFO timestep: 219000, acc_reward: 389.92
+22:58:31,115 root INFO timestep: 220000, acc_reward: 389.08
+22:58:38,113 root INFO Timestep: 220191
+22:58:38,113 root INFO Current episode: 2700
+22:58:38,113 root INFO Alpha: 0.2
+22:58:39,5 root INFO timestep: 221000, acc_reward: 360.26
+22:58:39,901 root INFO timestep: 222000, acc_reward: 360.35
+22:58:40,863 root INFO timestep: 223000, acc_reward: 360.43
+22:58:41,842 root INFO timestep: 224000, acc_reward: 364.46
+22:58:42,803 root INFO timestep: 225000, acc_reward: 359.84
+22:58:43,746 root INFO timestep: 226000, acc_reward: 363.88
+22:58:51,11 root INFO Timestep: 226915
+22:58:51,11 root INFO Current episode: 2750
+22:58:51,11 root INFO Alpha: 0.2
+22:58:51,635 root INFO timestep: 227000, acc_reward: 342.04
+22:58:52,509 root INFO timestep: 228000, acc_reward: 342.57
+22:58:53,396 root INFO timestep: 229000, acc_reward: 341.79
+22:58:54,275 root INFO timestep: 230000, acc_reward: 341.13
+22:58:55,158 root INFO timestep: 231000, acc_reward: 342.99
+22:58:56,33 root INFO timestep: 232000, acc_reward: 340.86
+22:58:56,911 root INFO timestep: 233000, acc_reward: 342.57
+22:59:04,405 root INFO Timestep: 233508
+22:59:04,405 root INFO Current episode: 2800
+22:59:04,405 root INFO Alpha: 0.2
+22:59:05,394 root INFO timestep: 234000, acc_reward: 317.68
+22:59:06,530 root INFO timestep: 235000, acc_reward: 316.59
+22:59:07,542 root INFO timestep: 236000, acc_reward: 317.32
+22:59:08,450 root INFO timestep: 237000, acc_reward: 314.69
+22:59:09,409 root INFO timestep: 238000, acc_reward: 315.25
+22:59:10,389 root INFO timestep: 239000, acc_reward: 316.37
+22:59:17,769 root INFO Timestep: 239812
+22:59:17,769 root INFO Current episode: 2850
+22:59:17,769 root INFO Alpha: 0.2
+22:59:18,451 root INFO timestep: 240000, acc_reward: 336.83
+22:59:19,370 root INFO timestep: 241000, acc_reward: 336.43
+22:59:20,289 root INFO timestep: 242000, acc_reward: 336.05
+22:59:21,232 root INFO timestep: 243000, acc_reward: 336.72
+22:59:22,108 root INFO timestep: 244000, acc_reward: 335.93
+22:59:23,13 root INFO timestep: 245000, acc_reward: 336.50
+22:59:23,909 root INFO timestep: 246000, acc_reward: 336.11
+22:59:32,430 root INFO Timestep: 246269
+22:59:32,430 root INFO Current episode: 2900
+22:59:32,430 root INFO Alpha: 0.2
+22:59:33,954 root INFO timestep: 247000, acc_reward: 406.70
+22:59:35,75 root INFO timestep: 248000, acc_reward: 406.47
+22:59:36,150 root INFO timestep: 249000, acc_reward: 405.97
+22:59:37,183 root INFO timestep: 250000, acc_reward: 406.11
+22:59:38,149 root INFO timestep: 251000, acc_reward: 406.29
+22:59:39,117 root INFO timestep: 252000, acc_reward: 406.10
+22:59:40,69 root INFO timestep: 253000, acc_reward: 405.73
+22:59:48,51 root INFO Timestep: 253230
+22:59:48,52 root INFO Current episode: 2950
+22:59:48,52 root INFO Alpha: 0.2
+22:59:48,905 root INFO timestep: 254000, acc_reward: 341.64
+22:59:49,815 root INFO timestep: 255000, acc_reward: 342.27
+22:59:50,725 root INFO timestep: 256000, acc_reward: 341.78
+22:59:51,622 root INFO timestep: 257000, acc_reward: 341.54
+22:59:52,498 root INFO timestep: 258000, acc_reward: 340.96
+22:59:53,369 root INFO timestep: 259000, acc_reward: 342.13
+22:59:54,253 root INFO timestep: 260000, acc_reward: 341.81
+23:00:02,552 root INFO Timestep: 260098
+23:00:02,552 root INFO Current episode: 3000
+23:00:02,552 root INFO Alpha: 0.2
+23:00:03,812 root INFO timestep: 261000, acc_reward: 405.29
+23:00:04,934 root INFO timestep: 262000, acc_reward: 405.65
+23:00:05,954 root INFO timestep: 263000, acc_reward: 404.67
+23:00:07,30 root INFO timestep: 264000, acc_reward: 405.19
+23:00:08,24 root INFO timestep: 265000, acc_reward: 404.33
+23:00:09,168 root INFO timestep: 266000, acc_reward: 404.09
+23:00:22,297 root INFO Timestep: 266904
+23:00:22,297 root INFO Current episode: 3050
+23:00:22,297 root INFO Alpha: 0.2
+23:00:23,153 root INFO timestep: 267000, acc_reward: 376.03
+23:00:24,238 root INFO timestep: 268000, acc_reward: 379.19
+23:00:25,360 root INFO timestep: 269000, acc_reward: 372.65
+23:00:26,429 root INFO timestep: 270000, acc_reward: 372.10
+23:00:27,560 root INFO timestep: 271000, acc_reward: 378.10
+23:00:28,589 root INFO timestep: 272000, acc_reward: 374.41
+23:00:29,846 root INFO timestep: 273000, acc_reward: 374.57
+23:00:38,429 root INFO Timestep: 273973
+23:00:38,430 root INFO Current episode: 3100
+23:00:38,430 root INFO Alpha: 0.2
+23:00:39,188 root INFO timestep: 274000, acc_reward: 389.50
+23:00:40,213 root INFO timestep: 275000, acc_reward: 388.21
+23:00:41,181 root INFO timestep: 276000, acc_reward: 388.99
+23:00:42,151 root INFO timestep: 277000, acc_reward: 389.78
+23:00:43,237 root INFO timestep: 278000, acc_reward: 388.75
+23:00:44,716 root INFO timestep: 279000, acc_reward: 387.38
+23:00:45,759 root INFO timestep: 280000, acc_reward: 389.74
+23:00:46,764 root INFO timestep: 281000, acc_reward: 388.70
+23:00:54,893 root INFO Timestep: 281631
+23:00:54,893 root INFO Current episode: 3150
+23:00:54,894 root INFO Alpha: 0.2
+23:00:55,897 root INFO timestep: 282000, acc_reward: 507.22
+23:00:55,901 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_507.22.pth.tar
+23:00:57,150 root INFO timestep: 283000, acc_reward: 507.79
+23:00:57,154 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_507.787.pth.tar
+23:00:58,345 root INFO timestep: 284000, acc_reward: 505.93
+23:00:59,572 root INFO timestep: 285000, acc_reward: 508.70
+23:00:59,577 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_508.7.pth.tar
+23:01:00,847 root INFO timestep: 286000, acc_reward: 506.84
+23:01:02,143 root INFO timestep: 287000, acc_reward: 506.68
+23:01:03,650 root INFO timestep: 288000, acc_reward: 506.43
+23:01:05,18 root INFO timestep: 289000, acc_reward: 507.05
+23:01:14,223 root INFO Timestep: 289716
+23:01:14,224 root INFO Current episode: 3200
+23:01:14,224 root INFO Alpha: 0.2
+23:01:15,686 root INFO timestep: 290000, acc_reward: 469.09
+23:01:17,233 root INFO timestep: 291000, acc_reward: 468.64
+23:01:18,350 root INFO timestep: 292000, acc_reward: 470.31
+23:01:19,579 root INFO timestep: 293000, acc_reward: 470.09
+23:01:20,765 root INFO timestep: 294000, acc_reward: 470.35
+23:01:21,873 root INFO timestep: 295000, acc_reward: 469.84
+23:01:22,935 root INFO timestep: 296000, acc_reward: 469.88
+23:01:24,4 root INFO timestep: 297000, acc_reward: 470.32
+23:01:34,35 root INFO Timestep: 297631
+23:01:34,35 root INFO Current episode: 3250
+23:01:34,35 root INFO Alpha: 0.2
+23:01:35,86 root INFO timestep: 298000, acc_reward: 540.72
+23:01:35,88 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_540.717.pth.tar
+23:01:36,429 root INFO timestep: 299000, acc_reward: 540.79
+23:01:36,435 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_540.789.pth.tar
+23:01:37,744 root INFO timestep: 300000, acc_reward: 541.66
+23:01:37,749 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_541.663.pth.tar
+23:01:38,929 root INFO timestep: 301000, acc_reward: 536.87
+23:01:40,168 root INFO timestep: 302000, acc_reward: 542.32
+23:01:40,173 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_542.317.pth.tar
+23:01:41,505 root INFO timestep: 303000, acc_reward: 537.66
+23:01:42,784 root INFO timestep: 304000, acc_reward: 538.83
+23:01:44,5 root INFO timestep: 305000, acc_reward: 532.04
+23:01:53,829 root INFO Timestep: 305484
+23:01:53,829 root INFO Current episode: 3300
+23:01:53,830 root INFO Alpha: 0.2
+23:01:54,729 root INFO timestep: 306000, acc_reward: 374.29
+23:01:55,687 root INFO timestep: 307000, acc_reward: 374.94
+23:01:56,608 root INFO timestep: 308000, acc_reward: 374.19
+23:01:57,506 root INFO timestep: 309000, acc_reward: 373.87
+23:01:58,411 root INFO timestep: 310000, acc_reward: 374.47
+23:01:59,385 root INFO timestep: 311000, acc_reward: 373.78
+23:02:00,379 root INFO timestep: 312000, acc_reward: 373.95
+23:02:01,346 root INFO timestep: 313000, acc_reward: 373.42
+23:02:10,375 root INFO Timestep: 313163
+23:02:10,375 root INFO Current episode: 3350
+23:02:10,375 root INFO Alpha: 0.2
+23:02:11,567 root INFO timestep: 314000, acc_reward: 429.43
+23:02:13,364 root INFO timestep: 315000, acc_reward: 430.84
+23:02:14,653 root INFO timestep: 316000, acc_reward: 429.41
+23:02:15,938 root INFO timestep: 317000, acc_reward: 429.98
+23:02:17,297 root INFO timestep: 318000, acc_reward: 430.06
+23:02:18,721 root INFO timestep: 319000, acc_reward: 429.59
+23:02:20,58 root INFO timestep: 320000, acc_reward: 428.62
+23:02:32,355 root INFO Timestep: 320357
+23:02:32,355 root INFO Current episode: 3400
+23:02:32,355 root INFO Alpha: 0.2
+23:02:33,288 root INFO timestep: 321000, acc_reward: 457.27
+23:02:34,279 root INFO timestep: 322000, acc_reward: 456.51
+23:02:35,295 root INFO timestep: 323000, acc_reward: 456.25
+23:02:36,377 root INFO timestep: 324000, acc_reward: 456.00
+23:02:37,468 root INFO timestep: 325000, acc_reward: 456.69
+23:02:38,543 root INFO timestep: 326000, acc_reward: 456.78
+23:02:39,675 root INFO timestep: 327000, acc_reward: 456.91
+23:02:40,821 root INFO timestep: 328000, acc_reward: 455.42
+23:02:50,985 root INFO Timestep: 328156
+23:02:50,985 root INFO Current episode: 3450
+23:02:50,985 root INFO Alpha: 0.2
+23:02:51,835 root INFO timestep: 329000, acc_reward: 390.50
+23:02:52,796 root INFO timestep: 330000, acc_reward: 388.69
+23:02:53,755 root INFO timestep: 331000, acc_reward: 394.92
+23:02:54,731 root INFO timestep: 332000, acc_reward: 393.56
+23:02:55,646 root INFO timestep: 333000, acc_reward: 387.53
+23:02:56,843 root INFO timestep: 334000, acc_reward: 390.45
+23:02:57,817 root INFO timestep: 335000, acc_reward: 403.28
+23:03:07,777 root INFO Timestep: 335084
+23:03:07,778 root INFO Current episode: 3500
+23:03:07,778 root INFO Alpha: 0.2
+23:03:08,887 root INFO timestep: 336000, acc_reward: 389.58
+23:03:09,953 root INFO timestep: 337000, acc_reward: 389.78
+23:03:11,24 root INFO timestep: 338000, acc_reward: 390.40
+23:03:12,101 root INFO timestep: 339000, acc_reward: 391.22
+23:03:13,138 root INFO timestep: 340000, acc_reward: 387.90
+23:03:14,197 root INFO timestep: 341000, acc_reward: 386.13
+23:03:15,344 root INFO timestep: 342000, acc_reward: 392.61
+23:03:25,299 root INFO Timestep: 342692
+23:03:25,299 root INFO Current episode: 3550
+23:03:25,299 root INFO Alpha: 0.2
+23:03:26,181 root INFO timestep: 343000, acc_reward: 387.10
+23:03:27,263 root INFO timestep: 344000, acc_reward: 386.72
+23:03:28,234 root INFO timestep: 345000, acc_reward: 386.64
+23:03:29,270 root INFO timestep: 346000, acc_reward: 387.16
+23:03:30,211 root INFO timestep: 347000, acc_reward: 385.89
+23:03:31,207 root INFO timestep: 348000, acc_reward: 386.14
+23:03:32,158 root INFO timestep: 349000, acc_reward: 389.08
+23:03:42,768 root INFO Timestep: 349336
+23:03:42,769 root INFO Current episode: 3600
+23:03:42,769 root INFO Alpha: 0.2
+23:03:43,652 root INFO timestep: 350000, acc_reward: 406.54
+23:03:44,666 root INFO timestep: 351000, acc_reward: 406.43
+23:03:45,622 root INFO timestep: 352000, acc_reward: 405.13
+23:03:46,619 root INFO timestep: 353000, acc_reward: 405.09
+23:03:47,612 root INFO timestep: 354000, acc_reward: 407.19
+23:03:48,603 root INFO timestep: 355000, acc_reward: 407.95
+23:03:49,585 root INFO timestep: 356000, acc_reward: 408.70
+23:03:59,734 root INFO Timestep: 356075
+23:03:59,734 root INFO Current episode: 3650
+23:03:59,734 root INFO Alpha: 0.2
+23:04:00,906 root INFO timestep: 357000, acc_reward: 404.93
+23:04:01,960 root INFO timestep: 358000, acc_reward: 400.24
+23:04:02,969 root INFO timestep: 359000, acc_reward: 404.26
+23:04:03,968 root INFO timestep: 360000, acc_reward: 403.84
+23:04:04,999 root INFO timestep: 361000, acc_reward: 401.29
+23:04:05,981 root INFO timestep: 362000, acc_reward: 405.59
+23:04:06,958 root INFO timestep: 363000, acc_reward: 398.47
+23:04:17,689 root INFO Timestep: 363233
+23:04:17,689 root INFO Current episode: 3700
+23:04:17,689 root INFO Alpha: 0.2
+23:04:18,981 root INFO timestep: 364000, acc_reward: 420.79
+23:04:20,70 root INFO timestep: 365000, acc_reward: 426.79
+23:04:21,153 root INFO timestep: 366000, acc_reward: 422.00
+23:04:22,310 root INFO timestep: 367000, acc_reward: 422.13
+23:04:23,392 root INFO timestep: 368000, acc_reward: 420.70
+23:04:24,416 root INFO timestep: 369000, acc_reward: 423.70
+23:04:25,422 root INFO timestep: 370000, acc_reward: 415.45
+23:04:37,125 root INFO Timestep: 370993
+23:04:37,126 root INFO Current episode: 3750
+23:04:37,126 root INFO Alpha: 0.2
+23:04:37,707 root INFO timestep: 371000, acc_reward: 297.29
+23:04:38,552 root INFO timestep: 372000, acc_reward: 271.61
+23:04:39,438 root INFO timestep: 373000, acc_reward: 289.48
+23:04:40,326 root INFO timestep: 374000, acc_reward: 287.83
+23:04:41,161 root INFO timestep: 375000, acc_reward: 284.00
+23:04:42,62 root INFO timestep: 376000, acc_reward: 271.40
+23:04:43,227 root INFO timestep: 377000, acc_reward: 290.54
+23:04:59,984 root INFO Timestep: 377783
+23:04:59,984 root INFO Current episode: 3800
+23:04:59,984 root INFO Alpha: 0.2
+23:05:00,994 root INFO timestep: 378000, acc_reward: 373.05
+23:05:02,248 root INFO timestep: 379000, acc_reward: 373.27
+23:05:03,691 root INFO timestep: 380000, acc_reward: 370.77
+23:05:05,355 root INFO timestep: 381000, acc_reward: 372.64
+23:05:06,875 root INFO timestep: 382000, acc_reward: 372.02
+23:05:08,107 root INFO timestep: 383000, acc_reward: 370.20
+23:05:09,474 root INFO timestep: 384000, acc_reward: 374.09
+23:05:23,246 root INFO Timestep: 384997
+23:05:23,247 root INFO Current episode: 3850
+23:05:23,247 root INFO Alpha: 0.2
+23:05:24,415 root INFO timestep: 385000, acc_reward: 550.70
+23:05:24,421 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_550.7.pth.tar
+23:05:26,151 root INFO timestep: 386000, acc_reward: 505.33
+23:05:28,2 root INFO timestep: 387000, acc_reward: 543.55
+23:05:29,646 root INFO timestep: 388000, acc_reward: 518.78
+23:05:31,355 root INFO timestep: 389000, acc_reward: 573.14
+23:05:31,360 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_573.14.pth.tar
+23:05:33,87 root INFO timestep: 390000, acc_reward: 569.04
+23:05:34,851 root INFO timestep: 391000, acc_reward: 579.87
+23:05:34,855 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_579.873.pth.tar
+23:05:36,526 root INFO timestep: 392000, acc_reward: 534.87
+23:05:51,776 root INFO Timestep: 392040
+23:05:51,776 root INFO Current episode: 3900
+23:05:51,777 root INFO Alpha: 0.2
+23:05:53,30 root INFO timestep: 393000, acc_reward: 387.20
+23:05:54,350 root INFO timestep: 394000, acc_reward: 394.39
+23:05:55,678 root INFO timestep: 395000, acc_reward: 388.79
+23:05:56,955 root INFO timestep: 396000, acc_reward: 383.88
+23:05:58,216 root INFO timestep: 397000, acc_reward: 388.92
+23:05:59,535 root INFO timestep: 398000, acc_reward: 386.60
+23:06:14,690 root INFO Timestep: 398902
+23:06:14,691 root INFO Current episode: 3950
+23:06:14,692 root INFO Alpha: 0.2
+23:06:15,576 root INFO timestep: 399000, acc_reward: 358.50
+23:06:16,850 root INFO timestep: 400000, acc_reward: 359.52
+23:06:18,38 root INFO timestep: 401000, acc_reward: 358.99
+23:06:19,217 root INFO timestep: 402000, acc_reward: 361.10
+23:06:20,439 root INFO timestep: 403000, acc_reward: 362.12
+23:06:21,710 root INFO timestep: 404000, acc_reward: 363.49
+23:06:22,926 root INFO timestep: 405000, acc_reward: 356.47
+23:06:37,360 root INFO Timestep: 405332
+23:06:37,361 root INFO Current episode: 4000
+23:06:37,361 root INFO Alpha: 0.2
+23:06:38,517 root INFO timestep: 406000, acc_reward: 375.52
+23:06:39,684 root INFO timestep: 407000, acc_reward: 380.81
+23:06:40,857 root INFO timestep: 408000, acc_reward: 377.55
+23:06:42,164 root INFO timestep: 409000, acc_reward: 381.41
+23:06:43,390 root INFO timestep: 410000, acc_reward: 379.87
+23:06:44,611 root INFO timestep: 411000, acc_reward: 379.32
+23:06:59,742 root INFO Timestep: 411916
+23:06:59,743 root INFO Current episode: 4050
+23:06:59,743 root INFO Alpha: 0.2
+23:07:00,660 root INFO timestep: 412000, acc_reward: 395.74
+23:07:02,84 root INFO timestep: 413000, acc_reward: 396.73
+23:07:03,430 root INFO timestep: 414000, acc_reward: 396.21
+23:07:04,787 root INFO timestep: 415000, acc_reward: 396.31
+23:07:06,24 root INFO timestep: 416000, acc_reward: 396.75
+23:07:07,362 root INFO timestep: 417000, acc_reward: 396.01
+23:07:08,696 root INFO timestep: 418000, acc_reward: 396.05
+23:07:10,71 root INFO timestep: 419000, acc_reward: 397.19
+23:07:27,618 root INFO Timestep: 419644
+23:07:27,621 root INFO Current episode: 4100
+23:07:27,621 root INFO Alpha: 0.2
+23:07:29,252 root INFO timestep: 420000, acc_reward: 640.94
+23:07:29,257 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_640.937.pth.tar
+23:07:31,175 root INFO timestep: 421000, acc_reward: 637.93
+23:07:33,30 root INFO timestep: 422000, acc_reward: 639.73
+23:07:34,985 root INFO timestep: 423000, acc_reward: 639.65
+23:07:36,871 root INFO timestep: 424000, acc_reward: 640.18
+23:07:38,816 root INFO timestep: 425000, acc_reward: 642.35
+23:07:38,821 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_642.354.pth.tar
+23:07:40,785 root INFO timestep: 426000, acc_reward: 640.69
+23:07:42,778 root INFO timestep: 427000, acc_reward: 640.41
+23:07:44,766 root INFO timestep: 428000, acc_reward: 640.70
+23:07:46,802 root INFO timestep: 429000, acc_reward: 641.44
+23:07:48,721 root INFO timestep: 430000, acc_reward: 640.88
+23:08:05,977 root INFO Timestep: 430108
+23:08:05,978 root INFO Current episode: 4150
+23:08:05,978 root INFO Alpha: 0.2
+23:08:08,812 root INFO timestep: 431000, acc_reward: 1028.62
+23:08:08,815 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_1028.624.pth.tar
+23:08:11,658 root INFO timestep: 432000, acc_reward: 1024.56
+23:08:14,443 root INFO timestep: 433000, acc_reward: 1026.17
+23:08:17,202 root INFO timestep: 434000, acc_reward: 1024.23
+23:08:19,985 root INFO timestep: 435000, acc_reward: 1026.38
+23:08:22,797 root INFO timestep: 436000, acc_reward: 1033.92
+23:08:22,801 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_1033.924.pth.tar
+23:08:25,768 root INFO timestep: 437000, acc_reward: 1032.70
+23:08:28,612 root INFO timestep: 438000, acc_reward: 1022.69
+23:08:31,449 root INFO timestep: 439000, acc_reward: 1023.85
+23:08:34,258 root INFO timestep: 440000, acc_reward: 1034.03
+23:08:34,262 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_1034.029.pth.tar
+23:08:36,883 root INFO timestep: 441000, acc_reward: 1030.51
+23:08:39,746 root INFO timestep: 442000, acc_reward: 1031.45
+23:08:42,418 root INFO timestep: 443000, acc_reward: 1021.30
+23:08:45,200 root INFO timestep: 444000, acc_reward: 1018.30
+23:08:47,956 root INFO timestep: 445000, acc_reward: 1029.81
+23:09:05,87 root INFO Timestep: 445175
+23:09:05,88 root INFO Current episode: 4200
+23:09:05,88 root INFO Alpha: 0.2
+23:09:06,452 root INFO timestep: 446000, acc_reward: 327.37
+23:09:07,802 root INFO timestep: 447000, acc_reward: 333.73
+23:09:09,280 root INFO timestep: 448000, acc_reward: 373.54
+23:09:10,686 root INFO timestep: 449000, acc_reward: 377.36
+23:09:11,988 root INFO timestep: 450000, acc_reward: 352.86
+23:09:13,200 root INFO timestep: 451000, acc_reward: 329.88
+23:09:14,524 root INFO timestep: 452000, acc_reward: 333.49
+23:09:15,885 root INFO timestep: 453000, acc_reward: 354.25
+23:09:17,303 root INFO timestep: 454000, acc_reward: 356.10
+23:09:34,278 root INFO Timestep: 454980
+23:09:34,280 root INFO Current episode: 4250
+23:09:34,280 root INFO Alpha: 0.2
+23:09:36,613 root INFO timestep: 455000, acc_reward: 813.89
+23:09:39,117 root INFO timestep: 456000, acc_reward: 811.57
+23:09:41,634 root INFO timestep: 457000, acc_reward: 813.88
+23:09:44,130 root INFO timestep: 458000, acc_reward: 813.07
+23:09:46,833 root INFO timestep: 459000, acc_reward: 815.29
+23:09:49,336 root INFO timestep: 460000, acc_reward: 814.69
+23:09:51,787 root INFO timestep: 461000, acc_reward: 813.46
+23:09:54,551 root INFO timestep: 462000, acc_reward: 814.02
+23:09:57,810 root INFO timestep: 463000, acc_reward: 813.00
+23:10:01,122 root INFO timestep: 464000, acc_reward: 814.48
+23:10:04,386 root INFO timestep: 465000, acc_reward: 812.15
+23:10:07,661 root INFO timestep: 466000, acc_reward: 814.69
+23:10:11,0 root INFO timestep: 467000, acc_reward: 813.26
+23:10:14,299 root INFO timestep: 468000, acc_reward: 813.96
+23:10:34,988 root INFO Timestep: 468168
+23:10:34,988 root INFO Current episode: 4300
+23:10:34,988 root INFO Alpha: 0.2
+23:10:36,583 root INFO timestep: 469000, acc_reward: 562.81
+23:10:38,245 root INFO timestep: 470000, acc_reward: 554.34
+23:10:40,222 root INFO timestep: 471000, acc_reward: 547.69
+23:10:42,311 root INFO timestep: 472000, acc_reward: 542.81
+23:10:44,206 root INFO timestep: 473000, acc_reward: 550.20
+23:10:46,158 root INFO timestep: 474000, acc_reward: 564.45
+23:10:48,476 root INFO timestep: 475000, acc_reward: 546.94
+23:10:50,640 root INFO timestep: 476000, acc_reward: 546.49
+23:10:52,731 root INFO timestep: 477000, acc_reward: 552.05
+23:10:54,757 root INFO timestep: 478000, acc_reward: 549.99
+23:11:21,699 root INFO Timestep: 478572
+23:11:21,700 root INFO Current episode: 4350
+23:11:21,701 root INFO Alpha: 0.2
+23:11:23,368 root INFO timestep: 479000, acc_reward: 535.02
+23:11:25,80 root INFO timestep: 480000, acc_reward: 534.80
+23:11:26,904 root INFO timestep: 481000, acc_reward: 534.40
+23:11:28,792 root INFO timestep: 482000, acc_reward: 532.36
+23:11:30,703 root INFO timestep: 483000, acc_reward: 533.61
+23:11:32,611 root INFO timestep: 484000, acc_reward: 529.78
+23:11:34,573 root INFO timestep: 485000, acc_reward: 532.64
+23:11:36,421 root INFO timestep: 486000, acc_reward: 531.85
+23:11:38,381 root INFO timestep: 487000, acc_reward: 533.78
+23:12:03,114 root INFO Timestep: 487768
+23:12:03,115 root INFO Current episode: 4400
+23:12:03,115 root INFO Alpha: 0.2
+23:12:04,512 root INFO timestep: 488000, acc_reward: 487.58
+23:12:06,242 root INFO timestep: 489000, acc_reward: 486.05
+23:12:07,820 root INFO timestep: 490000, acc_reward: 486.45
+23:12:09,446 root INFO timestep: 491000, acc_reward: 487.24
+23:12:11,171 root INFO timestep: 492000, acc_reward: 486.90
+23:12:12,823 root INFO timestep: 493000, acc_reward: 486.98
+23:12:14,416 root INFO timestep: 494000, acc_reward: 488.00
+23:12:16,165 root INFO timestep: 495000, acc_reward: 487.29
+23:12:18,177 root INFO timestep: 496000, acc_reward: 487.63
+23:12:19,860 root INFO timestep: 497000, acc_reward: 487.15
+23:12:38,271 root INFO Timestep: 497140
+23:12:38,271 root INFO Current episode: 4450
+23:12:38,271 root INFO Alpha: 0.2
+23:12:39,722 root INFO timestep: 498000, acc_reward: 531.07
+23:12:41,273 root INFO timestep: 499000, acc_reward: 530.24
+23:12:42,871 root INFO timestep: 500000, acc_reward: 531.59
+23:12:44,403 root INFO timestep: 501000, acc_reward: 531.93
+23:12:45,957 root INFO timestep: 502000, acc_reward: 531.65
+23:12:47,508 root INFO timestep: 503000, acc_reward: 531.64
+23:12:48,989 root INFO timestep: 504000, acc_reward: 531.20
+23:12:50,576 root INFO timestep: 505000, acc_reward: 531.08
+23:13:08,304 root INFO Timestep: 505868
+23:13:08,305 root INFO Current episode: 4500
+23:13:08,305 root INFO Alpha: 0.2
+23:13:09,442 root INFO timestep: 506000, acc_reward: 479.08
+23:13:10,966 root INFO timestep: 507000, acc_reward: 479.69
+23:13:12,494 root INFO timestep: 508000, acc_reward: 479.23
+23:13:13,985 root INFO timestep: 509000, acc_reward: 479.21
+23:13:15,687 root INFO timestep: 510000, acc_reward: 478.49
+23:13:17,469 root INFO timestep: 511000, acc_reward: 479.01
+23:13:19,68 root INFO timestep: 512000, acc_reward: 479.54
+23:13:20,393 root INFO timestep: 513000, acc_reward: 479.03
+23:13:21,817 root INFO timestep: 514000, acc_reward: 478.58
+23:13:36,285 root INFO Timestep: 514895
+23:13:36,286 root INFO Current episode: 4550
+23:13:36,286 root INFO Alpha: 0.2
+23:13:37,514 root INFO timestep: 515000, acc_reward: 456.99
+23:13:39,620 root INFO timestep: 516000, acc_reward: 457.13
+23:13:41,447 root INFO timestep: 517000, acc_reward: 457.42
+23:13:43,13 root INFO timestep: 518000, acc_reward: 456.50
+23:13:44,505 root INFO timestep: 519000, acc_reward: 457.30
+23:13:45,941 root INFO timestep: 520000, acc_reward: 457.61
+23:13:47,435 root INFO timestep: 521000, acc_reward: 457.69
+23:13:48,852 root INFO timestep: 522000, acc_reward: 457.02
+23:13:50,250 root INFO timestep: 523000, acc_reward: 457.15
+23:14:07,287 root INFO Timestep: 523314
+23:14:07,287 root INFO Current episode: 4600
+23:14:07,287 root INFO Alpha: 0.2
+23:14:08,874 root INFO timestep: 524000, acc_reward: 553.85
+23:14:10,462 root INFO timestep: 525000, acc_reward: 553.79
+23:14:12,31 root INFO timestep: 526000, acc_reward: 553.59
+23:14:13,567 root INFO timestep: 527000, acc_reward: 553.35
+23:14:15,222 root INFO timestep: 528000, acc_reward: 554.37
+23:14:16,761 root INFO timestep: 529000, acc_reward: 554.06
+23:14:18,309 root INFO timestep: 530000, acc_reward: 553.94
+23:14:19,899 root INFO timestep: 531000, acc_reward: 553.98
+23:14:21,440 root INFO timestep: 532000, acc_reward: 553.35
+23:14:23,92 root INFO timestep: 533000, acc_reward: 553.96
+23:14:38,935 root INFO Timestep: 533114
+23:14:38,935 root INFO Current episode: 4650
+23:14:38,935 root INFO Alpha: 0.2
+23:14:40,324 root INFO timestep: 534000, acc_reward: 494.20
+23:14:41,667 root INFO timestep: 535000, acc_reward: 495.28
+23:14:43,219 root INFO timestep: 536000, acc_reward: 494.75
+23:14:44,615 root INFO timestep: 537000, acc_reward: 494.67
+23:14:46,163 root INFO timestep: 538000, acc_reward: 494.37
+23:14:47,614 root INFO timestep: 539000, acc_reward: 494.70
+23:14:49,209 root INFO timestep: 540000, acc_reward: 494.14
+23:14:50,811 root INFO timestep: 541000, acc_reward: 494.73
+23:14:52,391 root INFO timestep: 542000, acc_reward: 495.25
+23:14:53,960 root INFO timestep: 543000, acc_reward: 494.54
+23:14:55,570 root INFO timestep: 544000, acc_reward: 494.33
+23:15:14,787 root INFO Timestep: 544168
+23:15:14,787 root INFO Current episode: 4700
+23:15:14,787 root INFO Alpha: 0.2
+23:15:16,201 root INFO timestep: 545000, acc_reward: 524.10
+23:15:17,678 root INFO timestep: 546000, acc_reward: 524.53
+23:15:19,197 root INFO timestep: 547000, acc_reward: 524.61
+23:15:20,718 root INFO timestep: 548000, acc_reward: 524.59
+23:15:22,192 root INFO timestep: 549000, acc_reward: 524.41
+23:15:23,772 root INFO timestep: 550000, acc_reward: 524.99
+23:15:25,291 root INFO timestep: 551000, acc_reward: 524.45
+23:15:27,413 root INFO timestep: 552000, acc_reward: 523.57
+23:15:29,385 root INFO timestep: 553000, acc_reward: 524.12
+23:15:49,951 root INFO Timestep: 553445
+23:15:49,951 root INFO Current episode: 4750
+23:15:49,953 root INFO Alpha: 0.2
+23:15:51,325 root INFO timestep: 554000, acc_reward: 435.82
+23:15:52,898 root INFO timestep: 555000, acc_reward: 435.06
+23:15:54,499 root INFO timestep: 556000, acc_reward: 436.12
+23:15:56,150 root INFO timestep: 557000, acc_reward: 435.73
+23:15:57,780 root INFO timestep: 558000, acc_reward: 434.72
+23:15:59,431 root INFO timestep: 559000, acc_reward: 435.53
+23:16:01,84 root INFO timestep: 560000, acc_reward: 435.04
+23:16:02,677 root INFO timestep: 561000, acc_reward: 435.74
+23:16:25,31 root INFO Timestep: 561911
+23:16:25,31 root INFO Current episode: 4800
+23:16:25,31 root INFO Alpha: 0.2
+23:16:26,190 root INFO timestep: 562000, acc_reward: 474.55
+23:16:27,819 root INFO timestep: 563000, acc_reward: 474.59
+23:16:29,482 root INFO timestep: 564000, acc_reward: 474.91
+23:16:31,198 root INFO timestep: 565000, acc_reward: 473.60
+23:16:32,944 root INFO timestep: 566000, acc_reward: 474.58
+23:16:34,635 root INFO timestep: 567000, acc_reward: 474.79
+23:16:36,276 root INFO timestep: 568000, acc_reward: 474.97
+23:16:37,989 root INFO timestep: 569000, acc_reward: 474.74
+23:16:39,470 root INFO timestep: 570000, acc_reward: 474.14
+23:16:41,73 root INFO timestep: 571000, acc_reward: 474.54
+23:17:03,625 root INFO Timestep: 571837
+23:17:03,625 root INFO Current episode: 4850
+23:17:03,625 root INFO Alpha: 0.2
+23:17:05,12 root INFO timestep: 572000, acc_reward: 486.91
+23:17:06,699 root INFO timestep: 573000, acc_reward: 487.39
+23:17:08,347 root INFO timestep: 574000, acc_reward: 487.65
+23:17:10,152 root INFO timestep: 575000, acc_reward: 487.71
+23:17:11,969 root INFO timestep: 576000, acc_reward: 485.82
+23:17:13,695 root INFO timestep: 577000, acc_reward: 486.27
+23:17:15,511 root INFO timestep: 578000, acc_reward: 487.32
+23:17:17,157 root INFO timestep: 579000, acc_reward: 487.05
+23:17:18,876 root INFO timestep: 580000, acc_reward: 486.57
+23:17:20,637 root INFO timestep: 581000, acc_reward: 487.32
+23:17:22,314 root INFO timestep: 582000, acc_reward: 487.22
+23:17:24,32 root INFO timestep: 583000, acc_reward: 487.53
+23:17:25,787 root INFO timestep: 584000, acc_reward: 486.31
+23:17:48,683 root INFO Timestep: 584810
+23:17:48,683 root INFO Current episode: 4900
+23:17:48,683 root INFO Alpha: 0.2
+23:17:51,663 root INFO timestep: 585000, acc_reward: 989.39
+23:17:56,211 root INFO timestep: 586000, acc_reward: 1353.62
+23:17:56,219 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_1353.624.pth.tar
+23:17:59,936 root INFO timestep: 587000, acc_reward: 1162.81
+23:18:04,108 root INFO timestep: 588000, acc_reward: 1288.56
+23:18:08,38 root INFO timestep: 589000, acc_reward: 1231.02
+23:18:11,685 root INFO timestep: 590000, acc_reward: 1166.73
+23:18:14,648 root INFO timestep: 591000, acc_reward: 928.87
+23:18:18,182 root INFO timestep: 592000, acc_reward: 1236.76
+23:18:21,748 root INFO timestep: 593000, acc_reward: 1170.36
+23:18:25,403 root INFO timestep: 594000, acc_reward: 1187.47
+23:18:28,731 root INFO timestep: 595000, acc_reward: 1011.15
+23:18:33,222 root INFO timestep: 596000, acc_reward: 1560.77
+23:18:33,227 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_1560.773.pth.tar
+23:18:37,399 root INFO timestep: 597000, acc_reward: 1421.55
+23:18:40,961 root INFO timestep: 598000, acc_reward: 1255.31
+23:18:44,419 root INFO timestep: 599000, acc_reward: 1156.28
+23:18:48,297 root INFO timestep: 600000, acc_reward: 1273.90
+23:18:52,220 root INFO timestep: 601000, acc_reward: 1314.38
+23:18:55,815 root INFO timestep: 602000, acc_reward: 1212.25
+23:18:59,424 root INFO timestep: 603000, acc_reward: 1178.27
+23:19:03,291 root INFO timestep: 604000, acc_reward: 1177.27
+23:19:07,134 root INFO timestep: 605000, acc_reward: 1181.97
+23:19:10,735 root INFO timestep: 606000, acc_reward: 1194.31
+23:19:14,158 root INFO timestep: 607000, acc_reward: 1131.63
+23:19:17,447 root INFO timestep: 608000, acc_reward: 920.96
+23:19:21,495 root INFO timestep: 609000, acc_reward: 1218.00
+23:19:43,894 root INFO Timestep: 609474
+23:19:43,894 root INFO Current episode: 4950
+23:19:43,894 root INFO Alpha: 0.2
+23:19:45,581 root INFO timestep: 610000, acc_reward: 541.15
+23:19:47,472 root INFO timestep: 611000, acc_reward: 538.96
+23:19:49,242 root INFO timestep: 612000, acc_reward: 537.93
+23:19:50,914 root INFO timestep: 613000, acc_reward: 539.23
+23:19:52,641 root INFO timestep: 614000, acc_reward: 539.24
+23:19:54,533 root INFO timestep: 615000, acc_reward: 542.35
+23:19:56,453 root INFO timestep: 616000, acc_reward: 541.01
+23:19:58,262 root INFO timestep: 617000, acc_reward: 534.38
+23:20:00,143 root INFO timestep: 618000, acc_reward: 539.88
+23:20:02,94 root INFO timestep: 619000, acc_reward: 537.51
+23:20:03,947 root INFO timestep: 620000, acc_reward: 541.20
+23:20:27,443 root INFO Timestep: 620579
+23:20:27,443 root INFO Current episode: 5000
+23:20:27,443 root INFO Alpha: 0.2
+23:20:29,109 root INFO timestep: 621000, acc_reward: 628.64
+23:20:30,914 root INFO timestep: 622000, acc_reward: 627.22
+23:20:32,641 root INFO timestep: 623000, acc_reward: 627.68
+23:20:34,329 root INFO timestep: 624000, acc_reward: 628.83
+23:20:36,189 root INFO timestep: 625000, acc_reward: 628.55
+23:20:38,99 root INFO timestep: 626000, acc_reward: 627.96
+23:20:39,994 root INFO timestep: 627000, acc_reward: 628.23
+23:20:41,941 root INFO timestep: 628000, acc_reward: 628.10
+23:20:43,883 root INFO timestep: 629000, acc_reward: 628.54
+23:20:45,844 root INFO timestep: 630000, acc_reward: 629.25
+23:20:47,816 root INFO timestep: 631000, acc_reward: 628.40
+23:21:15,620 root INFO Timestep: 631838
+23:21:15,620 root INFO Current episode: 5050
+23:21:15,620 root INFO Alpha: 0.2
+23:21:17,94 root INFO timestep: 632000, acc_reward: 635.99
+23:21:18,923 root INFO timestep: 633000, acc_reward: 637.10
+23:21:21,325 root INFO timestep: 634000, acc_reward: 637.48
+23:21:23,726 root INFO timestep: 635000, acc_reward: 636.42
+23:21:25,972 root INFO timestep: 636000, acc_reward: 636.23
+23:21:28,119 root INFO timestep: 637000, acc_reward: 637.12
+23:21:30,464 root INFO timestep: 638000, acc_reward: 637.77
+23:21:33,2 root INFO timestep: 639000, acc_reward: 637.73
+23:21:35,141 root INFO timestep: 640000, acc_reward: 636.15
+23:21:37,159 root INFO timestep: 641000, acc_reward: 637.26
+23:22:05,613 root INFO Timestep: 641798
+23:22:05,613 root INFO Current episode: 5100
+23:22:05,613 root INFO Alpha: 0.2
+23:22:07,124 root INFO timestep: 642000, acc_reward: 601.87
+23:22:08,744 root INFO timestep: 643000, acc_reward: 601.38
+23:22:10,381 root INFO timestep: 644000, acc_reward: 599.86
+23:22:12,180 root INFO timestep: 645000, acc_reward: 600.16
+23:22:14,19 root INFO timestep: 646000, acc_reward: 601.47
+23:22:15,836 root INFO timestep: 647000, acc_reward: 602.06
+23:22:17,656 root INFO timestep: 648000, acc_reward: 600.92
+23:22:19,463 root INFO timestep: 649000, acc_reward: 600.51
+23:22:21,194 root INFO timestep: 650000, acc_reward: 601.28
+23:22:22,758 root INFO timestep: 651000, acc_reward: 601.75
+23:22:47,782 root INFO Timestep: 651923
+23:22:47,782 root INFO Current episode: 5150
+23:22:47,782 root INFO Alpha: 0.2
+23:22:49,593 root INFO timestep: 652000, acc_reward: 687.87
+23:22:51,931 root INFO timestep: 653000, acc_reward: 709.74
+23:22:54,192 root INFO timestep: 654000, acc_reward: 716.57
+23:22:56,507 root INFO timestep: 655000, acc_reward: 709.66
+23:22:58,872 root INFO timestep: 656000, acc_reward: 782.45
+23:23:01,40 root INFO timestep: 657000, acc_reward: 696.55
+23:23:03,313 root INFO timestep: 658000, acc_reward: 715.62
+23:23:05,994 root INFO timestep: 659000, acc_reward: 728.94
+23:23:08,495 root INFO timestep: 660000, acc_reward: 687.69
+23:23:10,851 root INFO timestep: 661000, acc_reward: 690.99
+23:23:13,270 root INFO timestep: 662000, acc_reward: 710.01
+23:23:15,509 root INFO timestep: 663000, acc_reward: 688.28
+23:23:40,997 root INFO Timestep: 663439
+23:23:40,997 root INFO Current episode: 5200
+23:23:40,997 root INFO Alpha: 0.2
+23:23:42,719 root INFO timestep: 664000, acc_reward: 700.39
+23:23:44,752 root INFO timestep: 665000, acc_reward: 700.26
+23:23:46,641 root INFO timestep: 666000, acc_reward: 699.95
+23:23:48,452 root INFO timestep: 667000, acc_reward: 700.54
+23:23:50,409 root INFO timestep: 668000, acc_reward: 699.90
+23:23:52,364 root INFO timestep: 669000, acc_reward: 700.89
+23:23:54,230 root INFO timestep: 670000, acc_reward: 700.22
+23:23:56,225 root INFO timestep: 671000, acc_reward: 700.88
+23:23:58,168 root INFO timestep: 672000, acc_reward: 700.43
+23:24:00,92 root INFO timestep: 673000, acc_reward: 700.28
+23:24:01,800 root INFO timestep: 674000, acc_reward: 700.49
+23:24:27,240 root INFO Timestep: 674646
+23:24:27,240 root INFO Current episode: 5250
+23:24:27,240 root INFO Alpha: 0.2
+23:24:29,27 root INFO timestep: 675000, acc_reward: 699.03
+23:24:31,370 root INFO timestep: 676000, acc_reward: 698.12
+23:24:34,157 root INFO timestep: 677000, acc_reward: 698.84
+23:24:36,219 root INFO timestep: 678000, acc_reward: 699.61
+23:24:38,312 root INFO timestep: 679000, acc_reward: 699.00
+23:24:40,305 root INFO timestep: 680000, acc_reward: 698.31
+23:24:42,300 root INFO timestep: 681000, acc_reward: 698.44
+23:24:44,445 root INFO timestep: 682000, acc_reward: 699.04
+23:24:46,343 root INFO timestep: 683000, acc_reward: 699.65
+23:24:48,236 root INFO timestep: 684000, acc_reward: 699.49
+23:24:50,177 root INFO timestep: 685000, acc_reward: 697.81
+23:24:52,188 root INFO timestep: 686000, acc_reward: 699.23
+23:25:17,89 root INFO Timestep: 686635
+23:25:17,90 root INFO Current episode: 5300
+23:25:17,90 root INFO Alpha: 0.2
+23:25:18,680 root INFO timestep: 687000, acc_reward: 616.78
+23:25:20,427 root INFO timestep: 688000, acc_reward: 617.87
+23:25:22,186 root INFO timestep: 689000, acc_reward: 617.38
+23:25:24,70 root INFO timestep: 690000, acc_reward: 617.36
+23:25:25,834 root INFO timestep: 691000, acc_reward: 616.37
+23:25:27,667 root INFO timestep: 692000, acc_reward: 617.15
+23:25:29,259 root INFO timestep: 693000, acc_reward: 616.90
+23:25:31,204 root INFO timestep: 694000, acc_reward: 617.14
+23:25:33,12 root INFO timestep: 695000, acc_reward: 617.28
+23:25:34,812 root INFO timestep: 696000, acc_reward: 617.95
+23:25:36,513 root INFO timestep: 697000, acc_reward: 617.51
+23:25:38,348 root INFO timestep: 698000, acc_reward: 617.28
+23:25:40,106 root INFO timestep: 699000, acc_reward: 615.99
+23:26:04,603 root INFO Timestep: 699471
+23:26:04,603 root INFO Current episode: 5350
+23:26:04,604 root INFO Alpha: 0.2
+23:26:05,967 root INFO timestep: 700000, acc_reward: 669.65
+23:26:07,664 root INFO timestep: 701000, acc_reward: 687.13
+23:26:09,479 root INFO timestep: 702000, acc_reward: 674.78
+23:26:11,149 root INFO timestep: 703000, acc_reward: 664.97
+23:26:12,879 root INFO timestep: 704000, acc_reward: 665.63
+23:26:14,563 root INFO timestep: 705000, acc_reward: 665.50
+23:26:16,272 root INFO timestep: 706000, acc_reward: 657.87
+23:26:18,16 root INFO timestep: 707000, acc_reward: 695.14
+23:26:19,803 root INFO timestep: 708000, acc_reward: 663.88
+23:26:21,518 root INFO timestep: 709000, acc_reward: 658.00
+23:26:46,835 root INFO Timestep: 709487
+23:26:46,835 root INFO Current episode: 5400
+23:26:46,835 root INFO Alpha: 0.2
+23:26:48,607 root INFO timestep: 710000, acc_reward: 695.20
+23:26:50,622 root INFO timestep: 711000, acc_reward: 695.09
+23:26:52,455 root INFO timestep: 712000, acc_reward: 695.19
+23:26:54,425 root INFO timestep: 713000, acc_reward: 694.99
+23:26:56,407 root INFO timestep: 714000, acc_reward: 695.27
+23:26:58,488 root INFO timestep: 715000, acc_reward: 695.14
+23:27:00,501 root INFO timestep: 716000, acc_reward: 695.22
+23:27:02,515 root INFO timestep: 717000, acc_reward: 694.73
+23:27:04,458 root INFO timestep: 718000, acc_reward: 695.03
+23:27:06,579 root INFO timestep: 719000, acc_reward: 695.42
+23:27:08,608 root INFO timestep: 720000, acc_reward: 695.22
+23:27:35,238 root INFO Timestep: 720956
+23:27:35,239 root INFO Current episode: 5450
+23:27:35,239 root INFO Alpha: 0.2
+23:27:36,753 root INFO timestep: 721000, acc_reward: 664.44
+23:27:38,624 root INFO timestep: 722000, acc_reward: 666.06
+23:27:40,554 root INFO timestep: 723000, acc_reward: 665.94
+23:27:42,484 root INFO timestep: 724000, acc_reward: 669.01
+23:27:44,239 root INFO timestep: 725000, acc_reward: 665.80
+23:27:46,14 root INFO timestep: 726000, acc_reward: 666.91
+23:27:47,910 root INFO timestep: 727000, acc_reward: 663.52
+23:27:49,800 root INFO timestep: 728000, acc_reward: 667.96
+23:27:51,680 root INFO timestep: 729000, acc_reward: 667.46
+23:27:53,556 root INFO timestep: 730000, acc_reward: 667.46
+23:27:55,473 root INFO timestep: 731000, acc_reward: 668.54
+23:27:57,224 root INFO timestep: 732000, acc_reward: 665.34
+23:28:21,357 root INFO Timestep: 732591
+23:28:21,357 root INFO Current episode: 5500
+23:28:21,358 root INFO Alpha: 0.2
+23:28:22,950 root INFO timestep: 733000, acc_reward: 710.28
+23:28:24,896 root INFO timestep: 734000, acc_reward: 710.55
+23:28:26,850 root INFO timestep: 735000, acc_reward: 709.50
+23:28:28,793 root INFO timestep: 736000, acc_reward: 710.79
+23:28:30,759 root INFO timestep: 737000, acc_reward: 711.11
+23:28:32,766 root INFO timestep: 738000, acc_reward: 709.63
+23:28:34,781 root INFO timestep: 739000, acc_reward: 710.26
+23:28:36,629 root INFO timestep: 740000, acc_reward: 710.13
+23:28:38,589 root INFO timestep: 741000, acc_reward: 709.28
+23:28:40,563 root INFO timestep: 742000, acc_reward: 710.60
+23:28:42,576 root INFO timestep: 743000, acc_reward: 710.45
+23:29:09,141 root INFO Timestep: 743416
+23:29:09,141 root INFO Current episode: 5550
+23:29:09,141 root INFO Alpha: 0.2
+23:29:11,151 root INFO timestep: 744000, acc_reward: 758.07
+23:29:13,271 root INFO timestep: 745000, acc_reward: 759.58
+23:29:15,483 root INFO timestep: 746000, acc_reward: 759.34
+23:29:17,608 root INFO timestep: 747000, acc_reward: 757.14
+23:29:19,542 root INFO timestep: 748000, acc_reward: 761.81
+23:29:21,404 root INFO timestep: 749000, acc_reward: 758.10
+23:29:23,383 root INFO timestep: 750000, acc_reward: 758.07
+23:29:25,446 root INFO timestep: 751000, acc_reward: 757.82
+23:29:27,546 root INFO timestep: 752000, acc_reward: 757.87
+23:29:29,637 root INFO timestep: 753000, acc_reward: 759.60
+23:29:31,502 root INFO timestep: 754000, acc_reward: 757.71
+23:29:58,953 root INFO Timestep: 754767
+23:29:58,954 root INFO Current episode: 5600
+23:29:58,954 root INFO Alpha: 0.2
+23:30:00,503 root INFO timestep: 755000, acc_reward: 683.17
+23:30:02,329 root INFO timestep: 756000, acc_reward: 683.60
+23:30:04,192 root INFO timestep: 757000, acc_reward: 682.03
+23:30:06,32 root INFO timestep: 758000, acc_reward: 682.61
+23:30:07,773 root INFO timestep: 759000, acc_reward: 682.19
+23:30:09,460 root INFO timestep: 760000, acc_reward: 683.24
+23:30:11,62 root INFO timestep: 761000, acc_reward: 682.75
+23:30:12,655 root INFO timestep: 762000, acc_reward: 683.33
+23:30:14,287 root INFO timestep: 763000, acc_reward: 683.57
+23:30:15,995 root INFO timestep: 764000, acc_reward: 683.48
+23:30:17,801 root INFO timestep: 765000, acc_reward: 683.17
+23:30:42,337 root INFO Timestep: 765573
+23:30:42,337 root INFO Current episode: 5650
+23:30:42,337 root INFO Alpha: 0.2
+23:30:43,840 root INFO timestep: 766000, acc_reward: 687.14
+23:30:45,676 root INFO timestep: 767000, acc_reward: 686.02
+23:30:47,581 root INFO timestep: 768000, acc_reward: 686.54
+23:30:49,669 root INFO timestep: 769000, acc_reward: 685.94
+23:30:51,587 root INFO timestep: 770000, acc_reward: 686.18
+23:30:53,379 root INFO timestep: 771000, acc_reward: 686.28
+23:30:55,233 root INFO timestep: 772000, acc_reward: 686.56
+23:30:56,996 root INFO timestep: 773000, acc_reward: 685.70
+23:30:58,955 root INFO timestep: 774000, acc_reward: 686.28
+23:31:00,968 root INFO timestep: 775000, acc_reward: 686.56
+23:31:02,973 root INFO timestep: 776000, acc_reward: 686.70
+23:31:29,623 root INFO Timestep: 776291
+23:31:29,623 root INFO Current episode: 5700
+23:31:29,623 root INFO Alpha: 0.2
+23:31:31,284 root INFO timestep: 777000, acc_reward: 698.36
+23:31:33,46 root INFO timestep: 778000, acc_reward: 697.28
+23:31:35,56 root INFO timestep: 779000, acc_reward: 696.93
+23:31:37,37 root INFO timestep: 780000, acc_reward: 699.88
+23:31:39,36 root INFO timestep: 781000, acc_reward: 698.34
+23:31:40,811 root INFO timestep: 782000, acc_reward: 698.41
+23:31:42,496 root INFO timestep: 783000, acc_reward: 698.13
+23:31:44,254 root INFO timestep: 784000, acc_reward: 697.91
+23:31:46,144 root INFO timestep: 785000, acc_reward: 699.10
+23:31:48,83 root INFO timestep: 786000, acc_reward: 699.10
+23:32:13,963 root INFO Timestep: 786859
+23:32:13,963 root INFO Current episode: 5750
+23:32:13,963 root INFO Alpha: 0.2
+23:32:15,633 root INFO timestep: 787000, acc_reward: 688.70
+23:32:17,624 root INFO timestep: 788000, acc_reward: 689.96
+23:32:19,595 root INFO timestep: 789000, acc_reward: 690.39
+23:32:21,482 root INFO timestep: 790000, acc_reward: 687.76
+23:32:23,329 root INFO timestep: 791000, acc_reward: 688.94
+23:32:25,161 root INFO timestep: 792000, acc_reward: 687.69
+23:32:27,52 root INFO timestep: 793000, acc_reward: 688.31
+23:32:29,19 root INFO timestep: 794000, acc_reward: 688.07
+23:32:31,5 root INFO timestep: 795000, acc_reward: 689.17
+23:32:32,993 root INFO timestep: 796000, acc_reward: 688.46
+23:32:34,784 root INFO timestep: 797000, acc_reward: 689.31
+23:33:00,837 root INFO Timestep: 797774
+23:33:00,837 root INFO Current episode: 5800
+23:33:00,838 root INFO Alpha: 0.2
+23:33:07,406 root INFO timestep: 798000, acc_reward: 1015.44
+23:33:14,858 root INFO timestep: 799000, acc_reward: 1015.68
+23:33:21,584 root INFO timestep: 800000, acc_reward: 1015.37
+23:33:29,634 root INFO timestep: 801000, acc_reward: 1015.29
+23:33:37,439 root INFO timestep: 802000, acc_reward: 1015.52
+23:33:45,787 root INFO timestep: 803000, acc_reward: 1015.53
+23:33:53,569 root INFO timestep: 804000, acc_reward: 1015.81
+23:34:01,688 root INFO timestep: 805000, acc_reward: 1015.49
+23:34:09,191 root INFO timestep: 806000, acc_reward: 1015.49
+23:34:17,126 root INFO timestep: 807000, acc_reward: 1015.66
+23:34:24,826 root INFO timestep: 808000, acc_reward: 1015.54
+23:34:32,743 root INFO timestep: 809000, acc_reward: 1015.70
+23:34:40,813 root INFO timestep: 810000, acc_reward: 1015.74
+23:34:48,613 root INFO timestep: 811000, acc_reward: 1015.69
+23:34:56,294 root INFO timestep: 812000, acc_reward: 1015.47
+23:35:03,810 root INFO timestep: 813000, acc_reward: 1015.55
+23:35:11,268 root INFO timestep: 814000, acc_reward: 1015.60
+23:35:17,924 root INFO timestep: 815000, acc_reward: 1015.60
+23:35:25,91 root INFO timestep: 816000, acc_reward: 1015.55
+23:35:31,908 root INFO timestep: 817000, acc_reward: 1015.32
+23:35:39,56 root INFO timestep: 818000, acc_reward: 1015.73
+23:35:45,961 root INFO timestep: 819000, acc_reward: 1015.65
+23:35:52,412 root INFO timestep: 820000, acc_reward: 1015.65
+23:35:59,307 root INFO timestep: 821000, acc_reward: 1015.35
+23:36:06,716 root INFO timestep: 822000, acc_reward: 1015.69
+23:36:13,716 root INFO timestep: 823000, acc_reward: 1015.48
+23:36:21,450 root INFO timestep: 824000, acc_reward: 1015.40
+23:36:29,391 root INFO timestep: 825000, acc_reward: 1015.27
+23:36:37,282 root INFO timestep: 826000, acc_reward: 1015.69
+23:36:45,483 root INFO timestep: 827000, acc_reward: 1015.71
+23:36:53,64 root INFO timestep: 828000, acc_reward: 1015.54
+23:37:00,807 root INFO timestep: 829000, acc_reward: 1015.67
+23:37:08,618 root INFO timestep: 830000, acc_reward: 1015.62
+23:37:16,649 root INFO timestep: 831000, acc_reward: 1015.44
+23:37:24,817 root INFO timestep: 832000, acc_reward: 1015.62
+23:37:53,997 root INFO Timestep: 832710
+23:37:53,997 root INFO Current episode: 5850
+23:37:53,997 root INFO Alpha: 0.2
+23:37:57,121 root INFO timestep: 833000, acc_reward: 1398.83
+23:38:01,218 root INFO timestep: 834000, acc_reward: 1846.43
+23:38:01,225 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_1846.434.pth.tar
+23:38:04,871 root INFO timestep: 835000, acc_reward: 1537.92
+23:38:08,520 root INFO timestep: 836000, acc_reward: 1498.88
+23:38:11,656 root INFO timestep: 837000, acc_reward: 1429.84
+23:38:14,958 root INFO timestep: 838000, acc_reward: 1501.95
+23:38:18,529 root INFO timestep: 839000, acc_reward: 1505.10
+23:38:21,952 root INFO timestep: 840000, acc_reward: 1452.54
+23:38:25,132 root INFO timestep: 841000, acc_reward: 1528.88
+23:38:28,473 root INFO timestep: 842000, acc_reward: 1596.38
+23:38:32,293 root INFO timestep: 843000, acc_reward: 1634.93
+23:38:35,545 root INFO timestep: 844000, acc_reward: 1445.61
+23:38:39,924 root INFO timestep: 845000, acc_reward: 1807.16
+23:38:42,983 root INFO timestep: 846000, acc_reward: 1376.16
+23:38:48,307 root INFO timestep: 847000, acc_reward: 1935.84
+23:38:48,312 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_1935.844.pth.tar
+23:38:51,547 root INFO timestep: 848000, acc_reward: 1443.30
+23:39:18,587 root INFO Timestep: 848850
+23:39:18,587 root INFO Current episode: 5900
+23:39:18,587 root INFO Alpha: 0.2
+23:39:21,952 root INFO timestep: 849000, acc_reward: 1624.39
+23:39:25,446 root INFO timestep: 850000, acc_reward: 1662.05
+23:39:29,219 root INFO timestep: 851000, acc_reward: 1630.34
+23:39:33,263 root INFO timestep: 852000, acc_reward: 1698.78
+23:39:36,806 root INFO timestep: 853000, acc_reward: 1641.06
+23:39:40,316 root INFO timestep: 854000, acc_reward: 1691.61
+23:39:44,152 root INFO timestep: 855000, acc_reward: 1635.91
+23:39:48,206 root INFO timestep: 856000, acc_reward: 1696.51
+23:39:52,48 root INFO timestep: 857000, acc_reward: 1660.44
+23:39:55,699 root INFO timestep: 858000, acc_reward: 1643.81
+23:39:59,193 root INFO timestep: 859000, acc_reward: 1639.49
+23:40:03,15 root INFO timestep: 860000, acc_reward: 1658.66
+23:40:06,453 root INFO timestep: 861000, acc_reward: 1638.65
+23:40:10,16 root INFO timestep: 862000, acc_reward: 1646.84
+23:40:13,678 root INFO timestep: 863000, acc_reward: 1638.30
+23:40:41,37 root INFO Timestep: 863385
+23:40:41,37 root INFO Current episode: 5950
+23:40:41,37 root INFO Alpha: 0.2
+23:40:44,400 root INFO timestep: 864000, acc_reward: 1358.62
+23:40:48,181 root INFO timestep: 865000, acc_reward: 1685.86
+23:40:51,710 root INFO timestep: 866000, acc_reward: 1633.21
+23:40:54,800 root INFO timestep: 867000, acc_reward: 1212.25
+23:40:59,314 root INFO timestep: 868000, acc_reward: 1648.54
+23:41:02,989 root INFO timestep: 869000, acc_reward: 1572.50
+23:41:08,18 root INFO timestep: 870000, acc_reward: 1644.45
+23:41:12,391 root INFO timestep: 871000, acc_reward: 1524.90
+23:41:15,838 root INFO timestep: 872000, acc_reward: 1575.30
+23:41:19,101 root INFO timestep: 873000, acc_reward: 1388.41
+23:41:23,86 root INFO timestep: 874000, acc_reward: 1641.14
+23:41:27,427 root INFO timestep: 875000, acc_reward: 1757.03
+23:41:31,384 root INFO timestep: 876000, acc_reward: 1583.91
+23:41:35,103 root INFO timestep: 877000, acc_reward: 1680.85
+23:41:38,691 root INFO timestep: 878000, acc_reward: 1432.63
+23:41:42,769 root INFO timestep: 879000, acc_reward: 1681.84
+23:41:47,131 root INFO timestep: 880000, acc_reward: 1912.68
+23:41:50,427 root INFO timestep: 881000, acc_reward: 1365.43
+23:41:53,538 root INFO timestep: 882000, acc_reward: 1459.58
+23:42:26,94 root INFO Timestep: 882121
+23:42:26,95 root INFO Current episode: 6000
+23:42:26,95 root INFO Alpha: 0.2
+23:42:28,117 root INFO timestep: 883000, acc_reward: 679.31
+23:42:29,942 root INFO timestep: 884000, acc_reward: 679.48
+23:42:31,629 root INFO timestep: 885000, acc_reward: 679.30
+23:42:33,630 root INFO timestep: 886000, acc_reward: 678.72
+23:42:35,623 root INFO timestep: 887000, acc_reward: 679.74
+23:42:37,569 root INFO timestep: 888000, acc_reward: 678.82
+23:42:39,578 root INFO timestep: 889000, acc_reward: 679.45
+23:42:41,559 root INFO timestep: 890000, acc_reward: 679.47
+23:42:43,541 root INFO timestep: 891000, acc_reward: 679.10
+23:42:45,517 root INFO timestep: 892000, acc_reward: 679.55
+23:42:47,577 root INFO timestep: 893000, acc_reward: 678.58
+23:43:18,520 root INFO Timestep: 893107
+23:43:18,520 root INFO Current episode: 6050
+23:43:18,520 root INFO Alpha: 0.2
+23:43:20,880 root INFO timestep: 894000, acc_reward: 918.09
+23:43:23,244 root INFO timestep: 895000, acc_reward: 930.79
+23:43:25,583 root INFO timestep: 896000, acc_reward: 917.15
+23:43:27,949 root INFO timestep: 897000, acc_reward: 911.39
+23:43:30,321 root INFO timestep: 898000, acc_reward: 919.24
+23:43:32,477 root INFO timestep: 899000, acc_reward: 926.98
+23:43:34,479 root INFO timestep: 900000, acc_reward: 922.31
+23:43:36,753 root INFO timestep: 901000, acc_reward: 919.03
+23:43:39,81 root INFO timestep: 902000, acc_reward: 931.20
+23:43:41,406 root INFO timestep: 903000, acc_reward: 923.64
+23:43:43,603 root INFO timestep: 904000, acc_reward: 915.24
+23:43:45,921 root INFO timestep: 905000, acc_reward: 922.96
+23:43:48,213 root INFO timestep: 906000, acc_reward: 923.78
+23:43:50,286 root INFO timestep: 907000, acc_reward: 931.49
+23:44:19,569 root INFO Timestep: 907289
+23:44:19,569 root INFO Current episode: 6100
+23:44:19,569 root INFO Alpha: 0.2
+23:44:21,463 root INFO timestep: 908000, acc_reward: 796.33
+23:44:23,360 root INFO timestep: 909000, acc_reward: 825.29
+23:44:25,507 root INFO timestep: 910000, acc_reward: 828.71
+23:44:27,721 root INFO timestep: 911000, acc_reward: 815.67
+23:44:29,981 root INFO timestep: 912000, acc_reward: 838.86
+23:44:32,323 root INFO timestep: 913000, acc_reward: 840.66
+23:44:34,583 root INFO timestep: 914000, acc_reward: 845.62
+23:44:36,710 root INFO timestep: 915000, acc_reward: 779.51
+23:44:38,980 root INFO timestep: 916000, acc_reward: 852.13
+23:44:41,58 root INFO timestep: 917000, acc_reward: 819.65
+23:44:43,39 root INFO timestep: 918000, acc_reward: 820.14
+23:45:13,908 root INFO Timestep: 918598
+23:45:13,908 root INFO Current episode: 6150
+23:45:13,908 root INFO Alpha: 0.2
+23:45:15,330 root INFO timestep: 919000, acc_reward: 696.21
+23:45:17,205 root INFO timestep: 920000, acc_reward: 695.44
+23:45:19,112 root INFO timestep: 921000, acc_reward: 699.28
+23:45:20,998 root INFO timestep: 922000, acc_reward: 692.41
+23:45:22,875 root INFO timestep: 923000, acc_reward: 701.01
+23:45:24,784 root INFO timestep: 924000, acc_reward: 702.49
+23:45:26,702 root INFO timestep: 925000, acc_reward: 696.61
+23:45:28,549 root INFO timestep: 926000, acc_reward: 698.56
+23:45:30,416 root INFO timestep: 927000, acc_reward: 702.07
+23:45:32,320 root INFO timestep: 928000, acc_reward: 701.41
+23:45:34,152 root INFO timestep: 929000, acc_reward: 702.60
+23:45:36,53 root INFO timestep: 930000, acc_reward: 698.49
+23:45:37,675 root INFO timestep: 931000, acc_reward: 696.60
+23:46:04,312 root INFO Timestep: 931398
+23:46:04,312 root INFO Current episode: 6200
+23:46:04,312 root INFO Alpha: 0.2
+23:46:10,386 root INFO timestep: 932000, acc_reward: 2904.93
+23:46:10,390 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_2904.929.pth.tar
+23:46:17,143 root INFO timestep: 933000, acc_reward: 2904.60
+23:46:23,677 root INFO timestep: 934000, acc_reward: 2904.81
+23:46:30,789 root INFO timestep: 935000, acc_reward: 2904.14
+23:46:38,69 root INFO timestep: 936000, acc_reward: 2903.98
+23:46:45,90 root INFO timestep: 937000, acc_reward: 2906.78
+23:46:45,95 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_2906.784.pth.tar
+23:46:52,569 root INFO timestep: 938000, acc_reward: 2904.37
+23:47:00,6 root INFO timestep: 939000, acc_reward: 2906.00
+23:47:07,101 root INFO timestep: 940000, acc_reward: 2905.03
+23:47:14,635 root INFO timestep: 941000, acc_reward: 2904.33
+23:47:22,134 root INFO timestep: 942000, acc_reward: 2907.59
+23:47:22,141 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_2907.59.pth.tar
+23:47:29,315 root INFO timestep: 943000, acc_reward: 2905.75
+23:47:36,444 root INFO timestep: 944000, acc_reward: 2907.45
+23:47:43,622 root INFO timestep: 945000, acc_reward: 2906.02
+23:47:50,511 root INFO timestep: 946000, acc_reward: 2907.57
+23:47:57,466 root INFO timestep: 947000, acc_reward: 2903.18
+23:48:04,20 root INFO timestep: 948000, acc_reward: 2905.07
+23:48:10,647 root INFO timestep: 949000, acc_reward: 2907.00
+23:48:17,367 root INFO timestep: 950000, acc_reward: 2903.36
+23:48:23,944 root INFO timestep: 951000, acc_reward: 2904.07
+23:48:30,768 root INFO timestep: 952000, acc_reward: 2908.03
+23:48:30,771 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_2908.026.pth.tar
+23:48:36,985 root INFO timestep: 953000, acc_reward: 2907.55
+23:48:43,774 root INFO timestep: 954000, acc_reward: 2906.23
+23:48:50,611 root INFO timestep: 955000, acc_reward: 2904.41
+23:48:57,419 root INFO timestep: 956000, acc_reward: 2903.57
+23:49:04,326 root INFO timestep: 957000, acc_reward: 2905.51
+23:49:11,575 root INFO timestep: 958000, acc_reward: 2903.16
+23:49:19,225 root INFO timestep: 959000, acc_reward: 2902.74
+23:49:53,264 root INFO Timestep: 959150
+23:49:53,264 root INFO Current episode: 6250
+23:49:53,264 root INFO Alpha: 0.2
+23:50:00,194 root INFO timestep: 960000, acc_reward: 2731.08
+23:50:07,301 root INFO timestep: 961000, acc_reward: 2774.86
+23:50:14,710 root INFO timestep: 962000, acc_reward: 2875.77
+23:50:21,385 root INFO timestep: 963000, acc_reward: 2817.67
+23:50:28,628 root INFO timestep: 964000, acc_reward: 2937.51
+23:50:28,633 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_2937.511.pth.tar
+23:50:35,796 root INFO timestep: 965000, acc_reward: 2953.02
+23:50:35,802 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_2953.023.pth.tar
+23:50:42,190 root INFO timestep: 966000, acc_reward: 2796.83
+23:50:49,45 root INFO timestep: 967000, acc_reward: 2937.69
+23:50:55,646 root INFO timestep: 968000, acc_reward: 2878.32
+23:51:02,235 root INFO timestep: 969000, acc_reward: 2854.92
+23:51:08,184 root INFO timestep: 970000, acc_reward: 2715.33
+23:51:14,806 root INFO timestep: 971000, acc_reward: 2933.42
+23:51:21,21 root INFO timestep: 972000, acc_reward: 2875.86
+23:51:26,988 root INFO timestep: 973000, acc_reward: 2766.57
+23:51:33,365 root INFO timestep: 974000, acc_reward: 2954.84
+23:51:33,370 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_2954.841.pth.tar
+23:51:39,92 root INFO timestep: 975000, acc_reward: 2795.85
+23:51:45,202 root INFO timestep: 976000, acc_reward: 2873.26
+23:51:51,353 root INFO timestep: 977000, acc_reward: 2881.26
+23:51:57,808 root INFO timestep: 978000, acc_reward: 2871.87
+23:52:04,350 root INFO timestep: 979000, acc_reward: 2877.16
+23:52:10,819 root INFO timestep: 980000, acc_reward: 2858.89
+23:52:18,183 root INFO timestep: 981000, acc_reward: 2942.56
+23:52:52,511 root INFO Timestep: 981668
+23:52:52,511 root INFO Current episode: 6300
+23:52:52,511 root INFO Alpha: 0.2
+23:52:54,464 root INFO timestep: 982000, acc_reward: 848.13
+23:52:56,714 root INFO timestep: 983000, acc_reward: 835.27
+23:52:58,969 root INFO timestep: 984000, acc_reward: 845.27
+23:53:01,269 root INFO timestep: 985000, acc_reward: 841.52
+23:53:03,533 root INFO timestep: 986000, acc_reward: 844.94
+23:53:05,840 root INFO timestep: 987000, acc_reward: 843.26
+23:53:08,179 root INFO timestep: 988000, acc_reward: 849.18
+23:53:10,471 root INFO timestep: 989000, acc_reward: 841.20
+23:53:12,736 root INFO timestep: 990000, acc_reward: 844.49
+23:53:14,778 root INFO timestep: 991000, acc_reward: 842.34
+23:53:16,955 root INFO timestep: 992000, acc_reward: 843.60
+23:53:19,281 root INFO timestep: 993000, acc_reward: 847.60
+23:53:54,88 root INFO Timestep: 993667
+23:53:54,89 root INFO Current episode: 6350
+23:53:54,89 root INFO Alpha: 0.2
+23:53:55,733 root INFO timestep: 994000, acc_reward: 674.24
+23:53:57,498 root INFO timestep: 995000, acc_reward: 674.08
+23:53:59,280 root INFO timestep: 996000, acc_reward: 672.87
+23:54:01,117 root INFO timestep: 997000, acc_reward: 673.53
+23:54:03,63 root INFO timestep: 998000, acc_reward: 674.76
+23:54:04,986 root INFO timestep: 999000, acc_reward: 673.69
+23:54:06,885 root INFO timestep: 1000000, acc_reward: 674.64
+23:54:08,838 root INFO timestep: 1001000, acc_reward: 673.59
+23:54:10,760 root INFO timestep: 1002000, acc_reward: 674.62
+23:54:12,651 root INFO timestep: 1003000, acc_reward: 674.58
+23:54:14,500 root INFO timestep: 1004000, acc_reward: 673.78
+23:54:48,184 root INFO Timestep: 1004217
+23:54:48,184 root INFO Current episode: 6400
+23:54:48,184 root INFO Alpha: 0.2
+23:54:49,935 root INFO timestep: 1005000, acc_reward: 593.15
+23:54:51,615 root INFO timestep: 1006000, acc_reward: 592.35
+23:54:53,311 root INFO timestep: 1007000, acc_reward: 591.86
+23:54:55,87 root INFO timestep: 1008000, acc_reward: 593.52
+23:54:56,949 root INFO timestep: 1009000, acc_reward: 591.91
+23:54:58,896 root INFO timestep: 1010000, acc_reward: 593.34
+23:55:00,807 root INFO timestep: 1011000, acc_reward: 592.86
+23:55:02,683 root INFO timestep: 1012000, acc_reward: 592.46
+23:55:04,566 root INFO timestep: 1013000, acc_reward: 592.30
+23:55:37,811 root INFO Timestep: 1013748
+23:55:37,811 root INFO Current episode: 6450
+23:55:37,811 root INFO Alpha: 0.2
+23:55:39,512 root INFO timestep: 1014000, acc_reward: 676.67
+23:55:41,493 root INFO timestep: 1015000, acc_reward: 676.90
+23:55:43,577 root INFO timestep: 1016000, acc_reward: 678.42
+23:55:45,733 root INFO timestep: 1017000, acc_reward: 678.83
+23:55:47,700 root INFO timestep: 1018000, acc_reward: 677.36
+23:55:49,796 root INFO timestep: 1019000, acc_reward: 677.33
+23:55:51,848 root INFO timestep: 1020000, acc_reward: 678.04
+23:55:53,852 root INFO timestep: 1021000, acc_reward: 678.37
+23:55:55,869 root INFO timestep: 1022000, acc_reward: 678.47
+23:55:57,857 root INFO timestep: 1023000, acc_reward: 677.99
+23:55:59,889 root INFO timestep: 1024000, acc_reward: 676.33
+23:56:33,130 root INFO Timestep: 1024601
+23:56:33,131 root INFO Current episode: 6500
+23:56:33,131 root INFO Alpha: 0.2
+23:56:34,780 root INFO timestep: 1025000, acc_reward: 685.54
+23:56:36,487 root INFO timestep: 1026000, acc_reward: 688.34
+23:56:38,156 root INFO timestep: 1027000, acc_reward: 687.02
+23:56:39,971 root INFO timestep: 1028000, acc_reward: 688.08
+23:56:41,812 root INFO timestep: 1029000, acc_reward: 688.00
+23:56:43,601 root INFO timestep: 1030000, acc_reward: 687.93
+23:56:45,482 root INFO timestep: 1031000, acc_reward: 686.72
+23:56:47,123 root INFO timestep: 1032000, acc_reward: 688.69
+23:56:48,919 root INFO timestep: 1033000, acc_reward: 687.19
+23:56:50,773 root INFO timestep: 1034000, acc_reward: 687.05
+23:56:52,564 root INFO timestep: 1035000, acc_reward: 688.58
+23:56:54,439 root INFO timestep: 1036000, acc_reward: 684.52
+23:57:25,532 root INFO Timestep: 1036606
+23:57:25,532 root INFO Current episode: 6550
+23:57:25,532 root INFO Alpha: 0.2
+23:57:27,530 root INFO timestep: 1037000, acc_reward: 951.10
+23:57:29,822 root INFO timestep: 1038000, acc_reward: 955.98
+23:57:32,131 root INFO timestep: 1039000, acc_reward: 951.74
+23:57:34,578 root INFO timestep: 1040000, acc_reward: 960.79
+23:57:36,947 root INFO timestep: 1041000, acc_reward: 950.96
+23:57:39,315 root INFO timestep: 1042000, acc_reward: 951.61
+23:57:41,784 root INFO timestep: 1043000, acc_reward: 950.17
+23:57:44,325 root INFO timestep: 1044000, acc_reward: 956.25
+23:57:46,820 root INFO timestep: 1045000, acc_reward: 935.19
+23:57:49,353 root INFO timestep: 1046000, acc_reward: 946.27
+23:57:51,672 root INFO timestep: 1047000, acc_reward: 951.13
+23:57:54,172 root INFO timestep: 1048000, acc_reward: 954.09
+23:57:56,737 root INFO timestep: 1049000, acc_reward: 951.29
+23:57:59,183 root INFO timestep: 1050000, acc_reward: 951.10
+23:58:01,786 root INFO timestep: 1051000, acc_reward: 946.76
+23:58:04,320 root INFO timestep: 1052000, acc_reward: 938.42
+23:58:06,911 root INFO timestep: 1053000, acc_reward: 944.39
+23:58:09,383 root INFO timestep: 1054000, acc_reward: 943.96
+23:58:11,659 root INFO timestep: 1055000, acc_reward: 953.17
+23:58:14,111 root INFO timestep: 1056000, acc_reward: 950.65
+23:58:16,695 root INFO timestep: 1057000, acc_reward: 945.59
+23:58:19,201 root INFO timestep: 1058000, acc_reward: 955.91
+23:58:21,694 root INFO timestep: 1059000, acc_reward: 954.14
+23:58:57,867 root INFO Timestep: 1059984
+23:58:57,867 root INFO Current episode: 6600
+23:58:57,867 root INFO Alpha: 0.2
+23:59:00,134 root INFO timestep: 1060000, acc_reward: 990.96
+23:59:02,842 root INFO timestep: 1061000, acc_reward: 990.12
+23:59:05,334 root INFO timestep: 1062000, acc_reward: 991.27
+23:59:07,709 root INFO timestep: 1063000, acc_reward: 990.41
+23:59:10,290 root INFO timestep: 1064000, acc_reward: 990.33
+23:59:12,916 root INFO timestep: 1065000, acc_reward: 990.82
+23:59:15,502 root INFO timestep: 1066000, acc_reward: 989.12
+23:59:18,155 root INFO timestep: 1067000, acc_reward: 991.50
+23:59:20,809 root INFO timestep: 1068000, acc_reward: 991.99
+23:59:23,309 root INFO timestep: 1069000, acc_reward: 989.32
+23:59:26,189 root INFO timestep: 1070000, acc_reward: 989.28
+23:59:29,156 root INFO timestep: 1071000, acc_reward: 989.80
+23:59:31,657 root INFO timestep: 1072000, acc_reward: 989.00
+23:59:34,113 root INFO timestep: 1073000, acc_reward: 989.39
+23:59:36,367 root INFO timestep: 1074000, acc_reward: 989.06
+23:59:38,510 root INFO timestep: 1075000, acc_reward: 988.86
+23:59:40,785 root INFO timestep: 1076000, acc_reward: 989.42
+00:00:15,528 root INFO Timestep: 1076984
+00:00:15,528 root INFO Current episode: 6650
+00:00:15,528 root INFO Alpha: 0.2
+00:00:17,60 root INFO timestep: 1077000, acc_reward: 728.80
+00:00:19,86 root INFO timestep: 1078000, acc_reward: 730.36
+00:00:21,85 root INFO timestep: 1079000, acc_reward: 729.14
+00:00:23,214 root INFO timestep: 1080000, acc_reward: 728.83
+00:00:25,414 root INFO timestep: 1081000, acc_reward: 728.53
+00:00:27,567 root INFO timestep: 1082000, acc_reward: 729.57
+00:00:29,771 root INFO timestep: 1083000, acc_reward: 727.66
+00:00:31,987 root INFO timestep: 1084000, acc_reward: 728.90
+00:00:34,172 root INFO timestep: 1085000, acc_reward: 727.54
+00:00:36,155 root INFO timestep: 1086000, acc_reward: 728.93
+00:00:38,189 root INFO timestep: 1087000, acc_reward: 728.53
+00:00:40,243 root INFO timestep: 1088000, acc_reward: 728.72
+00:00:42,310 root INFO timestep: 1089000, acc_reward: 729.22
+00:00:44,504 root INFO timestep: 1090000, acc_reward: 728.76
+00:00:46,410 root INFO timestep: 1091000, acc_reward: 727.18
+00:00:48,228 root INFO timestep: 1092000, acc_reward: 729.32
+00:01:24,542 root INFO Timestep: 1092419
+00:01:24,542 root INFO Current episode: 6700
+00:01:24,542 root INFO Alpha: 0.2
+00:01:27,116 root INFO timestep: 1093000, acc_reward: 1095.31
+00:01:29,867 root INFO timestep: 1094000, acc_reward: 1104.75
+00:01:32,481 root INFO timestep: 1095000, acc_reward: 1095.13
+00:01:34,852 root INFO timestep: 1096000, acc_reward: 1086.07
+00:01:37,278 root INFO timestep: 1097000, acc_reward: 1102.08
+00:01:39,919 root INFO timestep: 1098000, acc_reward: 1098.69
+00:01:42,604 root INFO timestep: 1099000, acc_reward: 1096.63
+00:01:45,266 root INFO timestep: 1100000, acc_reward: 1100.28
+00:01:47,972 root INFO timestep: 1101000, acc_reward: 1099.77
+00:01:50,610 root INFO timestep: 1102000, acc_reward: 1105.67
+00:01:53,196 root INFO timestep: 1103000, acc_reward: 1104.19
+00:01:55,877 root INFO timestep: 1104000, acc_reward: 1111.55
+00:01:58,497 root INFO timestep: 1105000, acc_reward: 1094.53
+00:02:00,994 root INFO timestep: 1106000, acc_reward: 1085.23
+00:02:03,438 root INFO timestep: 1107000, acc_reward: 1112.49
+00:02:38,695 root INFO Timestep: 1107678
+00:02:38,695 root INFO Current episode: 6750
+00:02:38,695 root INFO Alpha: 0.2
+00:02:40,850 root INFO timestep: 1108000, acc_reward: 964.51
+00:02:43,377 root INFO timestep: 1109000, acc_reward: 964.51
+00:02:46,140 root INFO timestep: 1110000, acc_reward: 961.74
+00:02:48,861 root INFO timestep: 1111000, acc_reward: 955.42
+00:02:51,622 root INFO timestep: 1112000, acc_reward: 971.56
+00:02:54,351 root INFO timestep: 1113000, acc_reward: 961.49
+00:02:57,45 root INFO timestep: 1114000, acc_reward: 957.68
+00:02:59,572 root INFO timestep: 1115000, acc_reward: 963.43
+00:03:01,977 root INFO timestep: 1116000, acc_reward: 964.48
+00:03:04,506 root INFO timestep: 1117000, acc_reward: 963.12
+00:03:07,100 root INFO timestep: 1118000, acc_reward: 969.17
+00:03:09,642 root INFO timestep: 1119000, acc_reward: 962.29
+00:03:12,237 root INFO timestep: 1120000, acc_reward: 966.96
+00:03:14,831 root INFO timestep: 1121000, acc_reward: 965.14
+00:03:17,347 root INFO timestep: 1122000, acc_reward: 965.98
+00:03:19,943 root INFO timestep: 1123000, acc_reward: 972.54
+00:04:09,309 root INFO Timestep: 1123860
+00:04:09,310 root INFO Current episode: 6800
+00:04:09,310 root INFO Alpha: 0.2
+00:04:17,820 root INFO timestep: 1124000, acc_reward: 3022.86
+00:04:17,827 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_3022.858.pth.tar
+00:04:27,101 root INFO timestep: 1125000, acc_reward: 3022.91
+00:04:27,108 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_3022.906.pth.tar
+00:04:35,540 root INFO timestep: 1126000, acc_reward: 3022.69
+00:04:43,316 root INFO timestep: 1127000, acc_reward: 3021.28
+00:04:50,760 root INFO timestep: 1128000, acc_reward: 3022.05
+00:04:57,730 root INFO timestep: 1129000, acc_reward: 3022.50
+00:05:05,266 root INFO timestep: 1130000, acc_reward: 3022.21
+00:05:12,683 root INFO timestep: 1131000, acc_reward: 3021.11
+00:05:19,398 root INFO timestep: 1132000, acc_reward: 3022.84
+00:05:26,755 root INFO timestep: 1133000, acc_reward: 3019.26
+00:05:33,761 root INFO timestep: 1134000, acc_reward: 3019.20
+00:05:40,714 root INFO timestep: 1135000, acc_reward: 3022.78
+00:05:47,106 root INFO timestep: 1136000, acc_reward: 3022.25
+00:05:53,939 root INFO timestep: 1137000, acc_reward: 3022.29
+00:06:00,650 root INFO timestep: 1138000, acc_reward: 3020.55
+00:06:06,660 root INFO timestep: 1139000, acc_reward: 3020.47
+00:06:13,188 root INFO timestep: 1140000, acc_reward: 3022.88
+00:06:19,590 root INFO timestep: 1141000, acc_reward: 3022.12
+00:06:25,462 root INFO timestep: 1142000, acc_reward: 3021.41
+00:06:31,733 root INFO timestep: 1143000, acc_reward: 3019.79
+00:07:07,251 root INFO Timestep: 1143752
+00:07:07,251 root INFO Current episode: 6850
+00:07:07,252 root INFO Alpha: 0.2
+00:07:13,714 root INFO timestep: 1144000, acc_reward: 2820.39
+00:07:21,86 root INFO timestep: 1145000, acc_reward: 2820.08
+00:07:28,642 root INFO timestep: 1146000, acc_reward: 2821.10
+00:07:36,131 root INFO timestep: 1147000, acc_reward: 2819.35
+00:07:44,219 root INFO timestep: 1148000, acc_reward: 2820.36
+00:07:51,725 root INFO timestep: 1149000, acc_reward: 2820.00
+00:07:59,156 root INFO timestep: 1150000, acc_reward: 2820.40
+00:08:06,130 root INFO timestep: 1151000, acc_reward: 2820.68
+00:08:13,529 root INFO timestep: 1152000, acc_reward: 2819.83
+00:08:20,900 root INFO timestep: 1153000, acc_reward: 2820.83
+00:08:28,30 root INFO timestep: 1154000, acc_reward: 2819.62
+00:08:34,626 root INFO timestep: 1155000, acc_reward: 2819.83
+00:08:41,404 root INFO timestep: 1156000, acc_reward: 2821.11
+00:08:47,712 root INFO timestep: 1157000, acc_reward: 2820.91
+00:08:54,355 root INFO timestep: 1158000, acc_reward: 2820.47
+00:09:00,676 root INFO timestep: 1159000, acc_reward: 2820.34
+00:09:07,43 root INFO timestep: 1160000, acc_reward: 2819.55
+00:09:13,402 root INFO timestep: 1161000, acc_reward: 2820.09
+00:09:19,784 root INFO timestep: 1162000, acc_reward: 2819.80
+00:09:26,460 root INFO timestep: 1163000, acc_reward: 2819.01
+00:09:33,406 root INFO timestep: 1164000, acc_reward: 2820.85
+00:09:39,777 root INFO timestep: 1165000, acc_reward: 2820.67
+00:09:46,661 root INFO timestep: 1166000, acc_reward: 2820.48
+00:09:53,669 root INFO timestep: 1167000, acc_reward: 2820.86
+00:10:00,525 root INFO timestep: 1168000, acc_reward: 2820.65
+00:10:08,107 root INFO timestep: 1169000, acc_reward: 2820.27
+00:10:15,591 root INFO timestep: 1170000, acc_reward: 2820.18
+00:10:22,762 root INFO timestep: 1171000, acc_reward: 2819.58
+00:10:30,261 root INFO timestep: 1172000, acc_reward: 2820.19
+00:10:37,609 root INFO timestep: 1173000, acc_reward: 2819.46
+00:10:44,48 root INFO timestep: 1174000, acc_reward: 2819.76
+00:10:51,74 root INFO timestep: 1175000, acc_reward: 2820.24
+00:10:57,776 root INFO timestep: 1176000, acc_reward: 2819.62
+00:11:04,721 root INFO timestep: 1177000, acc_reward: 2820.07
+00:11:11,428 root INFO timestep: 1178000, acc_reward: 2821.50
+00:11:17,589 root INFO timestep: 1179000, acc_reward: 2820.90
+00:11:24,136 root INFO timestep: 1180000, acc_reward: 2819.69
+00:11:30,36 root INFO timestep: 1181000, acc_reward: 2821.13
+00:11:36,453 root INFO timestep: 1182000, acc_reward: 2821.35
+00:11:42,837 root INFO timestep: 1183000, acc_reward: 2820.56
+00:11:48,887 root INFO timestep: 1184000, acc_reward: 2820.44
+00:11:55,252 root INFO timestep: 1185000, acc_reward: 2820.67
+00:12:01,754 root INFO timestep: 1186000, acc_reward: 2820.19
+00:12:08,434 root INFO timestep: 1187000, acc_reward: 2820.06
+00:12:15,320 root INFO timestep: 1188000, acc_reward: 2820.88
+00:12:22,267 root INFO timestep: 1189000, acc_reward: 2821.12
+00:12:29,778 root INFO timestep: 1190000, acc_reward: 2820.22
+00:12:37,236 root INFO timestep: 1191000, acc_reward: 2819.99
+00:12:43,947 root INFO timestep: 1192000, acc_reward: 2820.62
+00:12:51,368 root INFO timestep: 1193000, acc_reward: 2820.14
+00:13:32,668 root INFO Timestep: 1193076
+00:13:32,669 root INFO Current episode: 6900
+00:13:32,669 root INFO Alpha: 0.2
+00:13:39,715 root INFO timestep: 1194000, acc_reward: 2914.59
+00:13:47,196 root INFO timestep: 1195000, acc_reward: 2913.59
+00:13:54,573 root INFO timestep: 1196000, acc_reward: 2915.00
+00:14:01,675 root INFO timestep: 1197000, acc_reward: 2914.45
+00:14:08,855 root INFO timestep: 1198000, acc_reward: 2914.65
+00:14:15,751 root INFO timestep: 1199000, acc_reward: 2914.36
+00:14:22,287 root INFO timestep: 1200000, acc_reward: 2914.08
+00:14:29,1 root INFO timestep: 1201000, acc_reward: 2914.87
+00:14:35,199 root INFO timestep: 1202000, acc_reward: 2914.44
+00:14:41,849 root INFO timestep: 1203000, acc_reward: 2914.34
+00:14:48,542 root INFO timestep: 1204000, acc_reward: 2915.11
+00:14:54,900 root INFO timestep: 1205000, acc_reward: 2913.84
+00:15:01,356 root INFO timestep: 1206000, acc_reward: 2914.20
+00:15:07,782 root INFO timestep: 1207000, acc_reward: 2914.80
+00:15:14,55 root INFO timestep: 1208000, acc_reward: 2914.77
+00:15:20,148 root INFO timestep: 1209000, acc_reward: 2914.55
+00:15:26,508 root INFO timestep: 1210000, acc_reward: 2913.94
+00:15:33,16 root INFO timestep: 1211000, acc_reward: 2915.06
+00:15:39,718 root INFO timestep: 1212000, acc_reward: 2913.64
+00:15:46,373 root INFO timestep: 1213000, acc_reward: 2915.71
+00:15:53,644 root INFO timestep: 1214000, acc_reward: 2914.96
+00:16:00,808 root INFO timestep: 1215000, acc_reward: 2914.30
+00:16:08,57 root INFO timestep: 1216000, acc_reward: 2914.14
+00:16:15,612 root INFO timestep: 1217000, acc_reward: 2914.37
+00:16:22,877 root INFO timestep: 1218000, acc_reward: 2914.11
+00:16:29,932 root INFO timestep: 1219000, acc_reward: 2914.90
+00:16:37,262 root INFO timestep: 1220000, acc_reward: 2914.03
+00:16:44,680 root INFO timestep: 1221000, acc_reward: 2914.49
+00:16:51,363 root INFO timestep: 1222000, acc_reward: 2914.46
+00:16:58,358 root INFO timestep: 1223000, acc_reward: 2914.58
+00:17:04,716 root INFO timestep: 1224000, acc_reward: 2914.25
+00:17:42,775 root INFO Timestep: 1224793
+00:17:42,775 root INFO Current episode: 6950
+00:17:42,775 root INFO Alpha: 0.2
+00:17:49,228 root INFO timestep: 1225000, acc_reward: 3002.66
+00:17:56,0 root INFO timestep: 1226000, acc_reward: 3002.41
+00:18:03,90 root INFO timestep: 1227000, acc_reward: 3002.81
+00:18:10,428 root INFO timestep: 1228000, acc_reward: 3003.82
+00:18:17,393 root INFO timestep: 1229000, acc_reward: 3003.13
+00:18:24,861 root INFO timestep: 1230000, acc_reward: 3002.99
+00:18:31,852 root INFO timestep: 1231000, acc_reward: 3002.54
+00:18:39,137 root INFO timestep: 1232000, acc_reward: 3003.11
+00:18:45,681 root INFO timestep: 1233000, acc_reward: 3002.93
+00:18:53,4 root INFO timestep: 1234000, acc_reward: 3002.11
+00:18:59,987 root INFO timestep: 1235000, acc_reward: 3002.50
+00:19:06,685 root INFO timestep: 1236000, acc_reward: 3002.86
+00:19:13,434 root INFO timestep: 1237000, acc_reward: 3002.13
+00:19:19,453 root INFO timestep: 1238000, acc_reward: 3003.28
+00:19:26,315 root INFO timestep: 1239000, acc_reward: 3002.24
+00:19:32,810 root INFO timestep: 1240000, acc_reward: 3003.17
+00:19:39,199 root INFO timestep: 1241000, acc_reward: 3003.20
+00:19:45,812 root INFO timestep: 1242000, acc_reward: 3002.64
+00:19:52,392 root INFO timestep: 1243000, acc_reward: 3003.10
+00:19:58,968 root INFO timestep: 1244000, acc_reward: 3003.44
+00:20:06,50 root INFO timestep: 1245000, acc_reward: 3002.67
+00:20:13,476 root INFO timestep: 1246000, acc_reward: 3003.04
+00:20:20,341 root INFO timestep: 1247000, acc_reward: 3003.07
+00:20:27,687 root INFO timestep: 1248000, acc_reward: 3002.75
+00:20:34,815 root INFO timestep: 1249000, acc_reward: 3002.80
+00:20:42,132 root INFO timestep: 1250000, acc_reward: 3002.79
+00:20:49,286 root INFO timestep: 1251000, acc_reward: 3002.14
+00:20:56,265 root INFO timestep: 1252000, acc_reward: 3002.41
+00:21:03,670 root INFO timestep: 1253000, acc_reward: 3002.37
+00:21:10,751 root INFO timestep: 1254000, acc_reward: 3002.73
+00:21:17,100 root INFO timestep: 1255000, acc_reward: 3003.03
+00:21:24,39 root INFO timestep: 1256000, acc_reward: 3002.57
+00:21:30,864 root INFO timestep: 1257000, acc_reward: 3003.03
+00:21:37,414 root INFO timestep: 1258000, acc_reward: 3002.31
+00:21:43,601 root INFO timestep: 1259000, acc_reward: 3003.23
+00:21:50,206 root INFO timestep: 1260000, acc_reward: 3003.14
+00:21:56,140 root INFO timestep: 1261000, acc_reward: 3002.76
+00:22:02,504 root INFO timestep: 1262000, acc_reward: 3002.31
+00:22:08,546 root INFO timestep: 1263000, acc_reward: 3002.01
+00:22:15,52 root INFO timestep: 1264000, acc_reward: 3002.83
+00:22:21,141 root INFO timestep: 1265000, acc_reward: 3002.77
+00:22:27,720 root INFO timestep: 1266000, acc_reward: 3002.76
+00:22:34,647 root INFO timestep: 1267000, acc_reward: 3002.71
+00:22:41,736 root INFO timestep: 1268000, acc_reward: 3002.52
+00:22:48,476 root INFO timestep: 1269000, acc_reward: 3003.41
+00:22:56,19 root INFO timestep: 1270000, acc_reward: 3003.20
+00:23:37,877 root INFO Timestep: 1270475
+00:23:37,877 root INFO Current episode: 7000
+00:23:37,877 root INFO Alpha: 0.2
+00:23:39,817 root INFO timestep: 1271000, acc_reward: 872.23
+00:23:42,68 root INFO timestep: 1272000, acc_reward: 878.95
+00:23:44,460 root INFO timestep: 1273000, acc_reward: 880.13
+00:23:46,889 root INFO timestep: 1274000, acc_reward: 878.66
+00:23:49,333 root INFO timestep: 1275000, acc_reward: 871.36
+00:23:51,571 root INFO timestep: 1276000, acc_reward: 878.12
+00:23:53,697 root INFO timestep: 1277000, acc_reward: 875.89
+00:23:55,817 root INFO timestep: 1278000, acc_reward: 877.12
+00:23:58,27 root INFO timestep: 1279000, acc_reward: 878.55
+00:24:00,464 root INFO timestep: 1280000, acc_reward: 876.43
+00:24:02,908 root INFO timestep: 1281000, acc_reward: 876.08
+00:24:05,291 root INFO timestep: 1282000, acc_reward: 872.65
+00:24:07,531 root INFO timestep: 1283000, acc_reward: 879.00
+00:24:51,36 root INFO Timestep: 1283190
+00:24:51,36 root INFO Current episode: 7050
+00:24:51,37 root INFO Alpha: 0.2
+00:24:53,974 root INFO timestep: 1284000, acc_reward: 1211.49
+00:24:56,558 root INFO timestep: 1285000, acc_reward: 1200.58
+00:24:59,205 root INFO timestep: 1286000, acc_reward: 1199.84
+00:25:02,45 root INFO timestep: 1287000, acc_reward: 1208.90
+00:25:05,94 root INFO timestep: 1288000, acc_reward: 1216.78
+00:25:08,25 root INFO timestep: 1289000, acc_reward: 1178.47
+00:25:10,953 root INFO timestep: 1290000, acc_reward: 1200.37
+00:25:13,890 root INFO timestep: 1291000, acc_reward: 1213.24
+00:25:16,728 root INFO timestep: 1292000, acc_reward: 1208.36
+00:25:19,635 root INFO timestep: 1293000, acc_reward: 1183.32
+00:25:22,209 root INFO timestep: 1294000, acc_reward: 1195.99
+00:25:24,751 root INFO timestep: 1295000, acc_reward: 1201.91
+00:25:27,449 root INFO timestep: 1296000, acc_reward: 1190.04
+00:25:30,162 root INFO timestep: 1297000, acc_reward: 1184.08
+00:25:32,951 root INFO timestep: 1298000, acc_reward: 1185.97
+00:26:15,627 root INFO Timestep: 1298551
+00:26:15,628 root INFO Current episode: 7100
+00:26:15,628 root INFO Alpha: 0.2
+00:26:22,232 root INFO timestep: 1299000, acc_reward: 3007.23
+00:26:28,818 root INFO timestep: 1300000, acc_reward: 3007.47
+00:26:36,197 root INFO timestep: 1301000, acc_reward: 3007.33
+00:26:43,228 root INFO timestep: 1302000, acc_reward: 3007.26
+00:26:50,914 root INFO timestep: 1303000, acc_reward: 3007.59
+00:26:57,791 root INFO timestep: 1304000, acc_reward: 3007.57
+00:27:05,288 root INFO timestep: 1305000, acc_reward: 3008.07
+00:27:12,403 root INFO timestep: 1306000, acc_reward: 3006.53
+00:27:19,831 root INFO timestep: 1307000, acc_reward: 3007.83
+00:27:26,494 root INFO timestep: 1308000, acc_reward: 3006.51
+00:27:33,407 root INFO timestep: 1309000, acc_reward: 3007.20
+00:27:40,171 root INFO timestep: 1310000, acc_reward: 3008.35
+00:27:46,624 root INFO timestep: 1311000, acc_reward: 3008.25
+00:27:53,486 root INFO timestep: 1312000, acc_reward: 3008.08
+00:28:00,242 root INFO timestep: 1313000, acc_reward: 3006.11
+00:28:06,393 root INFO timestep: 1314000, acc_reward: 3007.31
+00:28:12,815 root INFO timestep: 1315000, acc_reward: 3007.06
+00:28:18,986 root INFO timestep: 1316000, acc_reward: 3008.67
+00:28:25,67 root INFO timestep: 1317000, acc_reward: 3007.47
+00:28:31,411 root INFO timestep: 1318000, acc_reward: 3007.31
+00:28:37,203 root INFO timestep: 1319000, acc_reward: 3007.38
+00:28:43,402 root INFO timestep: 1320000, acc_reward: 3008.69
+00:28:49,337 root INFO timestep: 1321000, acc_reward: 3006.89
+00:28:55,682 root INFO timestep: 1322000, acc_reward: 3008.29
+00:29:02,115 root INFO timestep: 1323000, acc_reward: 3007.38
+00:29:08,412 root INFO timestep: 1324000, acc_reward: 3006.81
+00:29:15,371 root INFO timestep: 1325000, acc_reward: 3007.47
+00:29:21,903 root INFO timestep: 1326000, acc_reward: 3007.06
+00:29:29,515 root INFO timestep: 1327000, acc_reward: 3007.26
+00:29:36,522 root INFO timestep: 1328000, acc_reward: 3007.14
+00:29:43,801 root INFO timestep: 1329000, acc_reward: 3007.17
+00:29:51,102 root INFO timestep: 1330000, acc_reward: 3007.42
+00:29:58,10 root INFO timestep: 1331000, acc_reward: 3006.81
+00:30:05,687 root INFO timestep: 1332000, acc_reward: 3007.19
+00:30:12,439 root INFO timestep: 1333000, acc_reward: 3008.62
+00:30:19,963 root INFO timestep: 1334000, acc_reward: 3008.03
+00:30:26,797 root INFO timestep: 1335000, acc_reward: 3007.12
+00:30:33,826 root INFO timestep: 1336000, acc_reward: 3007.03
+00:30:40,594 root INFO timestep: 1337000, acc_reward: 3007.44
+00:30:47,10 root INFO timestep: 1338000, acc_reward: 3008.56
+00:30:53,864 root INFO timestep: 1339000, acc_reward: 3006.61
+00:30:59,946 root INFO timestep: 1340000, acc_reward: 3007.18
+00:31:06,644 root INFO timestep: 1341000, acc_reward: 3007.54
+00:31:12,919 root INFO timestep: 1342000, acc_reward: 3007.43
+00:31:19,161 root INFO timestep: 1343000, acc_reward: 3008.21
+00:31:25,402 root INFO timestep: 1344000, acc_reward: 3006.13
+00:31:31,404 root INFO timestep: 1345000, acc_reward: 3006.93
+00:31:37,722 root INFO timestep: 1346000, acc_reward: 3006.94
+00:32:19,493 root INFO Timestep: 1346322
+00:32:19,493 root INFO Current episode: 7150
+00:32:19,493 root INFO Alpha: 0.2
+00:32:23,205 root INFO timestep: 1347000, acc_reward: 1741.61
+00:32:26,983 root INFO timestep: 1348000, acc_reward: 1710.45
+00:32:30,423 root INFO timestep: 1349000, acc_reward: 1718.48
+00:32:34,172 root INFO timestep: 1350000, acc_reward: 1703.10
+00:32:38,220 root INFO timestep: 1351000, acc_reward: 1709.31
+00:32:42,307 root INFO timestep: 1352000, acc_reward: 1771.66
+00:32:46,394 root INFO timestep: 1353000, acc_reward: 1686.59
+00:32:50,511 root INFO timestep: 1354000, acc_reward: 1757.60
+00:32:54,619 root INFO timestep: 1355000, acc_reward: 1704.87
+00:32:58,730 root INFO timestep: 1356000, acc_reward: 1753.86
+00:33:02,613 root INFO timestep: 1357000, acc_reward: 1707.75
+00:33:06,171 root INFO timestep: 1358000, acc_reward: 1722.58
+00:33:10,62 root INFO timestep: 1359000, acc_reward: 1722.29
+00:33:14,130 root INFO timestep: 1360000, acc_reward: 1720.21
+00:33:18,132 root INFO timestep: 1361000, acc_reward: 1725.28
+00:33:21,693 root INFO timestep: 1362000, acc_reward: 1708.99
+00:33:25,375 root INFO timestep: 1363000, acc_reward: 1739.66
+00:33:31,207 root INFO timestep: 1364000, acc_reward: 1737.91
+00:33:35,429 root INFO timestep: 1365000, acc_reward: 1792.91
+00:33:39,461 root INFO timestep: 1366000, acc_reward: 1701.87
+00:33:43,68 root INFO timestep: 1367000, acc_reward: 1721.12
+00:34:33,946 root INFO Timestep: 1367423
+00:34:33,946 root INFO Current episode: 7200
+00:34:33,946 root INFO Alpha: 0.2
+00:34:40,741 root INFO timestep: 1368000, acc_reward: 3006.00
+00:34:47,929 root INFO timestep: 1369000, acc_reward: 3005.76
+00:34:55,106 root INFO timestep: 1370000, acc_reward: 3004.17
+00:35:01,614 root INFO timestep: 1371000, acc_reward: 3003.97
+00:35:08,676 root INFO timestep: 1372000, acc_reward: 3003.76
+00:35:15,41 root INFO timestep: 1373000, acc_reward: 2999.86
+00:35:21,771 root INFO timestep: 1374000, acc_reward: 3004.46
+00:35:28,250 root INFO timestep: 1375000, acc_reward: 3001.90
+00:35:34,488 root INFO timestep: 1376000, acc_reward: 3004.24
+00:35:41,25 root INFO timestep: 1377000, acc_reward: 3003.57
+00:35:46,993 root INFO timestep: 1378000, acc_reward: 3003.32
+00:35:53,452 root INFO timestep: 1379000, acc_reward: 3006.69
+00:35:59,585 root INFO timestep: 1380000, acc_reward: 3001.72
+00:36:05,623 root INFO timestep: 1381000, acc_reward: 3005.15
+00:36:11,879 root INFO timestep: 1382000, acc_reward: 3002.53
+00:36:17,618 root INFO timestep: 1383000, acc_reward: 3001.55
+00:36:23,985 root INFO timestep: 1384000, acc_reward: 3005.35
+00:36:30,108 root INFO timestep: 1385000, acc_reward: 3001.74
+00:36:36,320 root INFO timestep: 1386000, acc_reward: 3004.40
+00:36:43,12 root INFO timestep: 1387000, acc_reward: 3007.37
+00:36:49,325 root INFO timestep: 1388000, acc_reward: 3001.39
+00:36:56,472 root INFO timestep: 1389000, acc_reward: 3002.01
+00:37:03,344 root INFO timestep: 1390000, acc_reward: 3005.97
+00:37:10,494 root INFO timestep: 1391000, acc_reward: 3005.87
+00:37:17,770 root INFO timestep: 1392000, acc_reward: 3005.15
+00:37:24,541 root INFO timestep: 1393000, acc_reward: 3004.95
+00:37:31,979 root INFO timestep: 1394000, acc_reward: 3006.30
+00:37:38,817 root INFO timestep: 1395000, acc_reward: 3003.06
+00:37:46,199 root INFO timestep: 1396000, acc_reward: 3008.56
+00:37:53,531 root INFO timestep: 1397000, acc_reward: 3003.30
+00:38:00,157 root INFO timestep: 1398000, acc_reward: 3002.80
+00:38:07,408 root INFO timestep: 1399000, acc_reward: 3002.37
+00:38:13,837 root INFO timestep: 1400000, acc_reward: 3005.88
+00:38:20,566 root INFO timestep: 1401000, acc_reward: 3004.24
+00:38:27,176 root INFO timestep: 1402000, acc_reward: 3004.05
+00:38:33,580 root INFO timestep: 1403000, acc_reward: 3006.11
+00:38:40,150 root INFO timestep: 1404000, acc_reward: 3003.62
+00:38:46,259 root INFO timestep: 1405000, acc_reward: 3005.54
+00:38:52,704 root INFO timestep: 1406000, acc_reward: 3005.27
+00:38:58,912 root INFO timestep: 1407000, acc_reward: 3004.46
+00:39:04,890 root INFO timestep: 1408000, acc_reward: 3003.27
+00:39:11,174 root INFO timestep: 1409000, acc_reward: 3007.69
+00:39:56,375 root INFO Timestep: 1409580
+00:39:56,375 root INFO Current episode: 7250
+00:39:56,375 root INFO Alpha: 0.2
+00:40:03,543 root INFO timestep: 1410000, acc_reward: 2966.39
+00:40:10,190 root INFO timestep: 1411000, acc_reward: 2966.19
+00:40:17,714 root INFO timestep: 1412000, acc_reward: 2967.63
+00:40:24,673 root INFO timestep: 1413000, acc_reward: 2965.31
+00:40:31,778 root INFO timestep: 1414000, acc_reward: 2968.34
+00:40:39,203 root INFO timestep: 1415000, acc_reward: 2967.01
+00:40:45,833 root INFO timestep: 1416000, acc_reward: 2966.45
+00:40:53,242 root INFO timestep: 1417000, acc_reward: 2967.34
+00:41:00,408 root INFO timestep: 1418000, acc_reward: 2969.39
+00:41:07,280 root INFO timestep: 1419000, acc_reward: 2966.02
+00:41:14,328 root INFO timestep: 1420000, acc_reward: 2967.61
+00:41:20,588 root INFO timestep: 1421000, acc_reward: 2967.13
+00:41:27,472 root INFO timestep: 1422000, acc_reward: 2967.22
+00:41:33,945 root INFO timestep: 1423000, acc_reward: 2968.08
+00:41:40,243 root INFO timestep: 1424000, acc_reward: 2968.38
+00:41:46,927 root INFO timestep: 1425000, acc_reward: 2966.53
+00:41:52,906 root INFO timestep: 1426000, acc_reward: 2964.83
+00:41:59,403 root INFO timestep: 1427000, acc_reward: 2968.30
+00:42:05,579 root INFO timestep: 1428000, acc_reward: 2968.05
+00:42:11,594 root INFO timestep: 1429000, acc_reward: 2967.84
+00:42:17,923 root INFO timestep: 1430000, acc_reward: 2967.36
+00:42:23,931 root INFO timestep: 1431000, acc_reward: 2966.18
+00:42:30,622 root INFO timestep: 1432000, acc_reward: 2968.75
+00:42:37,344 root INFO timestep: 1433000, acc_reward: 2969.41
+00:42:44,29 root INFO timestep: 1434000, acc_reward: 2968.50
+00:42:51,436 root INFO timestep: 1435000, acc_reward: 2967.84
+00:42:58,126 root INFO timestep: 1436000, acc_reward: 2966.58
+00:43:05,512 root INFO timestep: 1437000, acc_reward: 2966.69
+00:43:12,671 root INFO timestep: 1438000, acc_reward: 2965.95
+00:43:19,635 root INFO timestep: 1439000, acc_reward: 2967.14
+00:43:26,829 root INFO timestep: 1440000, acc_reward: 2966.27
+00:43:33,343 root INFO timestep: 1441000, acc_reward: 2966.14
+00:43:40,167 root INFO timestep: 1442000, acc_reward: 2964.83
+00:43:46,846 root INFO timestep: 1443000, acc_reward: 2966.96
+00:43:53,106 root INFO timestep: 1444000, acc_reward: 2966.66
+00:43:59,832 root INFO timestep: 1445000, acc_reward: 2968.79
+00:44:05,926 root INFO timestep: 1446000, acc_reward: 2967.53
+00:44:12,343 root INFO timestep: 1447000, acc_reward: 2966.50
+00:44:18,653 root INFO timestep: 1448000, acc_reward: 2965.64
+00:44:24,572 root INFO timestep: 1449000, acc_reward: 2966.72
+00:44:31,8 root INFO timestep: 1450000, acc_reward: 2967.34
+00:44:36,912 root INFO timestep: 1451000, acc_reward: 2966.96
+00:44:42,916 root INFO timestep: 1452000, acc_reward: 2966.51
+00:44:49,256 root INFO timestep: 1453000, acc_reward: 2966.83
+00:44:55,195 root INFO timestep: 1454000, acc_reward: 2969.15
+00:45:01,917 root INFO timestep: 1455000, acc_reward: 2964.78
+00:45:08,541 root INFO timestep: 1456000, acc_reward: 2966.87
+00:45:15,345 root INFO timestep: 1457000, acc_reward: 2968.73
+00:46:06,674 root INFO Timestep: 1457576
+00:46:06,674 root INFO Current episode: 7300
+00:46:06,674 root INFO Alpha: 0.2
+00:46:13,842 root INFO timestep: 1458000, acc_reward: 3358.17
+00:46:13,846 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_3358.165.pth.tar
+00:46:20,830 root INFO timestep: 1459000, acc_reward: 3319.19
+00:46:28,119 root INFO timestep: 1460000, acc_reward: 3334.02
+00:46:34,411 root INFO timestep: 1461000, acc_reward: 3202.88
+00:46:41,316 root INFO timestep: 1462000, acc_reward: 3377.99
+00:46:41,322 root INFO checkpoint saved: /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57/sac_ckpt_m_0_3377.991.pth.tar
+00:46:48,95 root INFO timestep: 1463000, acc_reward: 3295.68
+00:46:54,261 root INFO timestep: 1464000, acc_reward: 3348.50
+00:47:00,939 root INFO timestep: 1465000, acc_reward: 3284.57
+00:47:07,59 root INFO timestep: 1466000, acc_reward: 3252.19
+00:47:13,46 root INFO timestep: 1467000, acc_reward: 3330.97
+00:47:19,459 root INFO timestep: 1468000, acc_reward: 3333.67
+00:47:25,398 root INFO timestep: 1469000, acc_reward: 3343.41
+00:47:31,352 root INFO timestep: 1470000, acc_reward: 3268.99
+00:47:37,509 root INFO timestep: 1471000, acc_reward: 3319.51
+00:47:43,0 root INFO timestep: 1472000, acc_reward: 3277.11
+00:47:48,965 root INFO timestep: 1473000, acc_reward: 3257.29
+00:47:54,942 root INFO timestep: 1474000, acc_reward: 3308.58
+00:48:00,740 root INFO timestep: 1475000, acc_reward: 3295.37
+00:48:06,605 root INFO timestep: 1476000, acc_reward: 3372.31
+00:48:12,463 root INFO timestep: 1477000, acc_reward: 3276.99
+00:48:18,811 root INFO timestep: 1478000, acc_reward: 3335.11
+00:48:24,835 root INFO timestep: 1479000, acc_reward: 3325.66
+00:48:31,741 root INFO timestep: 1480000, acc_reward: 3334.75
+00:48:39,537 root INFO timestep: 1481000, acc_reward: 3349.06
+00:48:45,803 root INFO timestep: 1482000, acc_reward: 3215.07
+00:48:53,84 root INFO timestep: 1483000, acc_reward: 3357.16
+00:49:00,358 root INFO timestep: 1484000, acc_reward: 3199.55
+00:49:53,133 root INFO Timestep: 1484764
+00:49:53,133 root INFO Current episode: 7350
+00:49:53,134 root INFO Alpha: 0.2
+00:49:57,189 root INFO timestep: 1485000, acc_reward: 1907.24
+00:50:01,442 root INFO timestep: 1486000, acc_reward: 1958.78
+00:50:05,333 root INFO timestep: 1487000, acc_reward: 1912.76
+00:50:09,593 root INFO timestep: 1488000, acc_reward: 1913.51
+00:50:13,812 root INFO timestep: 1489000, acc_reward: 1884.11
+00:50:17,991 root INFO timestep: 1490000, acc_reward: 1911.95
+00:50:21,745 root INFO timestep: 1491000, acc_reward: 1908.86
+00:50:25,685 root INFO timestep: 1492000, acc_reward: 1920.61
+00:50:29,786 root INFO timestep: 1493000, acc_reward: 1948.21
+00:50:33,813 root INFO timestep: 1494000, acc_reward: 1940.87
+00:50:37,642 root INFO timestep: 1495000, acc_reward: 1891.93
+00:50:41,151 root INFO timestep: 1496000, acc_reward: 1879.29
+00:50:45,208 root INFO timestep: 1497000, acc_reward: 1935.27
+00:50:49,152 root INFO timestep: 1498000, acc_reward: 1916.43
+00:50:53,60 root INFO timestep: 1499000, acc_reward: 1898.51
+00:50:56,573 root INFO timestep: 1500000, acc_reward: 1902.06
+00:51:00,219 root INFO timestep: 1501000, acc_reward: 1901.39
+00:51:04,22 root INFO timestep: 1502000, acc_reward: 1916.45
+00:51:07,938 root INFO timestep: 1503000, acc_reward: 1933.29
+00:51:11,526 root INFO timestep: 1504000, acc_reward: 1937.85
+00:51:14,874 root INFO timestep: 1505000, acc_reward: 1888.32
+00:52:05,393 root INFO Timestep: 1505620
+00:52:05,393 root INFO Current episode: 7400
+00:52:05,394 root INFO Alpha: 0.2
+00:52:11,201 root INFO timestep: 1506000, acc_reward: 2816.10
+00:52:17,525 root INFO timestep: 1507000, acc_reward: 2902.37
+00:52:23,239 root INFO timestep: 1508000, acc_reward: 2957.92
+00:52:29,341 root INFO timestep: 1509000, acc_reward: 2917.17
+00:52:35,562 root INFO timestep: 1510000, acc_reward: 2902.07
+00:52:41,90 root INFO timestep: 1511000, acc_reward: 2817.56
+00:52:46,973 root INFO timestep: 1512000, acc_reward: 2972.53
+00:52:52,933 root INFO timestep: 1513000, acc_reward: 2920.23
+00:52:58,504 root INFO timestep: 1514000, acc_reward: 2874.65
+00:53:04,66 root INFO timestep: 1515000, acc_reward: 2929.57
+00:53:09,684 root INFO timestep: 1516000, acc_reward: 2780.49
+00:53:15,152 root INFO timestep: 1517000, acc_reward: 2900.22
+00:53:19,967 root INFO timestep: 1518000, acc_reward: 2711.21
+00:53:25,450 root INFO timestep: 1519000, acc_reward: 2823.29
+00:53:30,681 root INFO timestep: 1520000, acc_reward: 2862.69
+00:53:35,724 root INFO timestep: 1521000, acc_reward: 2907.67
+00:53:41,49 root INFO timestep: 1522000, acc_reward: 2894.18
+00:53:46,215 root INFO timestep: 1523000, acc_reward: 2806.31
+00:53:51,84 root INFO timestep: 1524000, acc_reward: 2892.19
+00:53:56,304 root INFO timestep: 1525000, acc_reward: 3001.21
+00:54:01,281 root INFO timestep: 1526000, acc_reward: 2745.81
+00:54:06,306 root INFO timestep: 1527000, acc_reward: 3022.57
+00:54:56,656 root INFO Timestep: 1527535
+00:54:56,657 root INFO Current episode: 7450
+00:54:56,657 root INFO Alpha: 0.2
+00:54:59,252 root INFO timestep: 1528000, acc_reward: 1145.16
+00:55:02,122 root INFO timestep: 1529000, acc_reward: 1141.88
+00:55:04,686 root INFO timestep: 1530000, acc_reward: 1139.22
+00:55:07,286 root INFO timestep: 1531000, acc_reward: 1142.68
+00:55:09,874 root INFO timestep: 1532000, acc_reward: 1135.76
+00:55:12,664 root INFO timestep: 1533000, acc_reward: 1141.51
+00:55:15,634 root INFO timestep: 1534000, acc_reward: 1142.83
+00:55:18,493 root INFO timestep: 1535000, acc_reward: 1140.79
+00:55:21,368 root INFO timestep: 1536000, acc_reward: 1141.73
+00:55:24,25 root INFO timestep: 1537000, acc_reward: 1134.51
+00:55:26,510 root INFO timestep: 1538000, acc_reward: 1143.15
+00:55:29,375 root INFO timestep: 1539000, acc_reward: 1137.06
+00:55:32,221 root INFO timestep: 1540000, acc_reward: 1138.94
+00:55:35,132 root INFO timestep: 1541000, acc_reward: 1141.78
+00:55:38,36 root INFO timestep: 1542000, acc_reward: 1138.30
+00:55:40,692 root INFO timestep: 1543000, acc_reward: 1141.18
+00:56:33,698 root INFO Timestep: 1543074
+00:56:33,698 root INFO Current episode: 7500
+00:56:33,698 root INFO Alpha: 0.2
+00:56:37,4 root INFO timestep: 1544000, acc_reward: 1387.62
+00:56:40,319 root INFO timestep: 1545000, acc_reward: 1381.63
+00:56:43,493 root INFO timestep: 1546000, acc_reward: 1379.69
+00:56:46,362 root INFO timestep: 1547000, acc_reward: 1384.58
+00:56:49,380 root INFO timestep: 1548000, acc_reward: 1384.00
+00:56:52,559 root INFO timestep: 1549000, acc_reward: 1384.78
+00:56:55,962 root INFO timestep: 1550000, acc_reward: 1388.46
+00:56:59,169 root INFO timestep: 1551000, acc_reward: 1385.45
+00:57:02,270 root INFO timestep: 1552000, acc_reward: 1383.49
+00:57:05,140 root INFO timestep: 1553000, acc_reward: 1382.41
+00:57:08,4 root INFO timestep: 1554000, acc_reward: 1387.40
+00:57:11,145 root INFO timestep: 1555000, acc_reward: 1390.33
+00:57:14,200 root INFO timestep: 1556000, acc_reward: 1384.95
+00:57:17,391 root INFO timestep: 1557000, acc_reward: 1390.81
+00:57:20,365 root INFO timestep: 1558000, acc_reward: 1387.43
+00:57:23,164 root INFO timestep: 1559000, acc_reward: 1386.38
+00:57:25,960 root INFO timestep: 1560000, acc_reward: 1388.27
+00:57:28,899 root INFO timestep: 1561000, acc_reward: 1385.10
+00:57:31,942 root INFO timestep: 1562000, acc_reward: 1383.69
+00:58:22,876 root INFO Timestep: 1562906
+00:58:22,876 root INFO Current episode: 7550
+00:58:22,876 root INFO Alpha: 0.2
+00:58:29,871 root INFO timestep: 1563000, acc_reward: 3055.07
+00:58:37,67 root INFO timestep: 1564000, acc_reward: 3056.06
+00:58:43,893 root INFO timestep: 1565000, acc_reward: 3055.96
+00:58:51,382 root INFO timestep: 1566000, acc_reward: 3054.56
+00:58:58,266 root INFO timestep: 1567000, acc_reward: 3055.48
+00:59:05,288 root INFO timestep: 1568000, acc_reward: 3056.80
+00:59:12,383 root INFO timestep: 1569000, acc_reward: 3054.90
+00:59:18,604 root INFO timestep: 1570000, acc_reward: 3055.36
+00:59:25,693 root INFO timestep: 1571000, acc_reward: 3056.61
+00:59:32,572 root INFO timestep: 1572000, acc_reward: 3056.06
+00:59:38,812 root INFO timestep: 1573000, acc_reward: 3057.87
+00:59:45,426 root INFO timestep: 1574000, acc_reward: 3056.60
+00:59:51,629 root INFO timestep: 1575000, acc_reward: 3056.03
+00:59:57,902 root INFO timestep: 1576000, acc_reward: 3056.83
+01:00:04,366 root INFO timestep: 1577000, acc_reward: 3057.92
+01:00:10,485 root INFO timestep: 1578000, acc_reward: 3056.12
+01:00:16,845 root INFO timestep: 1579000, acc_reward: 3055.07
+01:00:23,234 root INFO timestep: 1580000, acc_reward: 3054.61
+01:00:29,447 root INFO timestep: 1581000, acc_reward: 3054.58
+01:00:36,275 root INFO timestep: 1582000, acc_reward: 3055.07
+01:00:43,116 root INFO timestep: 1583000, acc_reward: 3055.42
+01:00:50,75 root INFO timestep: 1584000, acc_reward: 3054.39
+01:00:57,626 root INFO timestep: 1585000, acc_reward: 3054.71
+01:01:04,441 root INFO timestep: 1586000, acc_reward: 3055.23
+01:01:11,823 root INFO timestep: 1587000, acc_reward: 3054.28
+01:01:19,184 root INFO timestep: 1588000, acc_reward: 3054.66
+01:01:26,278 root INFO timestep: 1589000, acc_reward: 3056.60
+01:01:33,27 root INFO timestep: 1590000, acc_reward: 3054.78
+01:01:39,459 root INFO timestep: 1591000, acc_reward: 3056.16
+01:01:46,223 root INFO timestep: 1592000, acc_reward: 3057.49
+01:01:52,646 root INFO timestep: 1593000, acc_reward: 3057.59
+01:01:58,986 root INFO timestep: 1594000, acc_reward: 3055.30
+01:02:05,565 root INFO timestep: 1595000, acc_reward: 3058.48
+01:02:11,700 root INFO timestep: 1596000, acc_reward: 3053.74
+01:02:17,992 root INFO timestep: 1597000, acc_reward: 3056.28
+01:02:24,335 root INFO timestep: 1598000, acc_reward: 3053.60
+01:02:30,116 root INFO timestep: 1599000, acc_reward: 3058.10
+01:02:36,391 root INFO timestep: 1600000, acc_reward: 3056.29
+01:02:42,810 root INFO timestep: 1601000, acc_reward: 3055.87
+01:02:48,917 root INFO timestep: 1602000, acc_reward: 3056.17
+01:02:55,803 root INFO timestep: 1603000, acc_reward: 3055.10
+01:03:02,624 root INFO timestep: 1604000, acc_reward: 3053.69
+01:03:09,516 root INFO timestep: 1605000, acc_reward: 3054.06
+01:03:16,962 root INFO timestep: 1606000, acc_reward: 3053.89
+01:03:24,53 root INFO timestep: 1607000, acc_reward: 3056.79
+01:03:31,675 root INFO timestep: 1608000, acc_reward: 3055.53
+01:04:31,828 root INFO Timestep: 1608878
+01:04:31,828 root INFO Current episode: 7600
+01:04:31,828 root INFO Alpha: 0.2
+01:04:38,895 root INFO timestep: 1609000, acc_reward: 3093.91
+01:04:45,857 root INFO timestep: 1610000, acc_reward: 3094.53
+01:04:53,234 root INFO timestep: 1611000, acc_reward: 3094.34
+01:05:00,50 root INFO timestep: 1612000, acc_reward: 3094.56
+01:05:06,739 root INFO timestep: 1613000, acc_reward: 3094.28
+01:05:13,682 root INFO timestep: 1614000, acc_reward: 3094.21
+01:05:19,989 root INFO timestep: 1615000, acc_reward: 3094.26
+01:05:26,576 root INFO timestep: 1616000, acc_reward: 3094.26
+01:05:33,267 root INFO timestep: 1617000, acc_reward: 3094.23
+01:05:39,356 root INFO timestep: 1618000, acc_reward: 3094.67
+01:05:45,841 root INFO timestep: 1619000, acc_reward: 3094.90
+01:05:52,284 root INFO timestep: 1620000, acc_reward: 3094.54
+01:05:58,623 root INFO timestep: 1621000, acc_reward: 3093.99
+01:06:04,697 root INFO timestep: 1622000, acc_reward: 3094.48
+01:06:10,949 root INFO timestep: 1623000, acc_reward: 3094.35
+01:06:17,733 root INFO timestep: 1624000, acc_reward: 3094.16
+01:06:24,142 root INFO timestep: 1625000, acc_reward: 3093.98
+01:06:31,213 root INFO timestep: 1626000, acc_reward: 3094.07
+01:06:38,782 root INFO timestep: 1627000, acc_reward: 3094.27
+01:06:45,674 root INFO timestep: 1628000, acc_reward: 3093.57
+01:06:53,236 root INFO timestep: 1629000, acc_reward: 3094.32
+01:07:00,419 root INFO timestep: 1630000, acc_reward: 3094.22
+01:07:07,582 root INFO timestep: 1631000, acc_reward: 3094.07
+01:07:15,21 root INFO timestep: 1632000, acc_reward: 3094.65
+01:07:22,569 root INFO timestep: 1633000, acc_reward: 3094.37
+01:07:30,32 root INFO timestep: 1634000, acc_reward: 3094.36
+01:07:36,892 root INFO timestep: 1635000, acc_reward: 3093.85
+01:07:44,320 root INFO timestep: 1636000, acc_reward: 3094.34
+01:07:51,739 root INFO timestep: 1637000, acc_reward: 3094.33
+01:07:58,183 root INFO timestep: 1638000, acc_reward: 3094.56
+01:08:05,304 root INFO timestep: 1639000, acc_reward: 3093.92
+01:08:12,41 root INFO timestep: 1640000, acc_reward: 3093.98
+01:08:18,441 root INFO timestep: 1641000, acc_reward: 3093.55
+01:08:25,342 root INFO timestep: 1642000, acc_reward: 3093.44
+01:08:31,724 root INFO timestep: 1643000, acc_reward: 3094.06
+01:08:38,33 root INFO timestep: 1644000, acc_reward: 3094.10
+01:08:44,620 root INFO timestep: 1645000, acc_reward: 3093.27
+01:08:50,604 root INFO timestep: 1646000, acc_reward: 3094.86
+01:08:57,137 root INFO timestep: 1647000, acc_reward: 3094.06
+01:09:04,36 root INFO timestep: 1648000, acc_reward: 3094.35
+01:09:10,429 root INFO timestep: 1649000, acc_reward: 3094.09
+01:09:17,801 root INFO timestep: 1650000, acc_reward: 3094.34
+01:09:25,483 root INFO timestep: 1651000, acc_reward: 3094.32
+01:09:33,59 root INFO timestep: 1652000, acc_reward: 3094.58
+01:09:40,329 root INFO timestep: 1653000, acc_reward: 3094.18
+01:09:47,329 root INFO timestep: 1654000, acc_reward: 3094.51
+01:09:54,740 root INFO timestep: 1655000, acc_reward: 3094.12
+01:10:52,820 root INFO Timestep: 1655954
+01:10:52,820 root INFO Current episode: 7650
+01:10:52,820 root INFO Alpha: 0.2
+01:10:59,988 root INFO timestep: 1656000, acc_reward: 3104.58
+01:11:06,730 root INFO timestep: 1657000, acc_reward: 3104.58
+01:11:14,190 root INFO timestep: 1658000, acc_reward: 3104.74
+01:11:21,487 root INFO timestep: 1659000, acc_reward: 3104.70
+01:11:28,613 root INFO timestep: 1660000, acc_reward: 3104.94
+01:11:35,332 root INFO timestep: 1661000, acc_reward: 3104.43
+01:11:41,892 root INFO timestep: 1662000, acc_reward: 3104.72
+01:11:48,722 root INFO timestep: 1663000, acc_reward: 3104.29
+01:11:55,510 root INFO timestep: 1664000, acc_reward: 3104.91
+01:12:02,377 root INFO timestep: 1665000, acc_reward: 3104.10
+01:12:08,917 root INFO timestep: 1666000, acc_reward: 3104.39
+01:12:16,236 root INFO timestep: 1667000, acc_reward: 3104.00
+01:12:23,814 root INFO timestep: 1668000, acc_reward: 3104.48
+01:12:30,417 root INFO timestep: 1669000, acc_reward: 3104.99
+01:12:37,928 root INFO timestep: 1670000, acc_reward: 3105.13
+01:12:45,343 root INFO timestep: 1671000, acc_reward: 3105.03
+01:12:52,156 root INFO timestep: 1672000, acc_reward: 3104.48
+01:12:59,793 root INFO timestep: 1673000, acc_reward: 3104.37
+01:13:06,599 root INFO timestep: 1674000, acc_reward: 3104.37
+01:13:13,552 root INFO timestep: 1675000, acc_reward: 3104.67
+01:13:20,542 root INFO timestep: 1676000, acc_reward: 3104.47
+01:13:26,995 root INFO timestep: 1677000, acc_reward: 3104.27
+01:13:33,770 root INFO timestep: 1678000, acc_reward: 3104.30
+01:13:40,504 root INFO timestep: 1679000, acc_reward: 3104.40
+01:13:46,496 root INFO timestep: 1680000, acc_reward: 3104.68
+01:13:53,146 root INFO timestep: 1681000, acc_reward: 3104.53
+01:13:59,906 root INFO timestep: 1682000, acc_reward: 3103.97
+01:14:06,329 root INFO timestep: 1683000, acc_reward: 3104.77
+01:14:13,772 root INFO timestep: 1684000, acc_reward: 3104.44
+01:14:21,314 root INFO timestep: 1685000, acc_reward: 3104.83
+01:14:28,410 root INFO timestep: 1686000, acc_reward: 3104.57
+01:14:36,21 root INFO timestep: 1687000, acc_reward: 3104.34
+01:14:43,509 root INFO timestep: 1688000, acc_reward: 3104.56
+01:14:50,975 root INFO timestep: 1689000, acc_reward: 3104.56
+01:14:57,947 root INFO timestep: 1690000, acc_reward: 3104.49
+01:15:05,152 root INFO timestep: 1691000, acc_reward: 3104.30
+01:15:12,518 root INFO timestep: 1692000, acc_reward: 3104.56
+01:15:19,176 root INFO timestep: 1693000, acc_reward: 3104.48
+01:15:26,191 root INFO timestep: 1694000, acc_reward: 3105.22
+01:15:33,267 root INFO timestep: 1695000, acc_reward: 3104.84
+01:15:40,144 root INFO timestep: 1696000, acc_reward: 3104.87
+01:15:46,843 root INFO timestep: 1697000, acc_reward: 3105.04
+01:15:53,91 root INFO timestep: 1698000, acc_reward: 3104.33
+01:15:59,787 root INFO timestep: 1699000, acc_reward: 3104.94
+01:16:06,220 root INFO timestep: 1700000, acc_reward: 3104.35
+01:16:12,478 root INFO timestep: 1701000, acc_reward: 3104.43
+01:16:19,302 root INFO timestep: 1702000, acc_reward: 3104.34
+01:16:25,922 root INFO timestep: 1703000, acc_reward: 3104.46
+01:16:33,140 root INFO timestep: 1704000, acc_reward: 3104.76
+01:16:40,656 root INFO timestep: 1705000, acc_reward: 3104.24
+01:17:41,521 root INFO Timestep: 1705604
+01:17:41,521 root INFO Current episode: 7700
+01:17:41,521 root INFO Alpha: 0.2
+01:17:46,156 root INFO timestep: 1706000, acc_reward: 1996.53
+01:17:50,679 root INFO timestep: 1707000, acc_reward: 1591.93
+01:17:55,943 root INFO timestep: 1708000, acc_reward: 1894.38
+01:18:00,468 root INFO timestep: 1709000, acc_reward: 1591.72
+01:18:05,393 root INFO timestep: 1710000, acc_reward: 1995.31
+01:18:10,267 root INFO timestep: 1711000, acc_reward: 1793.25
+01:18:15,947 root INFO timestep: 1712000, acc_reward: 2096.77
+01:18:21,188 root INFO timestep: 1713000, acc_reward: 1996.14
+01:18:25,727 root INFO timestep: 1714000, acc_reward: 1894.42
+01:18:30,657 root INFO timestep: 1715000, acc_reward: 1793.31
+01:18:35,812 root INFO timestep: 1716000, acc_reward: 1995.67
+01:18:40,586 root INFO timestep: 1717000, acc_reward: 1894.95
+01:18:44,465 root INFO timestep: 1718000, acc_reward: 1692.79
+01:18:50,47 root INFO timestep: 1719000, acc_reward: 2298.69
+01:18:54,282 root INFO timestep: 1720000, acc_reward: 1692.11
+01:18:58,892 root INFO timestep: 1721000, acc_reward: 1894.38
+01:19:03,539 root INFO timestep: 1722000, acc_reward: 1995.22
+01:19:08,78 root INFO timestep: 1723000, acc_reward: 1893.61
+01:19:13,105 root INFO timestep: 1724000, acc_reward: 2095.82
+01:19:18,154 root INFO timestep: 1725000, acc_reward: 2095.61
+01:19:22,475 root INFO timestep: 1726000, acc_reward: 1894.84
+01:19:27,266 root INFO timestep: 1727000, acc_reward: 1693.03
+01:19:31,959 root INFO timestep: 1728000, acc_reward: 1692.79
+01:19:37,765 root INFO timestep: 1729000, acc_reward: 2196.68
+01:19:42,465 root INFO timestep: 1730000, acc_reward: 1692.96
+01:19:47,601 root INFO timestep: 1731000, acc_reward: 1793.65
+01:19:52,41 root INFO timestep: 1732000, acc_reward: 1591.92
+01:19:57,619 root INFO timestep: 1733000, acc_reward: 1995.57
+01:20:03,451 root INFO timestep: 1734000, acc_reward: 2095.36
+01:20:07,731 root INFO timestep: 1735000, acc_reward: 1591.97
+01:20:12,273 root INFO timestep: 1736000, acc_reward: 1894.08
+01:20:17,291 root INFO timestep: 1737000, acc_reward: 1794.39
+01:20:22,788 root INFO timestep: 1738000, acc_reward: 1995.42
+01:20:28,140 root INFO timestep: 1739000, acc_reward: 1995.28
+01:20:32,986 root INFO timestep: 1740000, acc_reward: 1994.89
+01:20:37,878 root INFO timestep: 1741000, acc_reward: 1793.32
+01:20:43,354 root INFO timestep: 1742000, acc_reward: 1995.19
+01:20:48,302 root INFO timestep: 1743000, acc_reward: 1794.40
+01:20:52,864 root INFO timestep: 1744000, acc_reward: 1894.29
+01:20:57,286 root INFO timestep: 1745000, acc_reward: 1591.68
+01:21:02,796 root INFO timestep: 1746000, acc_reward: 1994.81
+01:21:08,208 root INFO timestep: 1747000, acc_reward: 1995.22
+01:21:13,40 root INFO timestep: 1748000, acc_reward: 1893.90
+01:21:18,299 root INFO timestep: 1749000, acc_reward: 1995.16
+01:21:23,51 root INFO timestep: 1750000, acc_reward: 1793.70
+01:21:27,986 root INFO timestep: 1751000, acc_reward: 1894.28
+01:21:32,559 root INFO timestep: 1752000, acc_reward: 1793.16
+01:21:37,310 root INFO timestep: 1753000, acc_reward: 1793.80
+01:22:40,234 root INFO Timestep: 1753874
+01:22:40,235 root INFO Current episode: 7750
+01:22:40,235 root INFO Alpha: 0.2
+01:22:47,392 root INFO timestep: 1754000, acc_reward: 2934.26
+01:22:54,406 root INFO timestep: 1755000, acc_reward: 2932.97
+01:23:01,211 root INFO timestep: 1756000, acc_reward: 2932.61
+01:23:08,385 root INFO timestep: 1757000, acc_reward: 2934.17
+01:23:15,384 root INFO timestep: 1758000, acc_reward: 2933.87
+01:23:22,245 root INFO timestep: 1759000, acc_reward: 2933.00
+01:23:28,562 root INFO timestep: 1760000, acc_reward: 2934.21
+01:23:35,202 root INFO timestep: 1761000, acc_reward: 2933.29
+01:23:42,329 root INFO timestep: 1762000, acc_reward: 2934.25
+01:23:49,158 root INFO timestep: 1763000, acc_reward: 2933.59
+01:23:56,273 root INFO timestep: 1764000, acc_reward: 2933.34
+01:24:03,775 root INFO timestep: 1765000, acc_reward: 2934.17
+01:24:10,486 root INFO timestep: 1766000, acc_reward: 2933.44
+01:24:18,35 root INFO timestep: 1767000, acc_reward: 2933.29
+01:24:25,495 root INFO timestep: 1768000, acc_reward: 2933.16
+01:24:32,972 root INFO timestep: 1769000, acc_reward: 2933.52
+01:24:40,235 root INFO timestep: 1770000, acc_reward: 2933.89
+01:24:47,587 root INFO timestep: 1771000, acc_reward: 2933.52
+01:24:54,839 root INFO timestep: 1772000, acc_reward: 2934.59
+01:25:01,994 root INFO timestep: 1773000, acc_reward: 2934.60
+01:25:08,972 root INFO timestep: 1774000, acc_reward: 2933.29
+01:25:15,830 root INFO timestep: 1775000, acc_reward: 2932.99
+01:25:22,576 root INFO timestep: 1776000, acc_reward: 2932.68
+01:25:28,700 root INFO timestep: 1777000, acc_reward: 2933.43
+01:25:35,322 root INFO timestep: 1778000, acc_reward: 2933.42
+01:25:41,866 root INFO timestep: 1779000, acc_reward: 2934.84
+01:25:47,617 root INFO timestep: 1780000, acc_reward: 2933.40
+01:25:54,94 root INFO timestep: 1781000, acc_reward: 2933.88
+01:26:00,859 root INFO timestep: 1782000, acc_reward: 2934.41
+01:26:07,412 root INFO timestep: 1783000, acc_reward: 2933.50
+01:26:14,650 root INFO timestep: 1784000, acc_reward: 2934.51
+01:26:21,905 root INFO timestep: 1785000, acc_reward: 2933.10
+01:26:29,60 root INFO timestep: 1786000, acc_reward: 2934.75
+01:26:36,565 root INFO timestep: 1787000, acc_reward: 2933.29
+01:26:43,394 root INFO timestep: 1788000, acc_reward: 2933.25
+01:26:50,606 root INFO timestep: 1789000, acc_reward: 2933.03
+01:26:58,39 root INFO timestep: 1790000, acc_reward: 2933.88
+01:27:04,954 root INFO timestep: 1791000, acc_reward: 2933.64
+01:27:12,200 root INFO timestep: 1792000, acc_reward: 2933.58
+01:27:19,627 root INFO timestep: 1793000, acc_reward: 2934.30
+01:27:26,216 root INFO timestep: 1794000, acc_reward: 2933.54
+01:27:33,321 root INFO timestep: 1795000, acc_reward: 2933.61
+01:27:40,318 root INFO timestep: 1796000, acc_reward: 2933.80
+01:27:46,521 root INFO timestep: 1797000, acc_reward: 2933.85
+01:27:53,343 root INFO timestep: 1798000, acc_reward: 2934.96
+01:28:00,57 root INFO timestep: 1799000, acc_reward: 2933.39
+01:28:06,125 root INFO timestep: 1800000, acc_reward: 2933.51
+01:28:12,531 root INFO timestep: 1801000, acc_reward: 2933.29
+01:28:19,23 root INFO timestep: 1802000, acc_reward: 2932.57
+01:28:25,7 root INFO timestep: 1803000, acc_reward: 2933.81
+01:29:28,186 root INFO Timestep: 1803187
+01:29:28,186 root INFO Current episode: 7800
+01:29:28,186 root INFO Alpha: 0.2
+01:29:35,40 root INFO timestep: 1804000, acc_reward: 3014.32
+01:29:42,526 root INFO timestep: 1805000, acc_reward: 3014.16
+01:29:49,845 root INFO timestep: 1806000, acc_reward: 3013.94
+01:29:56,478 root INFO timestep: 1807000, acc_reward: 3014.53
+01:30:03,982 root INFO timestep: 1808000, acc_reward: 3014.81
+01:30:11,210 root INFO timestep: 1809000, acc_reward: 3014.60
+01:30:17,921 root INFO timestep: 1810000, acc_reward: 3014.66
+01:30:25,327 root INFO timestep: 1811000, acc_reward: 3014.91
+01:30:33,398 root INFO timestep: 1812000, acc_reward: 3012.95
+01:30:39,960 root INFO timestep: 1813000, acc_reward: 3013.41
+01:30:46,914 root INFO timestep: 1814000, acc_reward: 3012.77
+01:30:53,566 root INFO timestep: 1815000, acc_reward: 3013.78
+01:30:59,728 root INFO timestep: 1816000, acc_reward: 3013.68
+01:31:06,343 root INFO timestep: 1817000, acc_reward: 3014.51
+01:31:13,4 root INFO timestep: 1818000, acc_reward: 3013.56
+01:31:19,817 root INFO timestep: 1819000, acc_reward: 3015.49
+01:31:26,771 root INFO timestep: 1820000, acc_reward: 3014.02
+01:31:33,474 root INFO timestep: 1821000, acc_reward: 3013.90
+01:31:40,840 root INFO timestep: 1822000, acc_reward: 3013.41
+01:31:48,35 root INFO timestep: 1823000, acc_reward: 3014.47
+01:31:54,792 root INFO timestep: 1824000, acc_reward: 3014.09
+01:32:02,151 root INFO timestep: 1825000, acc_reward: 3014.31
+01:32:09,270 root INFO timestep: 1826000, acc_reward: 3013.99
+01:32:15,645 root INFO timestep: 1827000, acc_reward: 3015.92
+01:32:22,606 root INFO timestep: 1828000, acc_reward: 3014.66
+01:32:29,245 root INFO timestep: 1829000, acc_reward: 3013.21
+01:32:35,861 root INFO timestep: 1830000, acc_reward: 3014.73
+01:32:43,132 root INFO timestep: 1831000, acc_reward: 3015.08
+01:32:50,425 root INFO timestep: 1832000, acc_reward: 3013.70
+01:32:57,171 root INFO timestep: 1833000, acc_reward: 3014.69
+01:33:04,361 root INFO timestep: 1834000, acc_reward: 3014.93
+01:33:11,262 root INFO timestep: 1835000, acc_reward: 3014.49
+01:33:17,732 root INFO timestep: 1836000, acc_reward: 3014.32
+01:33:24,678 root INFO timestep: 1837000, acc_reward: 3014.44
+01:33:32,790 root INFO timestep: 1838000, acc_reward: 3015.02
+01:33:39,173 root INFO timestep: 1839000, acc_reward: 3014.98
+01:33:46,167 root INFO timestep: 1840000, acc_reward: 3014.14
+01:33:53,397 root INFO timestep: 1841000, acc_reward: 3014.32
+01:34:00,135 root INFO timestep: 1842000, acc_reward: 3015.17
+01:35:08,380 root INFO Timestep: 1842684
+01:35:08,381 root INFO Current episode: 7850
+01:35:08,381 root INFO Alpha: 0.2
+01:35:15,948 root INFO timestep: 1843000, acc_reward: 2993.80
+01:35:23,41 root INFO timestep: 1844000, acc_reward: 2993.41
+01:35:30,404 root INFO timestep: 1845000, acc_reward: 2994.59
+01:35:37,945 root INFO timestep: 1846000, acc_reward: 2993.22
+01:35:44,601 root INFO timestep: 1847000, acc_reward: 2993.66
+01:35:51,790 root INFO timestep: 1848000, acc_reward: 2994.01
+01:35:58,877 root INFO timestep: 1849000, acc_reward: 2993.60
+01:36:05,292 root INFO timestep: 1850000, acc_reward: 2993.31
+01:36:11,984 root INFO timestep: 1851000, acc_reward: 2993.77
+01:36:18,689 root INFO timestep: 1852000, acc_reward: 2993.12
+01:36:25,23 root INFO timestep: 1853000, acc_reward: 2994.04
+01:36:31,344 root INFO timestep: 1854000, acc_reward: 2994.27
+01:36:37,888 root INFO timestep: 1855000, acc_reward: 2992.74
+01:36:43,934 root INFO timestep: 1856000, acc_reward: 2994.06
+01:36:50,370 root INFO timestep: 1857000, acc_reward: 2994.25
+01:36:57,281 root INFO timestep: 1858000, acc_reward: 2993.76
+01:37:03,983 root INFO timestep: 1859000, acc_reward: 2993.27
+01:37:11,134 root INFO timestep: 1860000, acc_reward: 2993.38
+01:37:18,586 root INFO timestep: 1861000, acc_reward: 2994.25
+01:37:26,47 root INFO timestep: 1862000, acc_reward: 2994.64
+01:37:33,138 root INFO timestep: 1863000, acc_reward: 2992.80
+01:37:40,650 root INFO timestep: 1864000, acc_reward: 2994.71
+01:37:48,270 root INFO timestep: 1865000, acc_reward: 2993.28
+01:37:55,698 root INFO timestep: 1866000, acc_reward: 2993.96
+01:38:02,588 root INFO timestep: 1867000, acc_reward: 2993.03
+01:38:09,746 root INFO timestep: 1868000, acc_reward: 2992.96
+01:38:17,97 root INFO timestep: 1869000, acc_reward: 2993.62
+01:38:24,383 root INFO timestep: 1870000, acc_reward: 2992.82
+01:38:31,489 root INFO timestep: 1871000, acc_reward: 2992.85
+01:38:38,135 root INFO timestep: 1872000, acc_reward: 2993.05
+01:38:44,735 root INFO timestep: 1873000, acc_reward: 2993.81
+01:38:51,508 root INFO timestep: 1874000, acc_reward: 2993.70
+01:38:57,853 root INFO timestep: 1875000, acc_reward: 2994.02
+01:39:04,247 root INFO timestep: 1876000, acc_reward: 2992.97
+01:39:10,916 root INFO timestep: 1877000, acc_reward: 2993.17
+01:39:17,19 root INFO timestep: 1878000, acc_reward: 2992.77
+01:39:23,309 root INFO timestep: 1879000, acc_reward: 2993.30
+01:39:30,813 root INFO timestep: 1880000, acc_reward: 2993.34
+01:39:37,347 root INFO timestep: 1881000, acc_reward: 2993.22
+01:39:44,285 root INFO timestep: 1882000, acc_reward: 2993.61
+01:39:51,827 root INFO timestep: 1883000, acc_reward: 2993.42
+01:39:58,935 root INFO timestep: 1884000, acc_reward: 2993.42
+01:40:05,834 root INFO timestep: 1885000, acc_reward: 2993.00
+01:40:13,301 root INFO timestep: 1886000, acc_reward: 2993.61
+01:40:20,387 root INFO timestep: 1887000, acc_reward: 2992.90
+01:40:27,229 root INFO timestep: 1888000, acc_reward: 2993.88
+01:41:34,97 root INFO Timestep: 1888862
+01:41:34,97 root INFO Current episode: 7900
+01:41:34,97 root INFO Alpha: 0.2
+01:41:41,155 root INFO timestep: 1889000, acc_reward: 2933.23
+01:41:48,744 root INFO timestep: 1890000, acc_reward: 2937.13
+01:41:55,602 root INFO timestep: 1891000, acc_reward: 2937.30
+01:42:02,605 root INFO timestep: 1892000, acc_reward: 2936.51
+01:42:09,722 root INFO timestep: 1893000, acc_reward: 2937.32
+01:42:16,335 root INFO timestep: 1894000, acc_reward: 2936.75
+01:42:22,957 root INFO timestep: 1895000, acc_reward: 2936.51
+01:42:29,847 root INFO timestep: 1896000, acc_reward: 2933.80
+01:42:36,178 root INFO timestep: 1897000, acc_reward: 2934.70
+01:42:42,523 root INFO timestep: 1898000, acc_reward: 2937.24
+01:42:49,87 root INFO timestep: 1899000, acc_reward: 2934.70
+01:42:55,270 root INFO timestep: 1900000, acc_reward: 2936.80
+01:43:01,346 root INFO timestep: 1901000, acc_reward: 2935.35
+01:43:07,891 root INFO timestep: 1902000, acc_reward: 2936.10
+01:43:14,382 root INFO timestep: 1903000, acc_reward: 2937.48
+01:43:21,50 root INFO timestep: 1904000, acc_reward: 2935.56
+01:43:28,238 root INFO timestep: 1905000, acc_reward: 2938.21
+01:43:35,310 root INFO timestep: 1906000, acc_reward: 2934.57
+01:43:42,225 root INFO timestep: 1907000, acc_reward: 2935.23
+01:43:49,808 root INFO timestep: 1908000, acc_reward: 2935.78
+01:43:57,71 root INFO timestep: 1909000, acc_reward: 2933.47
+01:44:04,13 root INFO timestep: 1910000, acc_reward: 2935.08
+01:44:11,711 root INFO timestep: 1911000, acc_reward: 2937.76
+01:44:19,221 root INFO timestep: 1912000, acc_reward: 2938.06
+01:44:27,37 root INFO timestep: 1913000, acc_reward: 2934.55
+01:44:34,442 root INFO timestep: 1914000, acc_reward: 2935.28
+01:44:41,200 root INFO timestep: 1915000, acc_reward: 2934.26
+01:44:48,809 root INFO timestep: 1916000, acc_reward: 2935.33
+01:44:56,13 root INFO timestep: 1917000, acc_reward: 2934.92
+01:45:02,750 root INFO timestep: 1918000, acc_reward: 2937.88
+01:45:09,778 root INFO timestep: 1919000, acc_reward: 2935.88
+01:45:16,600 root INFO timestep: 1920000, acc_reward: 2935.77
+01:45:23,52 root INFO timestep: 1921000, acc_reward: 2936.64
+01:45:29,770 root INFO timestep: 1922000, acc_reward: 2937.56
+01:45:36,519 root INFO timestep: 1923000, acc_reward: 2933.86
+01:45:43,435 root INFO timestep: 1924000, acc_reward: 2934.59
+01:45:50,408 root INFO timestep: 1925000, acc_reward: 2936.22
+01:45:57,357 root INFO timestep: 1926000, acc_reward: 2932.62
+01:46:05,68 root INFO timestep: 1927000, acc_reward: 2936.82
+01:46:12,678 root INFO timestep: 1928000, acc_reward: 2937.06
+01:46:20,265 root INFO timestep: 1929000, acc_reward: 2934.87
+01:46:27,459 root INFO timestep: 1930000, acc_reward: 2936.36
+01:46:34,499 root INFO timestep: 1931000, acc_reward: 2939.11
+01:46:42,61 root INFO timestep: 1932000, acc_reward: 2934.83
+01:46:49,540 root INFO timestep: 1933000, acc_reward: 2935.92
+01:46:57,10 root INFO timestep: 1934000, acc_reward: 2936.55
+01:47:04,55 root INFO timestep: 1935000, acc_reward: 2934.11
+01:47:10,595 root INFO timestep: 1936000, acc_reward: 2934.43
+01:47:17,642 root INFO timestep: 1937000, acc_reward: 2936.05
+01:48:25,331 root INFO Timestep: 1937727
+01:48:25,331 root INFO Current episode: 7950
+01:48:25,331 root INFO Alpha: 0.2
+01:48:32,825 root INFO timestep: 1938000, acc_reward: 2901.33
+01:48:40,347 root INFO timestep: 1939000, acc_reward: 2900.99
+01:48:47,784 root INFO timestep: 1940000, acc_reward: 2900.54
+01:48:55,8 root INFO timestep: 1941000, acc_reward: 2900.35
+01:49:02,496 root INFO timestep: 1942000, acc_reward: 2900.81
+01:49:10,411 root INFO timestep: 1943000, acc_reward: 2900.61
+01:49:18,72 root INFO timestep: 1944000, acc_reward: 2899.97
+01:49:25,150 root INFO timestep: 1945000, acc_reward: 2900.60
+01:49:32,510 root INFO timestep: 1946000, acc_reward: 2900.68
+01:49:39,725 root INFO timestep: 1947000, acc_reward: 2899.76
+01:49:46,767 root INFO timestep: 1948000, acc_reward: 2901.24
+01:49:53,542 root INFO timestep: 1949000, acc_reward: 2900.90
+01:50:00,578 root INFO timestep: 1950000, acc_reward: 2900.65
+01:50:06,904 root INFO timestep: 1951000, acc_reward: 2901.17
+01:50:13,349 root INFO timestep: 1952000, acc_reward: 2900.60
+01:50:20,77 root INFO timestep: 1953000, acc_reward: 2900.73
+01:50:26,668 root INFO timestep: 1954000, acc_reward: 2899.97
+01:50:33,277 root INFO timestep: 1955000, acc_reward: 2900.23
+01:50:40,155 root INFO timestep: 1956000, acc_reward: 2899.74
+01:50:47,204 root INFO timestep: 1957000, acc_reward: 2901.51
+01:50:54,262 root INFO timestep: 1958000, acc_reward: 2900.44
+01:51:01,503 root INFO timestep: 1959000, acc_reward: 2900.39
+01:51:09,110 root INFO timestep: 1960000, acc_reward: 2901.63
+01:51:16,113 root INFO timestep: 1961000, acc_reward: 2900.86
+01:51:23,317 root INFO timestep: 1962000, acc_reward: 2900.72
+01:51:30,931 root INFO timestep: 1963000, acc_reward: 2899.54
+01:51:38,465 root INFO timestep: 1964000, acc_reward: 2901.30
+01:51:45,935 root INFO timestep: 1965000, acc_reward: 2901.61
+01:51:52,987 root INFO timestep: 1966000, acc_reward: 2901.34
+01:52:00,249 root INFO timestep: 1967000, acc_reward: 2901.63
+01:52:07,659 root INFO timestep: 1968000, acc_reward: 2901.02
+01:52:14,413 root INFO timestep: 1969000, acc_reward: 2900.19
+01:52:21,545 root INFO timestep: 1970000, acc_reward: 2900.26
+01:52:29,50 root INFO timestep: 1971000, acc_reward: 2900.80
+01:52:36,665 root INFO timestep: 1972000, acc_reward: 2901.26
+01:52:44,109 root INFO timestep: 1973000, acc_reward: 2900.88
+01:52:51,272 root INFO timestep: 1974000, acc_reward: 2900.43
+01:52:58,321 root INFO timestep: 1975000, acc_reward: 2900.80
+01:53:05,612 root INFO timestep: 1976000, acc_reward: 2902.13
+01:53:12,664 root INFO timestep: 1977000, acc_reward: 2902.22
+01:53:19,183 root INFO timestep: 1978000, acc_reward: 2900.60
+01:53:26,132 root INFO timestep: 1979000, acc_reward: 2900.21
+01:53:32,819 root INFO timestep: 1980000, acc_reward: 2900.25
+01:53:38,983 root INFO timestep: 1981000, acc_reward: 2901.41
+01:53:45,606 root INFO timestep: 1982000, acc_reward: 2900.46
+01:53:52,191 root INFO timestep: 1983000, acc_reward: 2899.96
+01:53:58,193 root INFO timestep: 1984000, acc_reward: 2900.42
+01:54:04,938 root INFO timestep: 1985000, acc_reward: 2900.12
+01:54:11,908 root INFO timestep: 1986000, acc_reward: 2900.24
+01:54:18,612 root INFO timestep: 1987000, acc_reward: 2900.25
+01:55:31,978 root INFO Timestep: 1987163
+01:55:31,979 root INFO Current episode: 8000
+01:55:31,979 root INFO Alpha: 0.2
+01:55:39,116 root INFO timestep: 1988000, acc_reward: 3129.62
+01:55:46,584 root INFO timestep: 1989000, acc_reward: 3129.93
+01:55:53,399 root INFO timestep: 1990000, acc_reward: 3130.12
+01:56:00,446 root INFO timestep: 1991000, acc_reward: 3129.94
+01:56:07,895 root INFO timestep: 1992000, acc_reward: 3130.04
+01:56:14,965 root INFO timestep: 1993000, acc_reward: 3130.32
+01:56:21,698 root INFO timestep: 1994000, acc_reward: 3129.39
+01:56:28,889 root INFO timestep: 1995000, acc_reward: 3130.14
+01:56:35,915 root INFO timestep: 1996000, acc_reward: 3130.01
+01:56:42,799 root INFO timestep: 1997000, acc_reward: 3129.53
+01:56:49,507 root INFO timestep: 1998000, acc_reward: 3129.96
+01:56:55,603 root INFO timestep: 1999000, acc_reward: 3128.94
+01:57:02,448 root INFO timestep: 2000000, acc_reward: 3129.39
+01:57:02,671 root INFO Training complete.
+01:57:02,680 root INFO 
+
+Final Mean Reward: 3129.39436
+01:57:02,681 root INFO 
+\Average Mean Reward: 1610.71743
+01:57:02,681 root INFO 
+\Median Mean Reward: 1059.63008
+01:57:02,681 root INFO Best Mean Reward: 3377.99105
+01:57:02,681 root INFO Final Cumulative Reward: 3221434.862
+01:57:02,681 root INFO AUC for Mean Reward: 3219859.92751
+01:57:02,681 root INFO Time Elapsed During Training: 11105.388560295105
+
+01:57:06,392 matplotlib.font_manager DEBUG findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0.
+01:57:06,393 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Oblique.ttf) oblique normal 400 normal>) = 11.05
+01:57:06,393 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono.ttf) normal normal 400 normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneral.ttf) normal normal regular normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans.ttf) normal normal 400 normal>) = 0.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans-BoldOblique.ttf) oblique normal bold normal>) = 1.335
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneralBolIta.ttf) italic normal bold normal>) = 11.335
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif Display' (DejaVuSerifDisplay.ttf) normal normal 400 normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeFiveSym' (STIXSizFiveSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'cmss10' (cmss10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneralItalic.ttf) italic normal 400 normal>) = 11.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Oblique.ttf) oblique normal 400 normal>) = 1.05
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+01:57:06,394 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Display' (DejaVuSansDisplay.ttf) normal normal 400 normal>) = 10.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneralBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'cmex10' (cmex10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUni.ttf) normal normal regular normal>) = 10.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBolIta.ttf) italic normal bold normal>) = 11.335
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Bold.ttf) normal normal bold normal>) = 10.335
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Bold.ttf) normal normal bold normal>) = 10.335
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif.ttf) normal normal 400 normal>) = 10.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUniIta.ttf) italic normal 400 normal>) = 11.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'cmb10' (cmb10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+01:57:06,395 matplotlib.font_manager DEBUG findfont: score(<Font 'cmtt10' (cmtt10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,396 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,396 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-BoldItalic.ttf) italic normal bold normal>) = 11.335
+01:57:06,396 matplotlib.font_manager DEBUG findfont: score(<Font 'cmsy10' (cmsy10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,396 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Bold.ttf) normal normal bold normal>) = 0.33499999999999996
+01:57:06,396 matplotlib.font_manager DEBUG findfont: score(<Font 'cmr10' (cmr10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,396 matplotlib.font_manager DEBUG findfont: score(<Font 'cmmi10' (cmmi10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,396 matplotlib.font_manager DEBUG findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+01:57:06,412 matplotlib.font_manager DEBUG findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Oblique.ttf) oblique normal 400 normal>) = 11.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono.ttf) normal normal 400 normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneral.ttf) normal normal regular normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans.ttf) normal normal 400 normal>) = 0.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans-BoldOblique.ttf) oblique normal bold normal>) = 1.335
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneralBolIta.ttf) italic normal bold normal>) = 11.335
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif Display' (DejaVuSerifDisplay.ttf) normal normal 400 normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeFiveSym' (STIXSizFiveSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'cmss10' (cmss10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneralItalic.ttf) italic normal 400 normal>) = 11.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Oblique.ttf) oblique normal 400 normal>) = 1.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-BoldOblique.ttf) oblique normal bold normal>) = 11.335
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Display' (DejaVuSansDisplay.ttf) normal normal 400 normal>) = 10.05
+01:57:06,412 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXGeneral' (STIXGeneralBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymReg.ttf) normal normal regular normal>) = 10.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'cmex10' (cmex10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUni.ttf) normal normal regular normal>) = 10.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBolIta.ttf) italic normal bold normal>) = 11.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Bold.ttf) normal normal bold normal>) = 10.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Bold.ttf) normal normal bold normal>) = 10.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif.ttf) normal normal 400 normal>) = 10.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXNonUnicode' (STIXNonUniIta.ttf) italic normal 400 normal>) = 11.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'cmb10' (cmb10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'cmtt10' (cmtt10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymBol.ttf) normal normal bold normal>) = 10.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-BoldItalic.ttf) italic normal bold normal>) = 11.335
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'cmsy10' (cmsy10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Bold.ttf) normal normal bold normal>) = 0.33499999999999996
+01:57:06,413 matplotlib.font_manager DEBUG findfont: score(<Font 'cmr10' (cmr10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,414 matplotlib.font_manager DEBUG findfont: score(<Font 'cmmi10' (cmmi10.ttf) normal normal 400 normal>) = 10.05
+01:57:06,414 matplotlib.font_manager DEBUG findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/c_spino/anaconda3/envs/test_rl_project_env/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+01:57:06,734 root INFO 
+Rewards graphed successfully. See /home/c_spino/comp_597/GROUP_013/results/2022-04-24_22h51m57
