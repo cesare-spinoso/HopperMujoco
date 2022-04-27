@@ -5,16 +5,25 @@ from torch.functional import F
 from torch.distributions import Normal
 import numpy as np
 
-from typing import Tuple
+from typing import Tuple, Optional
 from copy import deepcopy
 
 
 class Agent:
-    """The agent class that is to be filled.
-    You are allowed to add any method you
-    want to this class.
+    """
+    Soft Actor-Critic Agent, implemented following the OpenAI Spinning Up pseudocode available here:
+        https://spinningup.openai.com/en/latest/algorithms/sac.html
 
-    Implemented following the pseudocode here: https://spinningup.openai.com/en/latest/algorithms/sac.html
+    Args:
+      alpha:                        Entropy regularization coefficent. Defaults to 0.2.
+      exploration_timesteps:        How many timesteps does the agent use at the beginning for uniform exploration.
+                                    Defaults to 10_000.
+      update_frequency_in_episodes: Frequency (in episodes) of the number of times that the agent takes gradient steps.
+                                    Defaults to 50.
+      update_start_in_episodes:     Number of episodes required before the agent starts taking gradient steps for its
+                                    networks. This is mostly here to ensure that the buffer is full enough to batching.
+                                    Defaults to 1_000.
+      number_of_batch_updates:      Number of gradient updates to take. Defaults to 1_000.
     """
 
     def __init__(
@@ -41,19 +50,7 @@ class Agent:
         batch_size: int = 100,
         replay_buffer_type: str = "uniform"
     ):
-        """Creates an SAC agent. Some of the more obscure parameters are explained below.
-
-        Args:
-            alpha (float, optional): Fixed KL threshold. The Udemy implementation uses a variable KL. Defaults to 0.2.
-            exploration_timesteps (int, optional): How many timesteps does the agent use at the beginning
-            for uniform exploration. Defaults to 10_000.
-            update_frequency_in_episodes (int, optional): Frequency (in episodes) of the number of times that
-            the agent takes gradient steps. Defaults to 50.
-            update_start_in_episodes (int, optional): NUmber of episodes required before the agent starts taking gradient
-            steps for its networks. This is mostly here to ensure that the buffer is full enough to batching. Defaults to 1_000.
-            number_of_batch_updates (int, optional): Number of gradient updates to take. Defaults to 1_000.
-        """
-        ### ENVIRONMENT VARIABLES ###
+        # Environment variables
         self.env_specs = env_specs
         # Number of observations (states) and actions
         self.num_obs = env_specs["observation_space"].shape[0]
@@ -65,7 +62,8 @@ class Agent:
         self.episode_of_last_update = None
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        ### HYPERPARAMETERS ###
+
+        # Hyperparameters
         self.gamma = gamma
         self.polyak = polyak
         # Number of time steps where sample actions randomly
@@ -76,7 +74,8 @@ class Agent:
         self.update_start_in_timesteps = update_start_in_timesteps
         self.number_of_batch_updates = number_of_batch_updates
         self.batch_size = batch_size
-        ### Q-NETWORKS (Q1 and Q1) ###
+
+        # Q-networks (Q1 and Q1)
         self.q1_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -96,7 +95,8 @@ class Agent:
         self._freeze_network(self.q1_network_target)
         self.q2_network_target = deepcopy(self.q2_network)
         self._freeze_network(self.q2_network_target)
-        ### POLICY NETWORK ###
+
+        # Policy network
         self.policy_network = PolicyNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -107,7 +107,8 @@ class Agent:
         self.policy_optimizer = torch.optim.Adam(
             self.policy_network.parameters(), lr=policy_lr
         )
-        ### LEARNING RATE SCHEDULER ###
+
+        # Learning rate scheduler
         self.learning_rate_scheduler = learning_rate_scheduler
         if self.learning_rate_scheduler is not None:
             assert self.learning_rate_scheduler in {
@@ -145,7 +146,7 @@ class Agent:
                 self.policy_scheduler = torch.optim.lr_scheduler.ExponentialLR(
                     self.policy_optimizer, gamma=self.decay_rate
                 )
-        ### ADPTABLE ALPHA ###
+        # Adaptable alpha
         self.alpha = alpha  # entropy parameter
         self.update_alpha = update_alpha
         if self.update_alpha is not None:
@@ -165,7 +166,7 @@ class Agent:
                 self.alpha_decaying_frequency = 100_000
                 self.alpha_decay_rate = 0.9
                 self.alpha_update_counter = 0
-        ### BUFFER ###
+        # Replay Buffer
         self.buffer = SACBuffer(
             number_obs=self.num_obs,
             number_actions=self.num_actions,
@@ -179,8 +180,8 @@ class Agent:
         then use default name of "model" which is assumed to be in the same directory as load_weights.
 
         Args:
-            root_path (str): Root path
-            pretrained_model_name (str, optional): Model name e.g. td3_ckpt_98.888. Defaults to None.
+          root_path (str): Root path
+          pretrained_model_name (str, optional): Model name e.g. sac_ckpt_98.888. Defaults to None.
         """
         if pretrained_model_name is None:
             pretrained_model_path = os.path.join(root_path, "model.pth.tar")
@@ -193,13 +194,13 @@ class Agent:
             pretrained_model = torch.load(
                 pretrained_model_path, map_location=torch.device(self.device)
             )
-        except:
+        except FileNotFoundError:
             raise Exception(
-                "Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
-                \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/td3_ckpt_98.888"
+                "Invalid location for loading pretrained model. You need folder/filename in results folder (without \
+                .pth.tar). \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/sac_ckpt_98.888"
             )
 
-        # load state dict for the 4 networks
+        # Load state dict for the 4 networks
         self.q1_network.load_state_dict(pretrained_model["q1_network"])
         self.q2_network.load_state_dict(pretrained_model["q2_network"])
         self.policy_network.load_state_dict(pretrained_model["policy_network"])
@@ -214,8 +215,8 @@ class Agent:
         """Save the weights of the critic and the actor as well as its score. If name is None,
         then use its score as the name.
         """
-        # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
-        if name == None:
+        # Path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
+        if name is None:
             ckpt_path = os.path.join(
                 ckpt_path, "sac_ckpt_" + str(round(score_avg, 3)) + ".pth.tar"
             )
@@ -239,7 +240,11 @@ class Agent:
 
         return ckpt_path
 
-    def act(self, curr_obs, mode="eval"):
+    def act(self, curr_obs: np.ndarray, mode: Optional[str] = "eval") -> np.ndarray:
+        """Returns an action following observation of :curr_obs:.
+        If mode is 'train', the agent waits for :self.exploration_timesteps: before sampling actions from the policy.
+        If mode is 'eval', return the mean of the policy.
+        """
         with torch.no_grad():
             curr_obs = torch.from_numpy(curr_obs).float().to(self.device)
             if mode == "train":
@@ -259,6 +264,7 @@ class Agent:
             return action
 
     def update(self, curr_obs, action, reward, next_obs, done, timestep, logger=None):
+        """After each timestep, send experience to the SACBuffer. Train the agent if it is ready to train."""
         # Store experience in buffer
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
@@ -271,8 +277,8 @@ class Agent:
             # print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
-            print(self.current_episode)
-            print(f"Alpha: {self.alpha}")
+            # print(self.current_episode)
+            # print(f"Alpha: {self.alpha}")
             self.episode_of_last_update = self.current_episode
             if logger:
                 logger.log(f"Timestep: {timestep}")
@@ -281,7 +287,9 @@ class Agent:
                 if self.learning_rate_scheduler is not None:
                     logger.log(f"LR: {self.q1_scheduler.get_last_lr()[0]}")
 
-    def is_ready_to_train(self):
+    def is_ready_to_train(self) -> bool:
+        """Returns True if enough exploration timesteps/episodes have passed and we are at the end of an episode.
+           Otherwise, returns False."""
         if self.episode_of_last_update is None:
             return self.current_episode > self.update_start_in_episodes or (
                 self.update_start_in_timesteps is not None
@@ -294,6 +302,9 @@ class Agent:
             )
 
     def train(self):
+        """Trains agents following OpenAI's Spinning Up pseudocode:
+            https://spinningup.openai.com/en/latest/algorithms/sac.html
+        """
         for j in range(self.number_of_batch_updates):
             # Get training batch
             (
@@ -304,19 +315,20 @@ class Agent:
                 done_data,
             ) = self.buffer.get_training_batch()
             # Get the training targets (Line 12 of the OpenAI pseudocode)
-            y = self.compute_targets(reward_data, next_obs_data, done_data)
-            # Train the Q-network (Line 13 of the OpenAI pseudocode)
-            self.train_q_networks(obs_data, action_data, y)
-            # Train the policy network (Line 14 of the OpenAI pseudocode)
-            self.train_policy_network(obs_data)
-            # "Train" the alpha
-            self.train_alpha(obs_data)
-            # Update the target networks (Line 15 of the OpenAI pseudocode)
-            self.update_target_networks()
-        # Learning rate scheduling
+            y = self._compute_targets(reward_data, next_obs_data, done_data)
+
+            self._train_q_networks(obs_data, action_data, y)
+            self._train_policy_network(obs_data)
+
+            # Learn entropy regularization coefficient, if applicable
+            self._train_alpha(obs_data)
+
+            self._update_target_networks()
+
+        # Update learning rate scheduler, if applicable
         self.update_learning_rate()
 
-    def compute_targets(
+    def _compute_targets(
         self,
         reward_data: torch.Tensor,
         next_obs_data: torch.Tensor,
@@ -333,7 +345,8 @@ class Agent:
                 min_q_network_target - self.alpha * log_proba
             )
 
-    def train_q_networks(self, obs_data, action_data, y):
+    def _train_q_networks(self, obs_data, action_data, y):
+        """Train the Q-network (Line 13 of the OpenAI pseudocode)"""
         for q_network, q_optimizer in [
             (self.q1_network, self.q1_optimizer),
             (self.q2_network, self.q2_optimizer),
@@ -349,7 +362,8 @@ class Agent:
             # Take a step
             q_optimizer.step()
 
-    def train_policy_network(self, obs_data):
+    def _train_policy_network(self, obs_data):
+        """Train the policy network (Line 14 of the OpenAI pseudocode)"""
         # Freeze the Q-networks
         self._freeze_network(self.q1_network)
         self._freeze_network(self.q2_network)
@@ -372,7 +386,10 @@ class Agent:
         self._unfreeze_network(self.q2_network)
         self._unfreeze_alpha()
 
-    def train_alpha(self, obs_data):
+    def _train_alpha(self, obs_data):
+        """Learn the entropy regularization coefficient, if :self.update_alpha: is specified.
+         Learning is described in https://arxiv.org/abs/1812.05905, section 6.
+         """
         if self.update_alpha is not None:
             if self.update_alpha == "learned":
                 # Zero grad
@@ -396,6 +413,7 @@ class Agent:
                     self.alpha *= self.alpha_decay_rate
 
     def update_learning_rate(self):
+        """Learning rate scheduler update."""
         if self.learning_rate_scheduler is not None:
             if self.learning_rate_scheduler == "cosine_annealing":
                 self.q1_scheduler.step()
@@ -410,20 +428,10 @@ class Agent:
                     self.q2_scheduler.step()
                     self.policy_scheduler.step()
 
-    def _freeze_network(self, network):
-        """Freeze the gradients of the network so that loss cannot backprop
-        through it."""
-        for param in network.parameters():
-            param.requires_grad = False
-
-    def _unfreeze_network(self, network):
-        """Unfreeze the network gradients."""
-        for param in network.parameters():
-            param.requires_grad = True
-
-    def update_target_networks(self):
+    def _update_target_networks(self):
         """Update the target networks for the q-network and the policy-network via
-        a moving average."""
+        a moving average (Line 15 of the OpenAI pseudocode).
+        """
         with torch.no_grad():
             self._polyak_average_update(self.q1_network, self.q1_network_target)
             self._polyak_average_update(self.q2_network, self.q2_network_target)
@@ -437,13 +445,15 @@ class Agent:
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
 
-    def _freeze_alpha(self):
-        if self.update_alpha:
-            self.log_alpha.requires_grad = False
+    def _freeze_network(self, network):
+        """Freeze the gradients of the network so that loss cannot backpropagate through it."""
+        for param in network.parameters():
+            param.requires_grad = False
 
-    def _unfreeze_alpha(self):
-        if self.update_alpha:
-            self.log_alpha.requires_grad = True
+    def _unfreeze_network(self, network):
+        """Unfreeze the network gradients."""
+        for param in network.parameters():
+            param.requires_grad = True
 
     def _freeze_alpha(self):
         if self.update_alpha == "learned":
@@ -480,12 +490,12 @@ class QNetwork(nn.Module):
         self.to(self.device)
 
     def forward(self, s: torch.Tensor, a: torch.Tensor) -> torch.Tensor:
-        # Expecte batch_size x (num_obs + num_actions)
+        # Expected batch_size x (num_obs + num_actions)
         return self.network(torch.hstack((s, a)))
 
 
 class PolicyNetwork(nn.Module):
-    # Spin-up uses a lower and upper bound for the log_std calculation
+    # OpenAI Spinning-Up uses a lower and upper bound for the log_std calculation
     LOG_STD_MAX = 2
     LOG_STD_MIN = -20
 
@@ -572,8 +582,9 @@ class SACBuffer:
         buffer_type: str = "uniform",
     ) -> None:
         """Buffer responsible for storing the experience and the Q target.
-        Unlike the VPG and PPO buffer, this buffer is static because random sampling
-        is used to train the agent.
+
+        If :buffer_type: is 'prioritized' then prioritized experience replay (PER) and on-policy mixing is used when
+        sampling the replay buffer, as described in (Banerjee, 2021): https://arxiv.org/pdf/2109.11767v1.pdf
         """
         # Number of states, actions and total number of time steps
         self.number_obs = number_obs
@@ -585,7 +596,7 @@ class SACBuffer:
         self.obs_buffer = torch.zeros((self.size, self.number_obs))
         self.next_obs_buffer = torch.zeros((self.size, self.number_obs))
         self.reward_buffer = torch.zeros(self.size)
-        self.priority_buffer = torch.zeros(self.size)  # for PER
+        self.priority_buffer = torch.zeros(self.size)
         self.done_buffer = torch.zeros(self.size)
         self.experience_pointer = 0
         self.effective_size = 0
@@ -596,18 +607,11 @@ class SACBuffer:
         self.obs_cache = torch.zeros((self.size, self.number_obs))
         self.next_obs_cache = torch.zeros((self.size, self.number_obs))
         self.reward_cache = torch.zeros(self.size)
-        self.priority_cache = torch.zeros(self.size)  # for PER
+        self.priority_cache = torch.zeros(self.size)
         self.done_cache = torch.zeros(self.size)
         self.cache_pointer = 0
         self.effective_cache_size = 0
-
-        # Temporary buffer
-        self.action_temp_buffer = torch.zeros((self.size, self.number_actions))
-        self.obs_temp_buffer = torch.zeros((self.size, self.number_obs))
-        self.next_obs_temp_buffer = torch.zeros((self.size, self.number_obs))
-        self.reward_temp_buffer = torch.zeros(self.size)
-        self.priority_temp_buffer = torch.zeros(self.size)  # for PER
-        self.done_temp_buffer = torch.zeros(self.size)
+        self.previous_effective_cache_size = 0
 
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -627,8 +631,8 @@ class SACBuffer:
         done: bool,
     ) -> None:
         """
-        During episode: store experience in the cache
-        At the end of episode: calculate return, put cache in buffer, empty cache
+        When called during an episode, experience is stored in the cache. At the end of episode, calculate the episodic
+        return (used for the 'priority' of each transition in that episode) and transfer the cache into the buffer.
         """
 
         # Store experience in cache
@@ -648,31 +652,31 @@ class SACBuffer:
         if done:
             # Copy cache into buffer
             self.action_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size,
                 :,
-            ] = self.action_cache[0 : self.effective_cache_size, :]
+            ] = self.action_cache[0: self.effective_cache_size, :]
             self.obs_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size,
                 :,
-            ] = self.obs_cache[0 : self.effective_cache_size, :]
+            ] = self.obs_cache[0: self.effective_cache_size, :]
             self.next_obs_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size,
                 :,
-            ] = self.next_obs_cache[0 : self.effective_cache_size, :]
+            ] = self.next_obs_cache[0: self.effective_cache_size, :]
             self.reward_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size
-            ] = self.reward_cache[0 : self.effective_cache_size]
+            ] = self.reward_cache[0: self.effective_cache_size]
             self.done_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size
-            ] = self.done_cache[0 : self.effective_cache_size]
+            ] = self.done_cache[0: self.effective_cache_size]
 
             self.priority_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size
             ] = self.current_episode_reward
 
@@ -686,8 +690,9 @@ class SACBuffer:
     def get_training_batch(
         self,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
-        """Sample (batch_size) number of data points from (0, self.experience_pointer - 1)
-        and returns tensors for s, a, s', r, and done."""
+        """Sample :self.batch_size: number of data points from the replay buffer and returns tensors
+        for s, a, s', r, and done. Experience is sampled on the buffer based on the :buffer_type:
+        """
         if self.buffer_type == "prioritized":
             # Sample indices
             sample_index1 = np.random.choice(
@@ -696,7 +701,7 @@ class SACBuffer:
             sample_index2 = np.random.choice(
                 np.arange(self.effective_size), self.batch_size
             )
-            # Sample data prioritization - Section 3.A
+            # Sample data prioritization - Section 3.A of (Banerjee, 2021)
             priority_sample_index1 = self.priority_buffer[sample_index1]
             priority_sample_index2 = self.priority_buffer[sample_index2]
 
@@ -715,10 +720,10 @@ class SACBuffer:
                     self.priority_buffer[sample_index]
                 )
                 sample_index = sample_index[indexing_of_sample_index][
-                    -self.batch_size :
+                    -self.batch_size:
                 ]
 
-                # To implement Section 3.B - To mix on and off-policy
+                # To implement Section 3.B of (Banerjee, 2021) - To mix on and off-policy experience.
                 # On-policy experience is stored in the previous written cache
                 swap_index = np.random.choice(self.batch_size)
 
