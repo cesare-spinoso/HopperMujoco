@@ -277,8 +277,8 @@ class Agent:
             # print(f"Current episode: {self.current_episode}")
         if self.is_ready_to_train():
             self.train()
-            print(self.current_episode)
-            print(f"Alpha: {self.alpha}")
+            # print(self.current_episode)
+            # print(f"Alpha: {self.alpha}")
             self.episode_of_last_update = self.current_episode
             if logger:
                 logger.log(f"Timestep: {timestep}")
