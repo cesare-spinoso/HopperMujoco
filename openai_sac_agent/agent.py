@@ -5,16 +5,25 @@ from torch.functional import F
 from torch.distributions import Normal
 import numpy as np
 
-from typing import Tuple
+from typing import Tuple, Optional
 from copy import deepcopy
 
 
 class Agent:
-    """The agent class that is to be filled.
-    You are allowed to add any method you
-    want to this class.
+    """
+    Soft Actor-Critic Agent, implemented following the OpenAI Spinning Up pseudocode available here:
+        https://spinningup.openai.com/en/latest/algorithms/sac.html
 
-    Implemented following the pseudocode here: https://spinningup.openai.com/en/latest/algorithms/sac.html
+    Args:
+      alpha:                        Entropy regularization coefficent. Defaults to 0.2.
+      exploration_timesteps:        How many timesteps does the agent use at the beginning for uniform exploration.
+                                    Defaults to 10_000.
+      update_frequency_in_episodes: Frequency (in episodes) of the number of times that the agent takes gradient steps.
+                                    Defaults to 50.
+      update_start_in_episodes:     Number of episodes required before the agent starts taking gradient steps for its
+                                    networks. This is mostly here to ensure that the buffer is full enough to batching.
+                                    Defaults to 1_000.
+      number_of_batch_updates:      Number of gradient updates to take. Defaults to 1_000.
     """
 
     def __init__(
@@ -41,18 +50,6 @@ class Agent:
         batch_size: int = 100,
         replay_buffer_type: str = "uniform"
     ):
-        """Creates an SAC agent. Some of the more obscure parameters are explained below.
-
-        Args:
-          alpha (float, optional): Fixed KL threshold. The Udemy implementation uses a variable KL. Defaults to 0.2.
-          exploration_timesteps (int, optional): How many timesteps does the agent use at the beginning
-          for uniform exploration. Defaults to 10_000.
-          update_frequency_in_episodes (int, optional): Frequency (in episodes) of the number of times that
-          the agent takes gradient steps. Defaults to 50.
-          update_start_in_episodes (int, optional): NUmber of episodes required before the agent starts taking gradient
-          steps for its networks. This is mostly here to ensure that the buffer is full enough to batching. Defaults to 1_000.
-          number_of_batch_updates (int, optional): Number of gradient updates to take. Defaults to 1_000.
-        """
         # Environment variables
         self.env_specs = env_specs
         # Number of observations (states) and actions
@@ -183,8 +180,8 @@ class Agent:
         then use default name of "model" which is assumed to be in the same directory as load_weights.
 
         Args:
-            root_path (str): Root path
-            pretrained_model_name (str, optional): Model name e.g. td3_ckpt_98.888. Defaults to None.
+          root_path (str): Root path
+          pretrained_model_name (str, optional): Model name e.g. td3_ckpt_98.888. Defaults to None.
         """
         if pretrained_model_name is None:
             pretrained_model_path = os.path.join(root_path, "model.pth.tar")
@@ -243,7 +240,11 @@ class Agent:
 
         return ckpt_path
 
-    def act(self, curr_obs, mode="eval"):
+    def act(self, curr_obs: np.ndarray, mode: Optional[str] = "eval") -> np.ndarray:
+        """Returns an action following observation of :curr_obs:.
+        If mode is 'train', the agent waits for :self.exploration_timesteps: before sampling actions from the policy.
+        If mode is 'eval', agent samples from the policy right away.
+        """
         with torch.no_grad():
             curr_obs = torch.from_numpy(curr_obs).float().to(self.device)
             if mode == "train":
@@ -263,6 +264,7 @@ class Agent:
             return action
 
     def update(self, curr_obs, action, reward, next_obs, done, timestep, logger=None):
+        """After each timestep, send experience to the SACBuffer. Train the agent if it is ready to train."""
         # Store experience in buffer
         curr_obs = torch.from_numpy(curr_obs).float()
         action = torch.from_numpy(action).float()
@@ -285,7 +287,9 @@ class Agent:
                 if self.learning_rate_scheduler is not None:
                     logger.log(f"LR: {self.q1_scheduler.get_last_lr()[0]}")
 
-    def is_ready_to_train(self):
+    def is_ready_to_train(self) -> bool:
+        """Returns True if enough exploration timesteps/episodes have passed and we are at the end of an episode.
+           Otherwise, returns False."""
         if self.episode_of_last_update is None:
             return self.current_episode > self.update_start_in_episodes or (
                 self.update_start_in_timesteps is not None
@@ -298,6 +302,9 @@ class Agent:
             )
 
     def train(self):
+        """Trains agents following OpenAI's Spinning Up pseudocode:
+            https://spinningup.openai.com/en/latest/algorithms/sac.html
+        """
         for j in range(self.number_of_batch_updates):
             # Get training batch
             (
@@ -309,15 +316,14 @@ class Agent:
             ) = self.buffer.get_training_batch()
             # Get the training targets (Line 12 of the OpenAI pseudocode)
             y = self.compute_targets(reward_data, next_obs_data, done_data)
-            # Train the Q-network (Line 13 of the OpenAI pseudocode)
+
             self.train_q_networks(obs_data, action_data, y)
-            # Train the policy network (Line 14 of the OpenAI pseudocode)
             self.train_policy_network(obs_data)
-            # "Train" the alpha
+
             self.train_alpha(obs_data)
-            # Update the target networks (Line 15 of the OpenAI pseudocode)
+
             self.update_target_networks()
-        # Learning rate scheduling
+
         self.update_learning_rate()
 
     def compute_targets(
@@ -338,6 +344,7 @@ class Agent:
             )
 
     def train_q_networks(self, obs_data, action_data, y):
+        """Train the Q-network (Line 13 of the OpenAI pseudocode)"""
         for q_network, q_optimizer in [
             (self.q1_network, self.q1_optimizer),
             (self.q2_network, self.q2_optimizer),
@@ -354,6 +361,7 @@ class Agent:
             q_optimizer.step()
 
     def train_policy_network(self, obs_data):
+        """Train the policy network (Line 14 of the OpenAI pseudocode)"""
         # Freeze the Q-networks
         self._freeze_network(self.q1_network)
         self._freeze_network(self.q2_network)
@@ -377,6 +385,7 @@ class Agent:
         self._unfreeze_alpha()
 
     def train_alpha(self, obs_data):
+        """Learn the entropy regularization coefficient."""
         if self.update_alpha is not None:
             if self.update_alpha == "learned":
                 # Zero grad
@@ -400,6 +409,7 @@ class Agent:
                     self.alpha *= self.alpha_decay_rate
 
     def update_learning_rate(self):
+        """Learning rate scheduler update."""
         if self.learning_rate_scheduler is not None:
             if self.learning_rate_scheduler == "cosine_annealing":
                 self.q1_scheduler.step()
@@ -427,7 +437,8 @@ class Agent:
 
     def update_target_networks(self):
         """Update the target networks for the q-network and the policy-network via
-        a moving average."""
+        a moving average (Line 15 of the OpenAI pseudocode).
+        """
         with torch.no_grad():
             self._polyak_average_update(self.q1_network, self.q1_network_target)
             self._polyak_average_update(self.q2_network, self.q2_network_target)
