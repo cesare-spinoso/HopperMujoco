@@ -387,7 +387,9 @@ class Agent:
         self._unfreeze_alpha()
 
     def _train_alpha(self, obs_data):
-        """Learn the entropy regularization coefficient."""
+        """Learn the entropy regularization coefficient, if :self.update_alpha: is specified.
+         Learning is described in https://arxiv.org/abs/1812.05905, section 6.
+         """
         if self.update_alpha is not None:
             if self.update_alpha == "learned":
                 # Zero grad
