@@ -44,16 +44,16 @@ class Agent:
         """Creates an SAC agent. Some of the more obscure parameters are explained below.
 
         Args:
-            alpha (float, optional): Fixed KL threshold. The Udemy implementation uses a variable KL. Defaults to 0.2.
-            exploration_timesteps (int, optional): How many timesteps does the agent use at the beginning
-            for uniform exploration. Defaults to 10_000.
-            update_frequency_in_episodes (int, optional): Frequency (in episodes) of the number of times that
-            the agent takes gradient steps. Defaults to 50.
-            update_start_in_episodes (int, optional): NUmber of episodes required before the agent starts taking gradient
-            steps for its networks. This is mostly here to ensure that the buffer is full enough to batching. Defaults to 1_000.
-            number_of_batch_updates (int, optional): Number of gradient updates to take. Defaults to 1_000.
+          alpha (float, optional): Fixed KL threshold. The Udemy implementation uses a variable KL. Defaults to 0.2.
+          exploration_timesteps (int, optional): How many timesteps does the agent use at the beginning
+          for uniform exploration. Defaults to 10_000.
+          update_frequency_in_episodes (int, optional): Frequency (in episodes) of the number of times that
+          the agent takes gradient steps. Defaults to 50.
+          update_start_in_episodes (int, optional): NUmber of episodes required before the agent starts taking gradient
+          steps for its networks. This is mostly here to ensure that the buffer is full enough to batching. Defaults to 1_000.
+          number_of_batch_updates (int, optional): Number of gradient updates to take. Defaults to 1_000.
         """
-        ### ENVIRONMENT VARIABLES ###
+        # Environment variables
         self.env_specs = env_specs
         # Number of observations (states) and actions
         self.num_obs = env_specs["observation_space"].shape[0]
@@ -65,7 +65,8 @@ class Agent:
         self.episode_of_last_update = None
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        ### HYPERPARAMETERS ###
+
+        # Hyperparameters
         self.gamma = gamma
         self.polyak = polyak
         # Number of time steps where sample actions randomly
@@ -76,7 +77,8 @@ class Agent:
         self.update_start_in_timesteps = update_start_in_timesteps
         self.number_of_batch_updates = number_of_batch_updates
         self.batch_size = batch_size
-        ### Q-NETWORKS (Q1 and Q1) ###
+
+        # Q-networks (Q1 and Q1)
         self.q1_network = QNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -96,7 +98,8 @@ class Agent:
         self._freeze_network(self.q1_network_target)
         self.q2_network_target = deepcopy(self.q2_network)
         self._freeze_network(self.q2_network_target)
-        ### POLICY NETWORK ###
+
+        # Policy network
         self.policy_network = PolicyNetwork(
             num_obs=self.num_obs,
             num_actions=self.num_actions,
@@ -107,7 +110,8 @@ class Agent:
         self.policy_optimizer = torch.optim.Adam(
             self.policy_network.parameters(), lr=policy_lr
         )
-        ### LEARNING RATE SCHEDULER ###
+
+        # Learning rate scheduler
         self.learning_rate_scheduler = learning_rate_scheduler
         if self.learning_rate_scheduler is not None:
             assert self.learning_rate_scheduler in {
@@ -145,7 +149,7 @@ class Agent:
                 self.policy_scheduler = torch.optim.lr_scheduler.ExponentialLR(
                     self.policy_optimizer, gamma=self.decay_rate
                 )
-        ### ADPTABLE ALPHA ###
+        # Adaptable alpha
         self.alpha = alpha  # entropy parameter
         self.update_alpha = update_alpha
         if self.update_alpha is not None:
@@ -165,7 +169,7 @@ class Agent:
                 self.alpha_decaying_frequency = 100_000
                 self.alpha_decay_rate = 0.9
                 self.alpha_update_counter = 0
-        ### BUFFER ###
+        # Replay Buffer
         self.buffer = SACBuffer(
             number_obs=self.num_obs,
             number_actions=self.num_actions,
@@ -193,7 +197,7 @@ class Agent:
             pretrained_model = torch.load(
                 pretrained_model_path, map_location=torch.device(self.device)
             )
-        except:
+        except FileNotFoundError:
             raise Exception(
                 "Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
                 \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/td3_ckpt_98.888"
@@ -215,7 +219,7 @@ class Agent:
         then use its score as the name.
         """
         # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
-        if name == None:
+        if name is None:
             ckpt_path = os.path.join(
                 ckpt_path, "sac_ckpt_" + str(round(score_avg, 3)) + ".pth.tar"
             )
@@ -600,6 +604,7 @@ class SACBuffer:
         self.done_cache = torch.zeros(self.size)
         self.cache_pointer = 0
         self.effective_cache_size = 0
+        self.previous_effective_cache_size = 0
 
         # Temporary buffer
         self.action_temp_buffer = torch.zeros((self.size, self.number_actions))
@@ -648,31 +653,31 @@ class SACBuffer:
         if done:
             # Copy cache into buffer
             self.action_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size,
                 :,
-            ] = self.action_cache[0 : self.effective_cache_size, :]
+            ] = self.action_cache[0: self.effective_cache_size, :]
             self.obs_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size,
                 :,
-            ] = self.obs_cache[0 : self.effective_cache_size, :]
+            ] = self.obs_cache[0: self.effective_cache_size, :]
             self.next_obs_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size,
                 :,
-            ] = self.next_obs_cache[0 : self.effective_cache_size, :]
+            ] = self.next_obs_cache[0: self.effective_cache_size, :]
             self.reward_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size
-            ] = self.reward_cache[0 : self.effective_cache_size]
+            ] = self.reward_cache[0: self.effective_cache_size]
             self.done_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size
-            ] = self.done_cache[0 : self.effective_cache_size]
+            ] = self.done_cache[0: self.effective_cache_size]
 
             self.priority_buffer[
-                self.experience_pointer : self.experience_pointer
+                self.experience_pointer: self.experience_pointer
                 + self.effective_cache_size
             ] = self.current_episode_reward
 
@@ -715,7 +720,7 @@ class SACBuffer:
                     self.priority_buffer[sample_index]
                 )
                 sample_index = sample_index[indexing_of_sample_index][
-                    -self.batch_size :
+                    -self.batch_size:
                 ]
 
                 # To implement Section 3.B - To mix on and off-policy
