@@ -442,14 +442,6 @@ class Agent:
             target_param.data.add_((1 - self.polyak) * param.data)
 
     def _freeze_alpha(self):
-        if self.update_alpha:
-            self.log_alpha.requires_grad = False
-
-    def _unfreeze_alpha(self):
-        if self.update_alpha:
-            self.log_alpha.requires_grad = True
-
-    def _freeze_alpha(self):
         if self.update_alpha == "learned":
             self.log_alpha.requires_grad = False
 
