@@ -26,6 +26,7 @@ params = {
     "learning_rate_scheduler": "cosine_annealing",
     "exploration_timesteps": 0, # Don't get data that cause you to forget
     "update_start_in_timesteps": 10_000,
-    "update_frequency_in_episodes": 1 # Increase update frequency
+    "update_frequency_in_episodes": 1, # Increase update frequency
+    "replay_buffer_type": "prioritized"
 }
 
