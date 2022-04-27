@@ -243,7 +243,7 @@ class Agent:
     def act(self, curr_obs: np.ndarray, mode: Optional[str] = "eval") -> np.ndarray:
         """Returns an action following observation of :curr_obs:.
         If mode is 'train', the agent waits for :self.exploration_timesteps: before sampling actions from the policy.
-        If mode is 'eval', agent samples from the policy right away.
+        If mode is 'eval', return the mean of the policy.
         """
         with torch.no_grad():
             curr_obs = torch.from_numpy(curr_obs).float().to(self.device)
