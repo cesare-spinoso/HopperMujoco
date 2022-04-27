@@ -36,19 +36,50 @@ grid = [
     },
 ]
 
-# The hyperparamters chosen for the sample efficient agent
-grid = {
+# Extra hyperparameter search w/ prioritized experience buffer
+gird = [
+    {
         "q_architecture": [(64, 64)],
         "q_activation_function": [torch.nn.ReLU],
         "policy_architecture": [(64, 64)],
         "policy_activation_function": [torch.nn.ReLU],
         "q_lr": [1e-3],
         "policy_lr": [1e-3],
-        "alpha": [0.8],
+        "alpha": [0.6, 1.2, 1.6, 2.4],
         "update_alpha": [False],
         "exploration_timesteps": [100],
         "update_start_in_episodes": [100],
         "update_frequency_in_episodes": [1],
+    },
+    {
+        "q_architecture": [(64, 64)],
+        "q_activation_function": [torch.nn.ReLU],
+        "policy_architecture": [(64, 64)],
+        "policy_activation_function": [torch.nn.ReLU],
+        "q_lr": [1e-3],
+        "policy_lr": [1e-3],
+        "alpha": [0.6, 1.2, 1.6, 2.4],
+        "prioritized_replay": [True], # TODO: Change this based on what it is
+        "update_alpha": [False],
+        "exploration_timesteps": [100],
+        "update_start_in_episodes": [100],
+        "update_frequency_in_episodes": [1],
+    },
+]
+
+# The hyperparamters chosen for the sample efficient agent
+grid = {
+    "q_architecture": [(64, 64)],
+    "q_activation_function": [torch.nn.ReLU],
+    "policy_architecture": [(64, 64)],
+    "policy_activation_function": [torch.nn.ReLU],
+    "q_lr": [1e-3],
+    "policy_lr": [1e-3],
+    "alpha": [0.8],
+    "update_alpha": [False],
+    "exploration_timesteps": [100],
+    "update_start_in_episodes": [100],
+    "update_frequency_in_episodes": [1],
 }
 
 hyperparameter_grid = []
