@@ -196,11 +196,11 @@ class Agent:
             )
         except FileNotFoundError:
             raise Exception(
-                "Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \
-                \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/td3_ckpt_98.888"
+                "Invalid location for loading pretrained model. You need folder/filename in results folder (without \
+                .pth.tar). \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/td3_ckpt_98.888"
             )
 
-        # load state dict for the 4 networks
+        # Load state dict for the 4 networks
         self.q1_network.load_state_dict(pretrained_model["q1_network"])
         self.q2_network.load_state_dict(pretrained_model["q2_network"])
         self.policy_network.load_state_dict(pretrained_model["policy_network"])
@@ -215,7 +215,7 @@ class Agent:
         """Save the weights of the critic and the actor as well as its score. If name is None,
         then use its score as the name.
         """
-        # path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
+        # Path for current version you're saving (only need ckpt_xxx, not ckpt_xxx.pth.tar)
         if name is None:
             ckpt_path = os.path.join(
                 ckpt_path, "sac_ckpt_" + str(round(score_avg, 3)) + ".pth.tar"
@@ -443,10 +443,8 @@ class Agent:
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
 
-
     def _freeze_network(self, network):
-        """Freeze the gradients of the network so that loss cannot backprop
-        through it."""
+        """Freeze the gradients of the network so that loss cannot backpropagate through it."""
         for param in network.parameters():
             param.requires_grad = False
 
@@ -490,12 +488,12 @@ class QNetwork(nn.Module):
         self.to(self.device)
 
     def forward(self, s: torch.Tensor, a: torch.Tensor) -> torch.Tensor:
-        # Expecte batch_size x (num_obs + num_actions)
+        # Expected batch_size x (num_obs + num_actions)
         return self.network(torch.hstack((s, a)))
 
 
 class PolicyNetwork(nn.Module):
-    # Spin-up uses a lower and upper bound for the log_std calculation
+    # OpenAI Spinning-Up uses a lower and upper bound for the log_std calculation
     LOG_STD_MAX = 2
     LOG_STD_MIN = -20
 
@@ -596,7 +594,7 @@ class SACBuffer:
         self.obs_buffer = torch.zeros((self.size, self.number_obs))
         self.next_obs_buffer = torch.zeros((self.size, self.number_obs))
         self.reward_buffer = torch.zeros(self.size)
-        self.priority_buffer = torch.zeros(self.size)  # for PER
+        self.priority_buffer = torch.zeros(self.size)
         self.done_buffer = torch.zeros(self.size)
         self.experience_pointer = 0
         self.effective_size = 0
@@ -607,19 +605,11 @@ class SACBuffer:
         self.obs_cache = torch.zeros((self.size, self.number_obs))
         self.next_obs_cache = torch.zeros((self.size, self.number_obs))
         self.reward_cache = torch.zeros(self.size)
-        self.priority_cache = torch.zeros(self.size)  # for PER
+        self.priority_cache = torch.zeros(self.size)
         self.done_cache = torch.zeros(self.size)
         self.cache_pointer = 0
         self.effective_cache_size = 0
         self.previous_effective_cache_size = 0
-
-        # Temporary buffer
-        self.action_temp_buffer = torch.zeros((self.size, self.number_actions))
-        self.obs_temp_buffer = torch.zeros((self.size, self.number_obs))
-        self.next_obs_temp_buffer = torch.zeros((self.size, self.number_obs))
-        self.reward_temp_buffer = torch.zeros(self.size)
-        self.priority_temp_buffer = torch.zeros(self.size)  # for PER
-        self.done_temp_buffer = torch.zeros(self.size)
 
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -709,7 +699,7 @@ class SACBuffer:
             sample_index2 = np.random.choice(
                 np.arange(self.effective_size), self.batch_size
             )
-            # Sample data prioritization - Section 3.A
+            # Sample data prioritization - Section 3.A of (Banerjee, 2021)
             priority_sample_index1 = self.priority_buffer[sample_index1]
             priority_sample_index2 = self.priority_buffer[sample_index2]
 
@@ -731,7 +721,7 @@ class SACBuffer:
                     -self.batch_size:
                 ]
 
-                # To implement Section 3.B - To mix on and off-policy
+                # To implement Section 3.B of (Banerjee, 2021) - To mix on and off-policy experience.
                 # On-policy experience is stored in the previous written cache
                 swap_index = np.random.choice(self.batch_size)
 
