@@ -28,7 +28,7 @@ class Agent:
         policy_lr: float = 1e-3,
         policy_architecture: tuple = (64, 64),
         policy_activation_function: F = nn.ReLU,
-        buffer_size: int = 2_000_000,
+        buffer_size: int = 3_000_000,
         alpha: float = 0.2,
         update_alpha: str = None,
         alpha_lr: float = 3e-4,
@@ -39,6 +39,7 @@ class Agent:
         update_start_in_timesteps: int = None,
         number_of_batch_updates: int = 1_000,
         batch_size: int = 100,
+        replay_buffer_type: str = "uniform"
     ):
         """Creates an SAC agent. Some of the more obscure parameters are explained below.
 
@@ -109,7 +110,10 @@ class Agent:
         ### LEARNING RATE SCHEDULER ###
         self.learning_rate_scheduler = learning_rate_scheduler
         if self.learning_rate_scheduler is not None:
-            assert self.learning_rate_scheduler in {"exponential_decay", "cosine_annealing"}
+            assert self.learning_rate_scheduler in {
+                "exponential_decay",
+                "cosine_annealing",
+            }
             self.update_counter = 0
             if self.learning_rate_scheduler == "cosine_annealing":
                 self.learning_rate_scheduler_frequency = 100
@@ -154,7 +158,9 @@ class Agent:
                 self.alpha = torch.exp(self.log_alpha)
                 # Optimizer
                 self.alpha_lr = alpha_lr
-                self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=self.alpha_lr)
+                self.alpha_optimizer = torch.optim.Adam(
+                    [self.log_alpha], lr=self.alpha_lr
+                )
             else:
                 self.alpha_decaying_frequency = 100_000
                 self.alpha_decay_rate = 0.9
@@ -165,6 +171,7 @@ class Agent:
             number_actions=self.num_actions,
             size=buffer_size,
             batch_size=self.batch_size,
+            buffer_type=replay_buffer_type
         )
 
     def load_weights(self, root_path: str, pretrained_model_name: str = None) -> None:
@@ -382,7 +389,9 @@ class Agent:
                 # Update the alpha, is this line necessary?
                 self.alpha = torch.exp(self.log_alpha)
             else:
-                if (self.current_timestep - self.alpha_update_counter) / self.alpha_decaying_frequency > 1:
+                if (
+                    self.current_timestep - self.alpha_update_counter
+                ) / self.alpha_decaying_frequency > 1:
                     self.alpha_update_counter = self.current_timestep
                     self.alpha *= self.alpha_decay_rate
 
@@ -393,12 +402,13 @@ class Agent:
                 self.q2_scheduler.step()
                 self.policy_scheduler.step()
             else:
-                if (self.current_timestep - self.update_counter) / self.learning_rate_scheduler_frequency_timesteps > 1:
+                if (
+                    self.current_timestep - self.update_counter
+                ) / self.learning_rate_scheduler_frequency_timesteps > 1:
                     self.update_counter = self.current_timestep
                     self.q1_scheduler.step()
                     self.q2_scheduler.step()
                     self.policy_scheduler.step()
-
 
     def _freeze_network(self, network):
         """Freeze the gradients of the network so that loss cannot backprop
@@ -426,7 +436,7 @@ class Agent:
             # Use OpenAI's in-place trick
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
-    
+
     def _freeze_alpha(self):
         if self.update_alpha:
             self.log_alpha.requires_grad = False
@@ -555,8 +565,11 @@ class SACBuffer:
         self,
         number_obs: int,
         number_actions: int,
-        size: int = 1_000_000,
+        size: int = 3_000_000,
         batch_size: int = 100,
+        gamma: float = 0.99,
+        priority_threshold: float = 0.5,
+        buffer_type: str = "uniform",
     ) -> None:
         """Buffer responsible for storing the experience and the Q target.
         Unlike the VPG and PPO buffer, this buffer is static because random sampling
@@ -566,18 +579,44 @@ class SACBuffer:
         self.number_obs = number_obs
         self.number_actions = number_actions
         self.size = size
+
         # Create state, action, next_state, reward, done buffers
         self.action_buffer = torch.zeros((self.size, self.number_actions))
         self.obs_buffer = torch.zeros((self.size, self.number_obs))
         self.next_obs_buffer = torch.zeros((self.size, self.number_obs))
         self.reward_buffer = torch.zeros(self.size)
+        self.priority_buffer = torch.zeros(self.size)  # for PER
         self.done_buffer = torch.zeros(self.size)
         self.experience_pointer = 0
         self.effective_size = 0
+        self.current_episode_reward = 0
+
+        # PER Cache
+        self.action_cache = torch.zeros((self.size, self.number_actions))
+        self.obs_cache = torch.zeros((self.size, self.number_obs))
+        self.next_obs_cache = torch.zeros((self.size, self.number_obs))
+        self.reward_cache = torch.zeros(self.size)
+        self.priority_cache = torch.zeros(self.size)  # for PER
+        self.done_cache = torch.zeros(self.size)
+        self.cache_pointer = 0
+        self.effective_cache_size = 0
+
+        # Temporary buffer
+        self.action_temp_buffer = torch.zeros((self.size, self.number_actions))
+        self.obs_temp_buffer = torch.zeros((self.size, self.number_obs))
+        self.next_obs_temp_buffer = torch.zeros((self.size, self.number_obs))
+        self.reward_temp_buffer = torch.zeros(self.size)
+        self.priority_temp_buffer = torch.zeros(self.size)  # for PER
+        self.done_temp_buffer = torch.zeros(self.size)
+
         # Device
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
         # Hyperparameters
         self.batch_size = batch_size
+        self.gamma = gamma
+        self.priority_threshold = priority_threshold
+        self.buffer_type = buffer_type  # uniform or prioritized
 
     def store_experience(
         self,
@@ -587,28 +626,148 @@ class SACBuffer:
         next_obs: torch.Tensor,
         done: bool,
     ) -> None:
-        """Store the experience and increment pointer. Once the pointer reaches the
-        end of the buffer reset it to 0. In this way the buffer acts as a queue."""
-        self.action_buffer[self.experience_pointer, :] = action
-        self.obs_buffer[self.experience_pointer, :] = obs
-        self.next_obs_buffer[self.experience_pointer, :] = next_obs
-        self.reward_buffer[self.experience_pointer] = reward
-        self.done_buffer[self.experience_pointer] = int(done)
-        self.experience_pointer = (self.experience_pointer + 1) % self.size
-        self.effective_size = min(self.effective_size + 1, self.size)
+        """
+        During episode: store experience in the cache
+        At the end of episode: calculate return, put cache in buffer, empty cache
+        """
+
+        # Store experience in cache
+        self.action_cache[self.cache_pointer, :] = action
+        self.obs_cache[self.cache_pointer, :] = obs
+        self.next_obs_cache[self.cache_pointer, :] = next_obs
+        self.reward_cache[self.cache_pointer] = reward
+        self.done_cache[self.cache_pointer] = int(done)
+
+        # Update total reward
+        self.current_episode_reward += (
+            np.power(self.gamma, self.effective_cache_size) * reward
+        )
+        self.cache_pointer += 1
+        self.effective_cache_size += 1
+
+        if done:
+            # Copy cache into buffer
+            self.action_buffer[
+                self.experience_pointer : self.experience_pointer
+                + self.effective_cache_size,
+                :,
+            ] = self.action_cache[0 : self.effective_cache_size, :]
+            self.obs_buffer[
+                self.experience_pointer : self.experience_pointer
+                + self.effective_cache_size,
+                :,
+            ] = self.obs_cache[0 : self.effective_cache_size, :]
+            self.next_obs_buffer[
+                self.experience_pointer : self.experience_pointer
+                + self.effective_cache_size,
+                :,
+            ] = self.next_obs_cache[0 : self.effective_cache_size, :]
+            self.reward_buffer[
+                self.experience_pointer : self.experience_pointer
+                + self.effective_cache_size
+            ] = self.reward_cache[0 : self.effective_cache_size]
+            self.done_buffer[
+                self.experience_pointer : self.experience_pointer
+                + self.effective_cache_size
+            ] = self.done_cache[0 : self.effective_cache_size]
+
+            self.priority_buffer[
+                self.experience_pointer : self.experience_pointer
+                + self.effective_cache_size
+            ] = self.current_episode_reward
+
+            self.effective_size += self.effective_cache_size
+            self.experience_pointer += self.effective_cache_size
+            self.previous_effective_cache_size = self.effective_cache_size
+            self.effective_cache_size = 0
+            self.cache_pointer = 0
+            self.current_episode_reward = 0
 
     def get_training_batch(
         self,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """Sample (batch_size) number of data points from (0, self.experience_pointer - 1)
         and returns tensors for s, a, s', r, and done."""
-        sample_index = np.random.choice(
-            np.arange(self.effective_size), self.batch_size, replace=False
-        )
-        return (
-            self.obs_buffer[sample_index, :].to(self.device),
-            self.action_buffer[sample_index, :].to(self.device),
-            self.reward_buffer[sample_index].to(self.device),
-            self.next_obs_buffer[sample_index, :].to(self.device),
-            self.done_buffer[sample_index].to(self.device),
-        )
+        if self.buffer_type == "prioritized":
+            # Sample indices
+            sample_index1 = np.random.choice(
+                np.arange(self.effective_size), self.batch_size
+            )
+            sample_index2 = np.random.choice(
+                np.arange(self.effective_size), self.batch_size
+            )
+            # Sample data prioritization - Section 3.A
+            priority_sample_index1 = self.priority_buffer[sample_index1]
+            priority_sample_index2 = self.priority_buffer[sample_index2]
+
+            # Compute the similarity between the samples
+            priority_sample_similarity = np.dot(
+                priority_sample_index1, priority_sample_index2
+            ) / (
+                np.linalg.norm(priority_sample_index1)
+                * np.linalg.norm(priority_sample_index2)
+            )
+
+            # Only use prioritized samples if they are different enough, otherwise use random samples
+            if priority_sample_similarity < self.priority_threshold:
+                sample_index = np.concatenate((sample_index1, sample_index2))
+                indexing_of_sample_index = np.argsort(
+                    self.priority_buffer[sample_index]
+                )
+                sample_index = sample_index[indexing_of_sample_index][
+                    -self.batch_size :
+                ]
+
+                # To implement Section 3.B - To mix on and off-policy
+                # On-policy experience is stored in the previous written cache
+                swap_index = np.random.choice(self.batch_size)
+
+                return_obs_buffer = self.obs_buffer[sample_index, :]
+                return_action_buffer = self.action_buffer[sample_index, :]
+                return_reward_buffer = self.reward_buffer[sample_index]
+                return_next_obs_buffer = self.next_obs_buffer[sample_index, :]
+                return_done_buffer = self.done_buffer[sample_index]
+
+                return_obs_buffer[swap_index, :] = self.obs_cache[
+                    np.random.choice(self.previous_effective_cache_size), :
+                ]
+                return_action_buffer[swap_index, :] = self.action_cache[
+                    np.random.choice(self.previous_effective_cache_size), :
+                ]
+                return_reward_buffer[swap_index] = self.reward_cache[
+                    np.random.choice(self.previous_effective_cache_size)
+                ]
+                return_next_obs_buffer[swap_index, :] = self.next_obs_cache[
+                    np.random.choice(self.previous_effective_cache_size), :
+                ]
+                return_done_buffer[swap_index] = self.done_cache[
+                    np.random.choice(self.previous_effective_cache_size)
+                ]
+
+                return (
+                    return_obs_buffer.to(self.device),
+                    return_action_buffer.to(self.device),
+                    return_reward_buffer.to(self.device),
+                    return_next_obs_buffer.to(self.device),
+                    return_done_buffer.to(self.device),
+                )
+            else:
+                sample_index = sample_index1
+                return (
+                    self.obs_buffer[sample_index, :].to(self.device),
+                    self.action_buffer[sample_index, :].to(self.device),
+                    self.reward_buffer[sample_index].to(self.device),
+                    self.next_obs_buffer[sample_index, :].to(self.device),
+                    self.done_buffer[sample_index].to(self.device),
+                )
+        else:
+            sample_index = np.random.choice(
+                np.arange(self.effective_size), self.batch_size, replace=False
+            )
+            return (
+                self.obs_buffer[sample_index, :].to(self.device),
+                self.action_buffer[sample_index, :].to(self.device),
+                self.reward_buffer[sample_index].to(self.device),
+                self.next_obs_buffer[sample_index, :].to(self.device),
+                self.done_buffer[sample_index].to(self.device),
+            )

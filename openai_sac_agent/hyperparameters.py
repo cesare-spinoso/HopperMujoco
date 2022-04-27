@@ -3,6 +3,7 @@
 import torch
 import sklearn.model_selection
 
+# Original HP Grid
 grid = {
     "architecture": [(64, 64), (100, 50, 25), (400, 300)],
     "activation": [torch.nn.ReLU, torch.nn.Tanh],
