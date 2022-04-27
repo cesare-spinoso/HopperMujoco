@@ -506,9 +506,6 @@ class SACBuffer:
         self.cache_pointer += 1
         self.effective_cache_size += 1
 
-        # self.experience_pointer = (self.experience_pointer + 1) % self.size
-        # self.effective_size = min(self.effective_size + 1, self.size)
-
         if done:
             # Copy cache into buffer
             self.action_buffer[
