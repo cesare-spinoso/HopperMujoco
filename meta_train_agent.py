@@ -73,9 +73,10 @@ if __name__ == "__main__":
         }
 
     # Training and evaluation variables
-    total_timesteps = 20_000
-    evaluation_freq = 1000
-    n_episodes_to_evaluate = 20
+    total_timesteps = 1_000_000
+    # Increasing the evaluation frequency for now as a quick fix
+    evaluation_freq = 500
+    n_episodes_to_evaluate = 10
 
     n_episodes_to_evaluate_leaderboard = 50
     num_seeds = 5
