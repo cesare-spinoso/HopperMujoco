@@ -181,7 +181,7 @@ class Agent:
 
         Args:
           root_path (str): Root path
-          pretrained_model_name (str, optional): Model name e.g. td3_ckpt_98.888. Defaults to None.
+          pretrained_model_name (str, optional): Model name e.g. sac_ckpt_98.888. Defaults to None.
         """
         if pretrained_model_name is None:
             pretrained_model_path = os.path.join(root_path, "model.pth.tar")
@@ -197,7 +197,7 @@ class Agent:
         except FileNotFoundError:
             raise Exception(
                 "Invalid location for loading pretrained model. You need folder/filename in results folder (without \
-                .pth.tar). \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/td3_ckpt_98.888"
+                .pth.tar). \nE.g. python3 train_agent.py --group vpg_agent --load 2022-03-31_12h46m44/sac_ckpt_98.888"
             )
 
         # Load state dict for the 4 networks
