@@ -1,5 +1,4 @@
 # Personal
-results/
 runs/
 # Pycharm
 .idea/
@@ -137,6 +136,8 @@ dmypy.json
 
 # Cluster scripts and outputs
 training_script.sh
+training_script*.sh
+*.sh
 job_output.txt
 job_error.txt
 

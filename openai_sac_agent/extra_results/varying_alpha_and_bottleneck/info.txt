@@ -1,0 +1,2 @@
+This one the alpha actually does change (but I don't have the recorded values for it so we can't do the double plots in this case
+) and uses bottleneck. I think we also use slightly different training settings e.g. the frequency of updates 

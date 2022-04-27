@@ -87,11 +87,11 @@ class Agent:
             pretrained_model_path = os.path.join(root_path, "model.pth.tar")
         else:
             pretrained_model_path = os.path.join(
-                root_path, "results", str(pretrained_model_name) + ".pth.tar"
+                root_path, str(pretrained_model_name) + ".pth.tar"
             )
 
         try:
-            pretrained_model = torch.load(pretrained_model_path)
+            pretrained_model = torch.load(pretrained_model_path, map_location=torch.device('cpu'))
         except:
             raise Exception(
                 "Invalid location for loading pretrained model. You need folder/filename in results folder (without .pth.tar). \

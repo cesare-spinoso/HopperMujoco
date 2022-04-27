@@ -1,3 +1,7 @@
+"""
+A script to train a single agent OR perform hyperparameter tuning.
+"""
+
 import argparse
 import importlib
 import os
@@ -8,73 +12,12 @@ from time import time
 import numpy as np
 from sklearn.metrics import auc
 
-
 from utils.json_utils import log_training_experiment_to_json
 from utils.plotting import plot_rewards
 from utils.logging_utils import start_logging
 from utils.environment import get_environment
 from utils.training import train_agent
 
-
-def train_and_evaluate(
-    agent,
-    env,
-    env_eval,
-    total_timesteps,
-    evaluation_freq,
-    n_episodes_to_evaluate,
-    save_checkpoints,
-    logger=None,
-    name=None,
-    visualize=False,
-):
-
-    if logger:
-        logger.log("Training start ... ")
-    start_time = time()
-
-    # you can feed names to train_agent or not --> will change the saved file names/graph labels
-    learning_curve = train_agent(
-        agent,
-        env,
-        env_eval,
-        total_timesteps,
-        evaluation_freq,
-        n_episodes_to_evaluate,
-        save_checkpoints,
-        logger=logger,
-        name=name,
-        visualize=visualize,
-    )
-    if logger:
-        logger.log("Training complete.")
-
-    # log some details of the training
-    elapsed_time = time() - start_time
-    if logger:
-        logger.log(f"\n\nFinal Mean Reward: {round(learning_curve[-1],5)}")
-        logger.log(f"Final Cumulative Reward: {round(np.sum(learning_curve),5)}")
-        logger.log(
-            f"AUC for Mean Reward: {round(auc(range(len(learning_curve)), learning_curve),5)}"
-        )
-        logger.log(f"Time Elapsed During Training: {elapsed_time}")
-
-    # plot learning curves - average reward and cumulative reward
-    # you can feed names to plot_rewards or not --> will change the graph labels
-    if logger:
-        plot_rewards(
-            learning_curve, logger.location, names=name, time_step=evaluation_freq
-        )
-    if name:
-        if logger:
-            logger.log(
-                "{} rewards graphed successfully. See {}".format(name, logger.location)
-            )
-    else:
-        if logger:
-            logger.log("Rewards graphed successfully. See {}".format(logger.location))
-
-    return learning_curve
 
 
 if __name__ == "__main__":
@@ -122,16 +65,24 @@ if __name__ == "__main__":
     evaluation_freq = 1000
     n_episodes_to_evaluate = 20
 
-    ########################################## training a single/multiple agent(s) ##########################################
+    ########################################## hyperparameter tuning ##########################################
     # starting a logger - results stored in folder labeled w/ date+time
     logger = start_logging()
 
     # Load the agent and try to load hyperparameters
     agent_module = importlib.import_module(args.group + ".agent")
     try:
-        hyperparameter_module = importlib.import_module(args.group + ".hyperparameters")
-        grid = hyperparameter_module.hyperparameter_grid
-        logger.log("Loaded the hyperparameter grid")
+        # If no .pth file is provided try to do grid search otherwise run default
+        if args.load == "None":
+            hyperparameter_module = importlib.import_module(args.group + ".hyperparameters")
+            grid = hyperparameter_module.hyperparameter_grid
+            logger.log("Loaded the hyperparameter grid")
+        # If a path is provided, the assumption is that the hyperparameters of the agent are in best_hyperparameters.py
+        else:
+            hyperparameter_module = importlib.import_module(args.group + ".best_hyperparameters")
+            grid = [hyperparameter_module.params]
+            assert hyperparameter_module.params["update_start_in_timesteps"] is not None
+            logger.log("Loaded the best hyperparameters")
     except:
         # Use the default hyperparameters
         logger.log("Could not find the hyperparameters.py module, using default agent.")
@@ -160,6 +111,7 @@ if __name__ == "__main__":
             logger,
             name=f"m_{i}",
             visualize=False,
+            save_checkpoint_start_timestep=0 if args.load == "None" else (agent.update_start_in_timesteps + 1)
         )
         logger.log("Training complete.")
 
