@@ -21,10 +21,12 @@ params = {
     "policy_architecture": (64, 64),
     "policy_activation_function": torch.nn.ReLU,
     "policy_lr": 1e-3,
-    "update_alpha": "learned", # Automatic exploration
+    "alpha": 0.8,
+    "update_alpha": "exponential_decay", # Automatic exploration
     "learning_rate_scheduler": "cosine_annealing",
     "exploration_timesteps": 0, # Don't get data that cause you to forget
     "update_start_in_timesteps": 10_000,
-    "update_frequency_in_episodes": 1 # Increase update frequency
+    "update_frequency_in_episodes": 1, # Increase update frequency
+    "replay_buffer_type": "prioritized"
 }
 
