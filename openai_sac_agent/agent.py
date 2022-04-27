@@ -579,8 +579,9 @@ class SACBuffer:
         buffer_type: str = "uniform",
     ) -> None:
         """Buffer responsible for storing the experience and the Q target.
-        Unlike the VPG and PPO buffer, this buffer is static because random sampling
-        is used to train the agent.
+
+        If :buffer_type: is 'prioritized' then prioritized experience replay (PER) and on-policy mixing is used when
+        sampling the replay buffer, as described in (Banerjee, 2021): https://arxiv.org/pdf/2109.11767v1.pdf
         """
         # Number of states, actions and total number of time steps
         self.number_obs = number_obs
@@ -635,8 +636,8 @@ class SACBuffer:
         done: bool,
     ) -> None:
         """
-        During episode: store experience in the cache
-        At the end of episode: calculate return, put cache in buffer, empty cache
+        When called during an episode, experience is stored in the cache. At the end of episode, calculate the episodic
+        return (used for the 'priority' of each transition in that episode) and transfer the cache into the buffer.
         """
 
         # Store experience in cache
@@ -694,8 +695,9 @@ class SACBuffer:
     def get_training_batch(
         self,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
-        """Sample (batch_size) number of data points from (0, self.experience_pointer - 1)
-        and returns tensors for s, a, s', r, and done."""
+        """Sample :self.batch_size: number of data points from the replay buffer and returns tensors
+        for s, a, s', r, and done. Experience is sampled on the buffer based on the :buffer_type:
+        """
         if self.buffer_type == "prioritized":
             # Sample indices
             sample_index1 = np.random.choice(
