@@ -315,18 +315,20 @@ class Agent:
                 done_data,
             ) = self.buffer.get_training_batch()
             # Get the training targets (Line 12 of the OpenAI pseudocode)
-            y = self.compute_targets(reward_data, next_obs_data, done_data)
+            y = self._compute_targets(reward_data, next_obs_data, done_data)
 
-            self.train_q_networks(obs_data, action_data, y)
-            self.train_policy_network(obs_data)
+            self._train_q_networks(obs_data, action_data, y)
+            self._train_policy_network(obs_data)
 
-            self.train_alpha(obs_data)
+            # Learn entropy regularization coefficient, if applicable
+            self._train_alpha(obs_data)
 
-            self.update_target_networks()
+            self._update_target_networks()
 
+        # Update learning rate scheduler, if applicable
         self.update_learning_rate()
 
-    def compute_targets(
+    def _compute_targets(
         self,
         reward_data: torch.Tensor,
         next_obs_data: torch.Tensor,
@@ -343,7 +345,7 @@ class Agent:
                 min_q_network_target - self.alpha * log_proba
             )
 
-    def train_q_networks(self, obs_data, action_data, y):
+    def _train_q_networks(self, obs_data, action_data, y):
         """Train the Q-network (Line 13 of the OpenAI pseudocode)"""
         for q_network, q_optimizer in [
             (self.q1_network, self.q1_optimizer),
@@ -360,7 +362,7 @@ class Agent:
             # Take a step
             q_optimizer.step()
 
-    def train_policy_network(self, obs_data):
+    def _train_policy_network(self, obs_data):
         """Train the policy network (Line 14 of the OpenAI pseudocode)"""
         # Freeze the Q-networks
         self._freeze_network(self.q1_network)
@@ -384,7 +386,7 @@ class Agent:
         self._unfreeze_network(self.q2_network)
         self._unfreeze_alpha()
 
-    def train_alpha(self, obs_data):
+    def _train_alpha(self, obs_data):
         """Learn the entropy regularization coefficient."""
         if self.update_alpha is not None:
             if self.update_alpha == "learned":
@@ -424,18 +426,7 @@ class Agent:
                     self.q2_scheduler.step()
                     self.policy_scheduler.step()
 
-    def _freeze_network(self, network):
-        """Freeze the gradients of the network so that loss cannot backprop
-        through it."""
-        for param in network.parameters():
-            param.requires_grad = False
-
-    def _unfreeze_network(self, network):
-        """Unfreeze the network gradients."""
-        for param in network.parameters():
-            param.requires_grad = True
-
-    def update_target_networks(self):
+    def _update_target_networks(self):
         """Update the target networks for the q-network and the policy-network via
         a moving average (Line 15 of the OpenAI pseudocode).
         """
@@ -451,6 +442,18 @@ class Agent:
             # Use OpenAI's in-place trick
             target_param.data.mul_(self.polyak)
             target_param.data.add_((1 - self.polyak) * param.data)
+
+
+    def _freeze_network(self, network):
+        """Freeze the gradients of the network so that loss cannot backprop
+        through it."""
+        for param in network.parameters():
+            param.requires_grad = False
+
+    def _unfreeze_network(self, network):
+        """Unfreeze the network gradients."""
+        for param in network.parameters():
+            param.requires_grad = True
 
     def _freeze_alpha(self):
         if self.update_alpha == "learned":
