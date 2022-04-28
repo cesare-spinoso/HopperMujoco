@@ -37,8 +37,7 @@ grid = [
 ]
 
 # Extra hyperparameter search w/ prioritized experience buffer
-grid = [
-    {
+grid = {
         "q_architecture": [(64, 64)],
         "q_activation_function": [torch.nn.ReLU],
         "policy_architecture": [(64, 64)],
