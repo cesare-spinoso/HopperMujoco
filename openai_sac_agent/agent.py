@@ -166,12 +166,13 @@ class Agent:
                 self.alpha_decay_rate = 0.9
                 self.alpha_update_counter = 0
         ### BUFFER ###
+        self.replay_buffer_type = replay_buffer_type
         self.buffer = SACBuffer(
             number_obs=self.num_obs,
             number_actions=self.num_actions,
             size=buffer_size,
             batch_size=self.batch_size,
-            buffer_type=replay_buffer_type
+            buffer_type=self.replay_buffer_type
         )
 
     def load_weights(self, root_path: str, pretrained_model_name: str = None) -> None:
