@@ -49,7 +49,7 @@ grid = {
         "exploration_timesteps": [100],
         "update_start_in_episodes": [100],
         "update_frequency_in_episodes": [1],
-        "replay_buffer_type": "uniform"
+        "replay_buffer_type": ["uniform"]
 }
 
 hyperparameter_grid = []
