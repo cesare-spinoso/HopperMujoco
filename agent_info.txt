@@ -1,6 +1,6 @@
 Agent: SAC Agent
 
-Model: m_0 (3698 checkpoint which actually gives about 3695 from the cosine retraining)
+Model: m_0 (3797 checkpoint from the retraining)
 
 Hyperparameters: {
     'actor_architecture': (64, 64), 

@@ -86,8 +86,8 @@ if __name__ == "__main__":
     agent.load_weights(args.root_path)
 
     # Note these can be environment specific and you are free to experiment with what works best for you
-    n_episodes_to_evaluate = 100
-    num_seeds = 1
+    n_episodes_to_evaluate = 50
+    num_seeds = 5
 
     mean_reward = evaluate_agent(agent, env_eval, num_seeds, n_episodes_to_evaluate)
     print(mean_reward)

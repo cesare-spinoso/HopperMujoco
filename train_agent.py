@@ -1,10 +1,13 @@
+from email.mime import audio
 import gym
+from copy import deepcopy
 
 import argparse
 import importlib
 import time
 import random
 import numpy as np
+from sklearn.metrics import auc
 
 import tensorflow as tf
 import torch
@@ -46,10 +49,10 @@ def get_environment(env_type):
 
 
 def train_agent(
-    agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate
+    agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, seed
 ):
 
-    seed = 0
+    seed = seed
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -122,10 +125,15 @@ if __name__ == "__main__":
     agent = agent_module.Agent(env_specs)
 
     # Note these can be environment specific and you are free to experiment with what works best for you
-    total_timesteps = 2000000
-    evaluation_freq = 1000
-    n_episodes_to_evaluate = 20
-
-    learning_curve = train_agent(
-        agent, env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate
-    )
+    total_timesteps = 100_000
+    evaluation_freq = 5000
+    n_episodes_to_evaluate = 10
+    auc_list = []
+    for i in range(1, 5):
+        learning_curve = train_agent(
+            deepcopy(agent), env, env_eval, total_timesteps, evaluation_freq, n_episodes_to_evaluate, i
+        )
+        auc_ = auc(np.arange(0, total_timesteps, evaluation_freq), learning_curve)/total_timesteps
+        print(auc_)
+        auc_list.append(auc_)
+    print(np.mean(np.array(auc_list)))
