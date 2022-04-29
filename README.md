@@ -62,7 +62,7 @@ Once you are done with training the agent, please copy-paste the code and manual
 Your agent can be trained by running `python3 train_agent.py --group GROUP_XXX`. For example, for the group `GROUP_MJ1`, it can be trained as `python3 train_agent.py --group GROUP_MJ1`. You can also run other variants of training such as training from the best agent, training for sample efficiency and evaluating the agent.
 
 ## Paper
-You can find our paper with results [here](/GROUP_013/RL_paper.pdf).
+You can find our paper with results [here](RL_paper.pdf).
 
 ## Video
 You can find a video highlighting our work [here](https://drive.google.com/file/d/178XOeBQlrf5vF3lTS4hY0BXyyBcEcKFM/view?usp=sharing).
