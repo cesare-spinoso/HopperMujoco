@@ -73,10 +73,10 @@ if __name__ == "__main__":
         }
 
     # Training and evaluation variables
-    total_timesteps = 1_000_000
+    total_timesteps = 500_000
     # Increasing the evaluation frequency for now as a quick fix
     evaluation_freq = 500
-    n_episodes_to_evaluate = 10
+    n_episodes_to_evaluate = 15
 
     n_episodes_to_evaluate_leaderboard = 50
     num_seeds = 5
@@ -137,7 +137,7 @@ if __name__ == "__main__":
             logger,
             name=f"m_0",
             visualize=False,
-            seed=seed,
+            seed=10*(seed + 1),
             # Don't resave the model!
             save_checkpoint_start_timestep=agent.update_start_in_timesteps + 1,
         )
