@@ -1,5 +1,5 @@
-# COMP 579 - GROUP_013
-## Virtual Environment
+# COMP 579 - Reinforcement Learning Project
+## Virtual Environment Installation
 Create a virtual environment with the dependencies found in `environment.yml`.
 
 ```
@@ -10,10 +10,6 @@ conda activate my-venv
 ```
 
 Note that this environment contains a cudatoolkit of version 10.2.89. Thus, you may have to uninstall and then reinstall it depending on your cuda version in the case that you are using GPUs.
-
-
-## Training the agent
-Assuming that you have group name as `GROUP_XXX`, after filling up the `Agent` class in `GROUP_XXX/agent.py`, your agent can be trained by running `python3 train_agent.py --group GROUP_XXX`. For example, for the group `GROUP_MJ1`, it can be trained as `python3 train_agent.py --group GROUP_MJ1`.
 
 ## Mujoco Domain
 
@@ -43,17 +39,6 @@ For installing mujoco on a CPU only machine do as follows:
 3. You can change the conda environment variable using ```conda env config vars set LD_LIBRARY_PATH=...```. If this command doesn't work in your setting, you can follow this [solution](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#macos-and-linux).
 
 
-#### Google Colab
-
-Clone your repository and create a conda environment:
-
-```
-!git clone https://github.com/COMP579TA/COMP579-Project-Template
-!cd COMP579-Project-Template
-!conda env create environment.yml -n my-venv
-!conda activate my-venv
-```
-
 Install the required packages to run mujoco environment
 ```
 !apt-get install -y \
@@ -72,3 +57,12 @@ Install the required packages to run mujoco environment
 You can check the following notebook for further info: https://colab.research.google.com/drive/1Zmr96imxqHnbauXf8KbzKgwuF7TROc9F?usp=sharing
 
 Once you are done with training the agent, please copy-paste the code and manually create an ```agent.py``` file and ```env_info.txt``` and upload it to your group folder.
+
+## Training the agent
+Your agent can be trained by running `python3 train_agent.py --group GROUP_XXX`. For example, for the group `GROUP_MJ1`, it can be trained as `python3 train_agent.py --group GROUP_MJ1`. You can also run other variants of training such as training from the best agent, training for sample efficiency and evaluating the agent.
+
+## Paper
+You can find our paper with results [here](RL_paper.pdf).
+
+## Video
+You can find a video highlighting our work [here](https://drive.google.com/file/d/178XOeBQlrf5vF3lTS4hY0BXyyBcEcKFM/view?usp=sharing).

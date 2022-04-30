@@ -1,0 +1,553 @@
+10:16:22,881 root INFO Loaded the hyperparameter grid
+10:16:22,955 root INFO Training start for the following model 0 ... 
+10:16:22,958 root INFO {'env_specs': {'observation_space': Box(-inf, inf, (11,), float64), 'action_space': Box(-1.0, 1.0, (3,), float32)}, 'num_obs': 11, 'num_actions': 3, 'action_limit': 1.0, 'current_timestep': 0, 'current_episode': 0, 'episode_of_last_update': None, 'device': device(type='cpu'), 'gamma': 0.99, 'polyak': 0.995, 'exploration_timesteps': 10000, 'update_frequency_in_episodes': 50, 'update_start_in_episodes': 1000, 'number_of_batch_updates': 1000, 'batch_size': 100, 'q1_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q1_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q2_network': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q2_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'q1_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'q2_network_target': QNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=14, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+), 'policy_network': PolicyNetwork(
+  (network): Sequential(
+    (0): Linear(in_features=11, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+  )
+  (mu_layer): Linear(in_features=64, out_features=3, bias=True)
+  (log_std_layer): Linear(in_features=64, out_features=3, bias=True)
+), 'policy_optimizer': Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+), 'alpha': 0.2, 'update_alpha': False, 'buffer': <openai_sac_agent.agent.SACBuffer object at 0x7f0ad2296dd0>}
+10:16:27,415 root INFO timestep: 10000, acc_reward: 185.04
+10:16:27,433 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_185.043.pth.tar
+10:16:33,381 root INFO timestep: 20000, acc_reward: 150.32
+10:17:07,532 root INFO timestep: 30000, acc_reward: 174.86
+10:17:32,935 root INFO timestep: 40000, acc_reward: 217.11
+10:17:32,945 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_217.109.pth.tar
+10:17:59,266 root INFO timestep: 50000, acc_reward: 213.95
+10:18:26,164 root INFO timestep: 60000, acc_reward: 262.63
+10:18:26,174 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_262.629.pth.tar
+10:18:53,784 root INFO timestep: 70000, acc_reward: 265.07
+10:18:53,794 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_265.074.pth.tar
+10:19:21,957 root INFO timestep: 80000, acc_reward: 261.50
+10:19:39,355 root INFO timestep: 90000, acc_reward: 284.12
+10:19:39,364 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_284.125.pth.tar
+10:20:09,127 root INFO timestep: 100000, acc_reward: 345.09
+10:20:09,136 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_345.094.pth.tar
+10:20:39,777 root INFO timestep: 110000, acc_reward: 317.61
+10:20:58,363 root INFO timestep: 120000, acc_reward: 245.39
+10:21:30,91 root INFO timestep: 130000, acc_reward: 299.80
+10:22:02,803 root INFO timestep: 140000, acc_reward: 354.18
+10:22:02,811 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_354.18.pth.tar
+10:22:22,425 root INFO timestep: 150000, acc_reward: 348.21
+10:22:58,65 root INFO timestep: 160000, acc_reward: 343.07
+10:23:18,338 root INFO timestep: 170000, acc_reward: 345.25
+10:23:54,41 root INFO timestep: 180000, acc_reward: 346.77
+10:24:31,47 root INFO timestep: 190000, acc_reward: 370.57
+10:24:31,57 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_370.565.pth.tar
+10:24:52,669 root INFO timestep: 200000, acc_reward: 357.59
+10:25:15,28 root INFO timestep: 210000, acc_reward: 517.37
+10:25:15,35 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_517.372.pth.tar
+10:25:54,759 root INFO timestep: 220000, acc_reward: 603.42
+10:25:54,767 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_603.418.pth.tar
+10:26:17,709 root INFO timestep: 230000, acc_reward: 239.56
+10:26:41,711 root INFO timestep: 240000, acc_reward: 668.95
+10:26:41,718 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_668.955.pth.tar
+10:27:05,733 root INFO timestep: 250000, acc_reward: 617.02
+10:27:30,313 root INFO timestep: 260000, acc_reward: 529.07
+10:27:55,67 root INFO timestep: 270000, acc_reward: 533.28
+10:28:19,679 root INFO timestep: 280000, acc_reward: 252.22
+10:28:45,576 root INFO timestep: 290000, acc_reward: 625.18
+10:29:11,735 root INFO timestep: 300000, acc_reward: 633.12
+10:29:59,831 root INFO timestep: 310000, acc_reward: 555.43
+10:30:27,248 root INFO timestep: 320000, acc_reward: 558.84
+10:30:55,204 root INFO timestep: 330000, acc_reward: 401.26
+10:31:23,702 root INFO timestep: 340000, acc_reward: 605.61
+10:31:52,267 root INFO timestep: 350000, acc_reward: 786.74
+10:31:52,275 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_786.74.pth.tar
+10:31:58,257 root INFO timestep: 360000, acc_reward: 779.81
+10:32:26,818 root INFO timestep: 370000, acc_reward: 683.50
+10:33:19,112 root INFO timestep: 380000, acc_reward: 783.48
+10:33:25,82 root INFO timestep: 390000, acc_reward: 752.27
+10:33:55,19 root INFO timestep: 400000, acc_reward: 607.11
+10:34:25,477 root INFO timestep: 410000, acc_reward: 617.13
+10:34:56,718 root INFO timestep: 420000, acc_reward: 798.56
+10:34:56,728 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_798.564.pth.tar
+10:35:28,676 root INFO timestep: 430000, acc_reward: 1025.43
+10:35:28,684 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_1025.434.pth.tar
+10:36:01,158 root INFO timestep: 440000, acc_reward: 671.11
+10:36:33,973 root INFO timestep: 450000, acc_reward: 536.85
+10:37:09,326 root INFO timestep: 460000, acc_reward: 1140.46
+10:37:09,336 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_1140.462.pth.tar
+10:37:15,718 root INFO timestep: 470000, acc_reward: 1115.57
+10:37:50,151 root INFO timestep: 480000, acc_reward: 1188.18
+10:37:50,160 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_1188.175.pth.tar
+10:37:56,793 root INFO timestep: 490000, acc_reward: 1225.02
+10:37:56,801 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_1225.016.pth.tar
+10:38:31,161 root INFO timestep: 500000, acc_reward: 613.01
+10:39:06,405 root INFO timestep: 510000, acc_reward: 1049.00
+10:39:12,766 root INFO timestep: 520000, acc_reward: 1051.90
+10:39:48,316 root INFO timestep: 530000, acc_reward: 846.38
+10:40:24,487 root INFO timestep: 540000, acc_reward: 834.25
+10:41:01,726 root INFO timestep: 550000, acc_reward: 953.32
+10:41:07,931 root INFO timestep: 560000, acc_reward: 951.01
+10:41:46,677 root INFO timestep: 570000, acc_reward: 1137.40
+10:42:27,922 root INFO timestep: 580000, acc_reward: 2134.28
+10:42:27,930 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_2134.279.pth.tar
+10:42:36,155 root INFO timestep: 590000, acc_reward: 2248.50
+10:42:36,163 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_2248.5.pth.tar
+10:43:17,250 root INFO timestep: 600000, acc_reward: 1773.84
+10:43:24,735 root INFO timestep: 610000, acc_reward: 1689.23
+10:44:05,455 root INFO timestep: 620000, acc_reward: 1204.51
+10:44:48,679 root INFO timestep: 630000, acc_reward: 2503.31
+10:44:48,687 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_2503.305.pth.tar
+10:44:57,647 root INFO timestep: 640000, acc_reward: 2710.21
+10:44:57,656 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_2710.213.pth.tar
+10:45:06,407 root INFO timestep: 650000, acc_reward: 2559.89
+10:45:49,757 root INFO timestep: 660000, acc_reward: 1487.10
+10:45:58,140 root INFO timestep: 670000, acc_reward: 2224.46
+10:46:06,189 root INFO timestep: 680000, acc_reward: 2013.59
+10:46:14,671 root INFO timestep: 690000, acc_reward: 2284.95
+10:47:01,962 root INFO timestep: 700000, acc_reward: 2464.72
+10:47:11,96 root INFO timestep: 710000, acc_reward: 2456.17
+10:47:20,282 root INFO timestep: 720000, acc_reward: 2461.85
+10:47:29,413 root INFO timestep: 730000, acc_reward: 2467.89
+10:48:17,590 root INFO timestep: 740000, acc_reward: 1567.41
+10:48:24,809 root INFO timestep: 750000, acc_reward: 1555.14
+10:48:32,188 root INFO timestep: 760000, acc_reward: 1580.21
+10:48:40,71 root INFO timestep: 770000, acc_reward: 1767.91
+10:49:31,58 root INFO timestep: 780000, acc_reward: 2038.42
+10:49:38,816 root INFO timestep: 790000, acc_reward: 1769.43
+10:49:46,393 root INFO timestep: 800000, acc_reward: 1708.70
+10:49:54,30 root INFO timestep: 810000, acc_reward: 1698.96
+10:50:47,85 root INFO timestep: 820000, acc_reward: 1979.93
+10:50:55,274 root INFO timestep: 830000, acc_reward: 1858.51
+10:51:03,951 root INFO timestep: 840000, acc_reward: 2164.19
+10:52:00,8 root INFO timestep: 850000, acc_reward: 2568.25
+10:52:09,622 root INFO timestep: 860000, acc_reward: 2570.48
+10:52:19,110 root INFO timestep: 870000, acc_reward: 2570.40
+10:53:16,150 root INFO timestep: 880000, acc_reward: 2677.51
+10:53:25,237 root INFO timestep: 890000, acc_reward: 2664.47
+10:53:34,315 root INFO timestep: 900000, acc_reward: 2675.98
+10:53:43,711 root INFO timestep: 910000, acc_reward: 2673.23
+10:53:53,394 root INFO timestep: 920000, acc_reward: 2680.12
+10:54:51,909 root INFO timestep: 930000, acc_reward: 1096.95
+10:54:58,422 root INFO timestep: 940000, acc_reward: 1040.00
+10:55:04,967 root INFO timestep: 950000, acc_reward: 1099.27
+10:55:11,394 root INFO timestep: 960000, acc_reward: 1130.94
+10:56:11,29 root INFO timestep: 970000, acc_reward: 1921.31
+10:56:18,678 root INFO timestep: 980000, acc_reward: 2026.34
+10:56:26,255 root INFO timestep: 990000, acc_reward: 1955.34
+10:57:26,156 root INFO timestep: 1000000, acc_reward: 1316.56
+10:57:32,826 root INFO timestep: 1010000, acc_reward: 1339.02
+10:58:32,435 root INFO timestep: 1020000, acc_reward: 936.32
+10:58:38,650 root INFO timestep: 1030000, acc_reward: 935.83
+10:59:40,615 root INFO timestep: 1040000, acc_reward: 2279.76
+10:59:49,127 root INFO timestep: 1050000, acc_reward: 2459.35
+10:59:57,389 root INFO timestep: 1060000, acc_reward: 2390.50
+11:00:59,615 root INFO timestep: 1070000, acc_reward: 968.31
+11:01:05,921 root INFO timestep: 1080000, acc_reward: 967.43
+11:02:05,987 root INFO timestep: 1090000, acc_reward: 855.35
+11:03:05,831 root INFO timestep: 1100000, acc_reward: 746.42
+11:04:05,955 root INFO timestep: 1110000, acc_reward: 1081.48
+11:04:12,334 root INFO timestep: 1120000, acc_reward: 1091.29
+11:05:15,450 root INFO timestep: 1130000, acc_reward: 3079.46
+11:05:15,458 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3079.457.pth.tar
+11:05:24,632 root INFO timestep: 1140000, acc_reward: 3096.58
+11:05:24,641 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3096.577.pth.tar
+11:06:25,508 root INFO timestep: 1150000, acc_reward: 1708.31
+11:06:32,570 root INFO timestep: 1160000, acc_reward: 1710.65
+11:07:35,484 root INFO timestep: 1170000, acc_reward: 3060.21
+11:07:44,479 root INFO timestep: 1180000, acc_reward: 3039.33
+11:08:47,241 root INFO timestep: 1190000, acc_reward: 2813.50
+11:08:56,660 root INFO timestep: 1200000, acc_reward: 3068.92
+11:09:06,20 root INFO timestep: 1210000, acc_reward: 3076.03
+11:10:08,68 root INFO timestep: 1220000, acc_reward: 1426.04
+11:10:14,852 root INFO timestep: 1230000, acc_reward: 1274.81
+11:11:23,390 root INFO timestep: 1240000, acc_reward: 1971.61
+11:12:28,20 root INFO timestep: 1250000, acc_reward: 971.04
+11:12:34,458 root INFO timestep: 1260000, acc_reward: 957.84
+11:13:31,499 root INFO timestep: 1270000, acc_reward: 1920.25
+11:13:38,500 root INFO timestep: 1280000, acc_reward: 1524.20
+11:14:34,777 root INFO timestep: 1290000, acc_reward: 2266.24
+11:14:42,370 root INFO timestep: 1300000, acc_reward: 1973.66
+11:14:49,889 root INFO timestep: 1310000, acc_reward: 1912.60
+11:15:44,185 root INFO timestep: 1320000, acc_reward: 913.99
+11:16:47,398 root INFO timestep: 1330000, acc_reward: 3063.26
+11:16:57,328 root INFO timestep: 1340000, acc_reward: 3063.30
+11:17:07,93 root INFO timestep: 1350000, acc_reward: 3062.02
+11:17:16,824 root INFO timestep: 1360000, acc_reward: 3062.93
+11:18:22,835 root INFO timestep: 1370000, acc_reward: 3125.67
+11:18:22,859 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3125.674.pth.tar
+11:18:32,619 root INFO timestep: 1380000, acc_reward: 3125.91
+11:18:32,642 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3125.909.pth.tar
+11:18:42,400 root INFO timestep: 1390000, acc_reward: 3125.63
+11:19:45,185 root INFO timestep: 1400000, acc_reward: 2785.80
+11:19:54,155 root INFO timestep: 1410000, acc_reward: 2885.00
+11:20:02,940 root INFO timestep: 1420000, acc_reward: 2773.10
+11:20:11,936 root INFO timestep: 1430000, acc_reward: 2892.10
+11:20:20,753 root INFO timestep: 1440000, acc_reward: 2815.56
+11:21:18,77 root INFO timestep: 1450000, acc_reward: 3137.40
+11:21:18,86 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3137.404.pth.tar
+11:21:27,125 root INFO timestep: 1460000, acc_reward: 3140.29
+11:21:27,134 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3140.286.pth.tar
+11:21:36,161 root INFO timestep: 1470000, acc_reward: 3140.92
+11:21:36,169 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3140.916.pth.tar
+11:21:45,212 root INFO timestep: 1480000, acc_reward: 3140.09
+11:21:54,266 root INFO timestep: 1490000, acc_reward: 3140.52
+11:22:49,309 root INFO timestep: 1500000, acc_reward: 1395.82
+11:22:56,736 root INFO timestep: 1510000, acc_reward: 1769.38
+11:23:50,298 root INFO timestep: 1520000, acc_reward: 569.20
+11:23:56,395 root INFO timestep: 1530000, acc_reward: 888.86
+11:24:52,143 root INFO timestep: 1540000, acc_reward: 1826.72
+11:24:59,776 root INFO timestep: 1550000, acc_reward: 1861.55
+11:26:00,381 root INFO timestep: 1560000, acc_reward: 1391.17
+11:26:09,91 root INFO timestep: 1570000, acc_reward: 1997.38
+11:26:16,942 root INFO timestep: 1580000, acc_reward: 1454.57
+11:26:25,237 root INFO timestep: 1590000, acc_reward: 1753.30
+11:27:30,892 root INFO timestep: 1600000, acc_reward: 803.86
+11:27:37,495 root INFO timestep: 1610000, acc_reward: 817.23
+11:28:43,150 root INFO timestep: 1620000, acc_reward: 892.09
+11:28:49,388 root INFO timestep: 1630000, acc_reward: 898.34
+11:29:54,986 root INFO timestep: 1640000, acc_reward: 1025.05
+11:30:01,545 root INFO timestep: 1650000, acc_reward: 1047.09
+11:31:08,450 root INFO timestep: 1660000, acc_reward: 1600.86
+11:31:15,631 root INFO timestep: 1670000, acc_reward: 1587.88
+11:32:20,446 root INFO timestep: 1680000, acc_reward: 900.50
+11:32:26,911 root INFO timestep: 1690000, acc_reward: 902.51
+11:33:32,775 root INFO timestep: 1700000, acc_reward: 965.56
+11:33:39,275 root INFO timestep: 1710000, acc_reward: 968.47
+11:34:44,696 root INFO timestep: 1720000, acc_reward: 929.85
+11:35:49,588 root INFO timestep: 1730000, acc_reward: 769.99
+11:35:55,834 root INFO timestep: 1740000, acc_reward: 767.46
+11:37:03,537 root INFO timestep: 1750000, acc_reward: 2259.61
+11:37:12,341 root INFO timestep: 1760000, acc_reward: 2614.12
+11:37:20,325 root INFO timestep: 1770000, acc_reward: 2092.25
+11:38:26,121 root INFO timestep: 1780000, acc_reward: 1119.80
+11:38:32,581 root INFO timestep: 1790000, acc_reward: 992.86
+11:39:39,48 root INFO timestep: 1800000, acc_reward: 1120.22
+11:40:45,71 root INFO timestep: 1810000, acc_reward: 932.01
+11:40:51,481 root INFO timestep: 1820000, acc_reward: 898.80
+11:41:56,743 root INFO timestep: 1830000, acc_reward: 1021.03
+11:42:03,334 root INFO timestep: 1840000, acc_reward: 1085.30
+11:43:09,49 root INFO timestep: 1850000, acc_reward: 746.26
+11:43:15,296 root INFO timestep: 1860000, acc_reward: 740.00
+11:43:21,456 root INFO timestep: 1870000, acc_reward: 745.79
+11:44:29,743 root INFO timestep: 1880000, acc_reward: 3121.12
+11:44:39,229 root INFO timestep: 1890000, acc_reward: 3119.07
+11:44:48,695 root INFO timestep: 1900000, acc_reward: 3121.03
+11:44:58,190 root INFO timestep: 1910000, acc_reward: 3119.95
+11:45:07,656 root INFO timestep: 1920000, acc_reward: 3119.83
+11:46:12,944 root INFO timestep: 1930000, acc_reward: 1098.12
+11:46:19,643 root INFO timestep: 1940000, acc_reward: 1122.23
+11:47:29,37 root INFO timestep: 1950000, acc_reward: 3162.97
+11:47:29,47 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3162.966.pth.tar
+11:47:38,454 root INFO timestep: 1960000, acc_reward: 3165.16
+11:47:38,464 root INFO checkpoint saved: /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22/sac_ckpt_m_0_3165.16.pth.tar
+11:47:47,894 root INFO timestep: 1970000, acc_reward: 3163.65
+11:48:53,748 root INFO timestep: 1980000, acc_reward: 923.97
+11:49:00,170 root INFO timestep: 1990000, acc_reward: 924.90
+11:50:06,871 root INFO timestep: 2000000, acc_reward: 1570.39
+11:50:06,913 root INFO Training complete.
+11:50:06,917 root INFO 
+
+Final Mean Reward: 1570.39367
+11:50:06,917 root INFO 
+\Average Mean Reward: 1531.98717
+11:50:06,918 root INFO 
+\Median Mean Reward: 1196.3426
+11:50:06,918 root INFO Best Mean Reward: 3165.16035
+11:50:06,919 root INFO Final Cumulative Reward: 306397.43471
+11:50:06,919 root INFO AUC for Mean Reward: 305519.71652
+11:50:06,920 root INFO Time Elapsed During Training: 5623.961561203003
+
+11:50:06,933 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+11:50:06,934 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:06,935 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,935 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,936 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,936 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,937 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,937 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,938 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,938 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,939 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,939 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,940 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:06,940 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:06,940 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,941 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+11:50:06,941 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,942 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+11:50:06,942 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:50:06,943 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,943 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:06,944 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,944 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,944 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,945 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,945 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,946 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:50:06,946 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:06,947 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:06,947 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,948 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,948 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,949 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,949 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:06,950 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,950 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,950 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,951 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:06,951 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,952 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,952 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Regular.ttf', name='Lato', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,953 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Light.ttf', name='Lato', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
+11:50:06,953 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGraphic.ttf', name='UnGraphic', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,953 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGungseo.ttf', name='UnGungseo', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,954 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-BoldItalic.ttf', name='Lato', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:06,954 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:50:06,955 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-BlackItalic.ttf', name='Lato', style='italic', variant='normal', weight=900, stretch='normal', size='scalable')) = 11.525
+11:50:06,955 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaru.ttf', name='UnDinaru', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,956 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,956 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnBatangBold.ttf', name='UnBatang', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,957 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Heavy.ttf', name='Lato', style='normal', variant='normal', weight=800, stretch='normal', size='scalable')) = 10.43
+11:50:06,957 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-ThinItalic.ttf', name='Lato', style='italic', variant='normal', weight=200, stretch='normal', size='scalable')) = 11.24
+11:50:06,958 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/noto/NotoMono-Regular.ttf', name='Noto Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,958 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Semibold.ttf', name='Lato', style='normal', variant='normal', weight=600, stretch='normal', size='scalable')) = 10.24
+11:50:06,959 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-HairlineItalic.ttf', name='Lato', style='italic', variant='normal', weight=100, stretch='normal', size='scalable')) = 11.335
+11:50:06,959 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Medium.ttf', name='Lato', style='normal', variant='normal', weight=500, stretch='normal', size='scalable')) = 10.145
+11:50:06,960 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,960 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf', name='Droid Sans Fallback', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,960 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnBatang.ttf', name='UnBatang', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,961 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDotumBold.ttf', name='UnDotum', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,961 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Italic.ttf', name='Lato', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:06,962 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Thin.ttf', name='Lato', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 10.24
+11:50:06,962 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-LightItalic.ttf', name='Lato', style='italic', variant='normal', weight=300, stretch='normal', size='scalable')) = 11.145
+11:50:06,963 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-MediumItalic.ttf', name='Lato', style='italic', variant='normal', weight=500, stretch='normal', size='scalable')) = 11.145
+11:50:06,963 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaruLight.ttf', name='UnDinaru', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
+11:50:06,964 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:50:06,964 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnPilgi.ttf', name='UnPilgi', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,965 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-SemiboldItalic.ttf', name='Lato', style='italic', variant='normal', weight=600, stretch='normal', size='scalable')) = 11.24
+11:50:06,965 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnPilgiBold.ttf', name='UnPilgi', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,965 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf', name='FontAwesome', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,966 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Bold.ttf', name='Lato', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,966 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/opentype/font-awesome/FontAwesome.otf', name='FontAwesome', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,967 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Black.ttf', name='Lato', style='normal', variant='normal', weight=900, stretch='normal', size='scalable')) = 10.525
+11:50:06,967 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDotum.ttf', name='UnDotum', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,968 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaruBold.ttf', name='UnDinaru', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,968 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Hairline.ttf', name='Lato', style='normal', variant='normal', weight=100, stretch='normal', size='scalable')) = 10.335
+11:50:06,969 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:06,969 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGraphicBold.ttf', name='UnGraphic', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:06,970 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-HeavyItalic.ttf', name='Lato', style='italic', variant='normal', weight=800, stretch='normal', size='scalable')) = 11.43
+11:50:06,970 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+11:50:07,17 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0.
+11:50:07,18 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,18 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,19 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,19 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,20 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,20 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,21 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,21 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,22 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,22 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,22 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,23 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,23 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,24 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,24 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+11:50:07,25 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,26 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+11:50:07,26 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:50:07,27 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,27 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,28 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,28 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,28 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,29 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,29 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,30 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:50:07,30 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,31 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,31 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,32 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,32 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,33 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,33 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,34 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,34 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,35 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,35 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,36 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,36 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,36 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Regular.ttf', name='Lato', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,37 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Light.ttf', name='Lato', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
+11:50:07,37 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGraphic.ttf', name='UnGraphic', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,38 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGungseo.ttf', name='UnGungseo', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,38 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-BoldItalic.ttf', name='Lato', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,39 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:50:07,39 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-BlackItalic.ttf', name='Lato', style='italic', variant='normal', weight=900, stretch='normal', size='scalable')) = 11.525
+11:50:07,40 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaru.ttf', name='UnDinaru', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,40 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,40 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnBatangBold.ttf', name='UnBatang', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,41 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Heavy.ttf', name='Lato', style='normal', variant='normal', weight=800, stretch='normal', size='scalable')) = 10.43
+11:50:07,41 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-ThinItalic.ttf', name='Lato', style='italic', variant='normal', weight=200, stretch='normal', size='scalable')) = 11.24
+11:50:07,42 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/noto/NotoMono-Regular.ttf', name='Noto Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,42 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Semibold.ttf', name='Lato', style='normal', variant='normal', weight=600, stretch='normal', size='scalable')) = 10.24
+11:50:07,42 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-HairlineItalic.ttf', name='Lato', style='italic', variant='normal', weight=100, stretch='normal', size='scalable')) = 11.335
+11:50:07,43 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Medium.ttf', name='Lato', style='normal', variant='normal', weight=500, stretch='normal', size='scalable')) = 10.145
+11:50:07,43 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,44 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf', name='Droid Sans Fallback', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,44 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnBatang.ttf', name='UnBatang', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,44 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDotumBold.ttf', name='UnDotum', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,45 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Italic.ttf', name='Lato', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,45 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Thin.ttf', name='Lato', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 10.24
+11:50:07,46 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-LightItalic.ttf', name='Lato', style='italic', variant='normal', weight=300, stretch='normal', size='scalable')) = 11.145
+11:50:07,46 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-MediumItalic.ttf', name='Lato', style='italic', variant='normal', weight=500, stretch='normal', size='scalable')) = 11.145
+11:50:07,46 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaruLight.ttf', name='UnDinaru', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
+11:50:07,47 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:50:07,47 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnPilgi.ttf', name='UnPilgi', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,48 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-SemiboldItalic.ttf', name='Lato', style='italic', variant='normal', weight=600, stretch='normal', size='scalable')) = 11.24
+11:50:07,48 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnPilgiBold.ttf', name='UnPilgi', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,48 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf', name='FontAwesome', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,49 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Bold.ttf', name='Lato', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,49 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/opentype/font-awesome/FontAwesome.otf', name='FontAwesome', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,50 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Black.ttf', name='Lato', style='normal', variant='normal', weight=900, stretch='normal', size='scalable')) = 10.525
+11:50:07,50 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDotum.ttf', name='UnDotum', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,51 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaruBold.ttf', name='UnDinaru', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,51 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Hairline.ttf', name='Lato', style='normal', variant='normal', weight=100, stretch='normal', size='scalable')) = 10.335
+11:50:07,52 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,52 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGraphicBold.ttf', name='UnGraphic', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,53 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-HeavyItalic.ttf', name='Lato', style='italic', variant='normal', weight=800, stretch='normal', size='scalable')) = 11.43
+11:50:07,53 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+11:50:07,763 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+11:50:07,764 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,764 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,765 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,766 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,766 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,767 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,767 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,768 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,769 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,769 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,770 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,770 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,771 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,772 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,772 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+11:50:07,773 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,773 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+11:50:07,774 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:50:07,774 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,775 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,775 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,776 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,777 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,777 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,778 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,778 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:50:07,779 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,779 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,780 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,780 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,781 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,782 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,782 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,783 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,783 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,784 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,785 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,785 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,786 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,786 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Regular.ttf', name='Lato', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,787 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Light.ttf', name='Lato', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
+11:50:07,787 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGraphic.ttf', name='UnGraphic', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,788 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGungseo.ttf', name='UnGungseo', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,788 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-BoldItalic.ttf', name='Lato', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+11:50:07,789 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+11:50:07,790 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-BlackItalic.ttf', name='Lato', style='italic', variant='normal', weight=900, stretch='normal', size='scalable')) = 11.525
+11:50:07,790 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaru.ttf', name='UnDinaru', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,791 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,791 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnBatangBold.ttf', name='UnBatang', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,792 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Heavy.ttf', name='Lato', style='normal', variant='normal', weight=800, stretch='normal', size='scalable')) = 10.43
+11:50:07,792 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-ThinItalic.ttf', name='Lato', style='italic', variant='normal', weight=200, stretch='normal', size='scalable')) = 11.24
+11:50:07,793 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/noto/NotoMono-Regular.ttf', name='Noto Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,793 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Semibold.ttf', name='Lato', style='normal', variant='normal', weight=600, stretch='normal', size='scalable')) = 10.24
+11:50:07,794 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-HairlineItalic.ttf', name='Lato', style='italic', variant='normal', weight=100, stretch='normal', size='scalable')) = 11.335
+11:50:07,795 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Medium.ttf', name='Lato', style='normal', variant='normal', weight=500, stretch='normal', size='scalable')) = 10.145
+11:50:07,795 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,796 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf', name='Droid Sans Fallback', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,796 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnBatang.ttf', name='UnBatang', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,797 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDotumBold.ttf', name='UnDotum', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,797 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Italic.ttf', name='Lato', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+11:50:07,798 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Thin.ttf', name='Lato', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 10.24
+11:50:07,799 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-LightItalic.ttf', name='Lato', style='italic', variant='normal', weight=300, stretch='normal', size='scalable')) = 11.145
+11:50:07,799 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-MediumItalic.ttf', name='Lato', style='italic', variant='normal', weight=500, stretch='normal', size='scalable')) = 11.145
+11:50:07,800 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaruLight.ttf', name='UnDinaru', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
+11:50:07,800 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+11:50:07,801 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnPilgi.ttf', name='UnPilgi', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,802 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-SemiboldItalic.ttf', name='Lato', style='italic', variant='normal', weight=600, stretch='normal', size='scalable')) = 11.24
+11:50:07,802 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnPilgiBold.ttf', name='UnPilgi', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,803 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf', name='FontAwesome', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,803 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Bold.ttf', name='Lato', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,804 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/opentype/font-awesome/FontAwesome.otf', name='FontAwesome', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,805 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Black.ttf', name='Lato', style='normal', variant='normal', weight=900, stretch='normal', size='scalable')) = 10.525
+11:50:07,805 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDotum.ttf', name='UnDotum', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,806 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnDinaruBold.ttf', name='UnDinaru', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,806 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-Hairline.ttf', name='Lato', style='normal', variant='normal', weight=100, stretch='normal', size='scalable')) = 10.335
+11:50:07,807 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+11:50:07,807 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/unfonts-core/UnGraphicBold.ttf', name='UnGraphic', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+11:50:07,808 matplotlib.font_manager DEBUG findfont: score(FontEntry(fname='/usr/share/fonts/truetype/lato/Lato-HeavyItalic.ttf', name='Lato', style='italic', variant='normal', weight=800, stretch='normal', size='scalable')) = 11.43
+11:50:07,808 matplotlib.font_manager DEBUG findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/mila/c/cesare.spinoso/.conda/envs/mujoco/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+11:50:22,977 root INFO 
+Rewards graphed successfully. See /home/mila/c/cesare.spinoso/etienne/GROUP_013/results/2022-04-25_10h16m22
