@@ -36,7 +36,7 @@ grid = [
     },
 ]
 
-# The hyperparamters chosen for the sample efficient agent
+# Extra hyperparameter search w/ prioritized experience buffer
 grid = {
         "q_architecture": [(64, 64)],
         "q_activation_function": [torch.nn.ReLU],
@@ -44,15 +44,14 @@ grid = {
         "policy_activation_function": [torch.nn.ReLU],
         "q_lr": [1e-3],
         "policy_lr": [1e-3],
-        "alpha": [0.8],
-        "update_alpha": [False],
+        "alpha": [0.75, 0.8, 0.85],
+        "update_alpha": [None],
         "exploration_timesteps": [100],
         "update_start_in_episodes": [100],
         "update_frequency_in_episodes": [1],
+        "replay_buffer_type": ["uniform"]
 }
 
 hyperparameter_grid = []
 for i, params in enumerate(sklearn.model_selection.ParameterGrid(grid)):
-    if i == 0:
-        continue
     hyperparameter_grid.append(params)

@@ -38,7 +38,7 @@ def calc_sample_efficiency(
             evaluation_freq,
             n_episodes_to_evaluate,
             logger,
-            seed=i,
+            seed=i*10,
             save_checkpoint=save_checkpoint
         )
         auc_performances.append(auc(range(0, total_timesteps, evaluation_freq), seed_performance))
