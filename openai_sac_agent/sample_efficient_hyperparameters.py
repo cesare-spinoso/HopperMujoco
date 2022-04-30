@@ -44,7 +44,7 @@ grid = {
         "policy_activation_function": [torch.nn.ReLU],
         "q_lr": [1e-3],
         "policy_lr": [1e-3],
-        "alpha": [0.6, 0.7, 0.8, 0.9],
+        "alpha": [0.75, 0.8, 0.85],
         "update_alpha": [None],
         "exploration_timesteps": [100],
         "update_start_in_episodes": [100],
